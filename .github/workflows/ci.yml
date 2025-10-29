@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -16,16 +16,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt install qt6-base-dev
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake qt6-base-dev
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -S ${{github.workspace}}
 
       - name: Build project
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          make
+        run: cmake --build ${{github.workspace}}/build
 
       - name: Run tests
-        run: |
-          cd tests
-          ../build/pacman_tests
+        working-directory: ${{github.workspace}}/build
+        run: ctest --output-on-failure
