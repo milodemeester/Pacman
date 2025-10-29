@@ -1,0 +1,17 @@
+//
+// Created by milod on 29/10/2025.
+//
+
+#ifndef PACMAN_GAME_H
+#define PACMAN_GAME_H
+
+#include <SFML/Graphics.hpp>
+
+
+class Game{
+public:
+    void run();
+};
+
+
+#endif //PACMAN_GAME_H
