@@ -1,42 +1,31 @@
-name: CI
+name: Build and Test
 
-on: [push, pull_request]
-
-defaults:
-  run:
-    shell: bash
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: ${{ matrix.platform.name }} ${{ matrix.config.name }}
-    runs-on: ${{ matrix.platform.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - { name: Windows VS2022, os: windows-2022  }
-          - { name: Linux GCC,      os: ubuntu-latest }
-          - { name: Linux Clang,    os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
-          - { name: macOS,          os: macos-latest  }
-        config:
-          - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
-          - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
-      - name: Install Linux Dependencies
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype-dev
-
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure
-        run: cmake -B build ${{matrix.platform.flags}} ${{matrix.config.flags}}
+      - name: Install dependencies
+        run: |
+          sudo apt install qt6-base-dev
 
-      - name: Build
-        run: cmake --build build --config Release
+      - name: Build project
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
 
-      # NIEUWE STAP HIERONDER TOEGEVOEGD
-      - name: Test
-        run: ctest --test-dir build --config Release --output-on-failure
+      - name: Run tests
+        run: |
+          cd tests
+          ../build/pacman_tests
