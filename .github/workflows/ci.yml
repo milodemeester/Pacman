@@ -2,7 +2,9 @@ name: Build and Test
 
 on:
   push:
+    branches: [ "main", "master" ]
   pull_request:
+    branches: [ "main", "master" ]
   workflow_dispatch:
 
 jobs:
@@ -20,11 +22,14 @@ jobs:
           sudo apt-get install -y build-essential cmake qt6-base-dev
 
       - name: Configure CMake
+        # Maakt een 'build' map en configureert het project daarin
         run: cmake -B ${{github.workspace}}/build -S ${{github.workspace}}
 
       - name: Build project
+        # Compileert het project (inclusief de tests)
         run: cmake --build ${{github.workspace}}/build
 
       - name: Run tests
+        # Voert ctest uit VANUIT de build map
         working-directory: ${{github.workspace}}/build
         run: ctest --output-on-failure
