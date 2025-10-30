@@ -1,18 +1,14 @@
-name: Build and Test
+name: Tests only (Ubuntu, 5 min)
 
 on:
   push:
   pull_request:
   workflow_dispatch:
 
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  build-and-test:
+  tests-ubuntu-fast:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
 
     steps:
       - name: Checkout repository
@@ -28,67 +24,32 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ccache-
 
-      - name: Cache CMake FetchContent deps
-        uses: actions/cache@v4
-        with:
-          path: build/_deps
-          key: ${{ runner.os }}-cmake-deps-${{ hashFiles('**/CMakeLists.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-cmake-deps-
-
-      - name: Install system packages (build deps + OpenGL)
+      - name: Install minimal build packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake ninja-build ccache pkg-config \
-            libopenal-dev libsndfile1-dev libudev-dev \
-            libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
-            libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev
+          sudo apt-get install -y build-essential cmake ninja-build ccache pkg-config
 
-      - name: Configure CMake (Ninja + ccache)
-        env:
-          CCACHE_DIR: ${{ runner.home }}/.ccache
+      - name: Install and build system GoogleTest (fast)
         run: |
-          cmake -S . -B build -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+          # libgtest-dev provides sources; build & install the libs so find_package(GTest) can find them
+          sudo apt-get install -y libgtest-dev
+          # Debian/Ubuntu may place sources in /usr/src/googletest or /usr/src/gtest
+          if [ -d /usr/src/googletest ]; then
+            SRC=/usr/src/googletest
+          else
+            SRC=/usr/src/gtest
+          fi
+          sudo cmake -S "$SRC" -B "$SRC/build" -DCMAKE_BUILD_TYPE=Release
+          sudo cmake --build "$SRC/build" --target install -- -j $(nproc)
 
-      - name: Build (parallel)
-        run: cmake --build build --config Release -- -j $(nproc)
-
-      - name: Run tests (ctest)
-        run: ctest --test-dir build -j $(nproc) --output-on-failure
-
-      - name: Upload test logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ctest-logs
-          path: build/Testing || build/Testing/**/*.log || build/**/*.log
-
-  # Optionele snelle unit-test job:
-  # Gebruik deze job alleen als je pacman_tests target NIET linkt tegen SFML (dus tests onafhankelijk zijn van SFML).
-  # Deze job bouwt enkel de test-target en geeft snel feedback op PR's.
-  unit-tests-fast:
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    if: always()
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install minimal packages
+      - name: Configure CMake (only tests)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential cmake ninja-build ccache pkg-config \
-            libsndfile1-dev libudev-dev
-      - name: Configure CMake (Ninja + ccache)
-        env:
-          CCACHE_DIR: ${{ runner.home }}/.ccache
-        run: cmake -S . -B build -G Ninja \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-      - name: Build only tests target (fast)
-        run: cmake --build build --target pacman_tests -- -j $(nproc)
-      - name: Run tests (fast)
-        run: ./build/pacman_tests
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build only pacman_tests target
+        run: |
+          cmake --build build --target pacman_tests -- -j $(nproc)
+
+      - name: Run tests (only pacman_tests)
+        run: |
+          ./build/pacman_tests
