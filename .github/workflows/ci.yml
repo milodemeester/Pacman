@@ -28,4 +28,4 @@ jobs:
       - name: Run tests
         run: |
           cd tests
-          ../build/TA_project_tests
+          ../build/pacman_tests
