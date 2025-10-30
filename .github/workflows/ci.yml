@@ -1,22 +1,65 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libudev-dev libopenal-dev libsndfile1
-      - name: Start Xvfb
+        with:
+          fetch-depth: 0
+
+      # Cache ccache to speed up repeated compilations
+      - name: Cache ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt','**/*.cpp','**/*.h') }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+
+      # Cache CMake FetchContent build deps to avoid rebuilding SFML/googletest every run
+      - name: Cache CMake deps
+        uses: actions/cache@v4
+        with:
+          path: build/_deps
+          key: ${{ runner.os }}-cmake-deps-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-cmake-deps-
+
+      - name: Install packages
         run: |
-          sudo apt-get install -y xvfb
-          Xvfb :99 -screen 0 1024x768x24 & 
-          echo "DISPLAY=:99" >> $GITHUB_ENV
-      - name: Configure cmake
-        run: cmake -S . -B build
-      - name: Build
-        run: cmake --build build --config Release -- -j
-      - name: Run tests
-        run: ctest --test-dir build --output-on-failure
+          sudo apt-get update
+          # minimal toolchain + ninja + ccache (ninja recommended for fast incremental builds)
+          sudo apt-get install -y build-essential cmake ninja-build ccache \
+            libopenal-dev libsndfile1 libudev-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+
+      - name: Configure CMake (Ninja, use ccache)
+        env:
+          CCACHE_DIR: ${{ runner.home }}/.ccache
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+      - name: Build (parallel)
+        run: cmake --build build --config Release -- -j $(nproc)
+
+      - name: Run tests (parallel)
+        run: |
+          ctest --test-dir build -j $(nproc) --output-on-failure
+
+      - name: Upload test logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctest-logs
+          path: build/Testing || build/Testing/**/*.log || build/**/*.log
