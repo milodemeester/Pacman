@@ -1,57 +1,54 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.26)
 project(Pacman LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# --- MANUEL GTEST CONFIGURATION ---
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gtest/include)
-
-# Vertel de linker waar de gecompileerde gtest libraries (.a of .lib) te vinden zijn.
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/gtest/lib)
-
-# --- SFML CONFIG ---
 include(FetchContent)
-FetchContent_Declare(SFML
+
+# SFML via FetchContent - configureer als shared om minder define-issues te hebben
+FetchContent_Declare(
+        SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
         GIT_TAG 3.0.2
         GIT_SHALLOW ON
-        EXCLUDE_FROM_ALL
-        SYSTEM)
+)
 FetchContent_MakeAvailable(SFML)
 
-# --- HOOFDAPPLICATIE ---
-add_executable(Pacman
+# GoogleTest
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.15.2
+        GIT_SHALLOW ON
+)
+FetchContent_MakeAvailable(googletest)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+
+
+# Main executable
+add_executable(pacman
         src/main.cpp
         src/Game.cpp
+        include/Game.h
 )
 
-# Link de Pacman game met de SFML libraries.
-target_link_libraries(Pacman PRIVATE sfml-graphics sfml-window sfml-system)
+target_include_directories(pacman PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(pacman PRIVATE sfml-graphics sfml-window sfml-system)
 
-# Zorg ervoor dat de compiler je eigen 'include' map kan vinden.
-target_include_directories(Pacman PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# --- TESTAPPLICATION ---
-# Activeer de testfunctionaliteit in CMake.
 enable_testing()
 
-# Definieer een aparte executable voor je tests.
+# Tests executable
 add_executable(pacman_tests
         tests/Game_test.cpp
-        # We hebben de implementatie van de Game klasse nodig om te kunnen testen.
         src/Game.cpp
 )
+target_include_directories(pacman_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(pacman_tests PRIVATE GTest::gtest_main sfml-graphics sfml-window sfml-system)
 
-# Link de test-executable met de gtest libraries.
-# De namen 'gtest' en 'gtest_main' moeten overeenkomen met de bestandsnamen in gtest/lib
-# (bijv. libgtest.a en libgtest_main.a).
-target_link_libraries(pacman_tests PRIVATE gtest gtest_main)
+# Zorg dat CTest toont wat er misgaat
+set(CTEST_OUTPUT_ON_FAILURE ON)
 
-# Zorg ervoor dat de compiler je eigen 'include' map kan vinden.
-target_include_directories(pacman_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# Vertel ctest dat 'pacman_tests' een test-executable is.
 include(GoogleTest)
 gtest_discover_tests(pacman_tests)
-# -----------------------------

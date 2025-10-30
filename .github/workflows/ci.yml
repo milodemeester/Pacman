@@ -1,32 +1,22 @@
-name: Build and Test
+name: CI
 
-on:
-  push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
-  workflow_dispatch:
+on: [push, pull_request]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install SFML dependencies
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libudev-dev libopenal-dev libsndfile1
+      - name: Start Xvfb
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential cmake libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev libfreetype-dev libopenal-dev libflac-dev libvorbis-dev
-
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -S ${{github.workspace}}
-
-      - name: Build project
-        run: cmake --build ${{github.workspace}}/build
-
+          sudo apt-get install -y xvfb
+          Xvfb :99 -screen 0 1024x768x24 & 
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+      - name: Configure cmake
+        run: cmake -S . -B build
+      - name: Build
+        run: cmake --build build --config Release -- -j
       - name: Run tests
-        working-directory: ${{github.workspace}}/build
-        run: ctest --output-on-failure
+        run: ctest --test-dir build --output-on-failure
