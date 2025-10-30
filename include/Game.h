@@ -5,9 +5,6 @@
 #ifndef PACMAN_GAME_H
 #define PACMAN_GAME_H
 
-#include <SFML/Graphics.hpp>
-
-
 class Game{
 public:
     void run();

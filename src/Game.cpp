@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include <SFML/Graphics.hpp>
 
 void Game::run(){
     auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
