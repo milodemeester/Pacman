@@ -6,7 +6,11 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 include(FetchContent)
 
-# SFML via FetchContent - configureer als shared om minder define-issues te hebben
+# Forceer SFML STATIC build zodat er geen runtime-DLLs nodig zijn op Windows
+# (zorg dat dit vóór FetchContent_MakeAvailable(SFML) staat)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
+# SFML via FetchContent - configureer als static om runtime DLL issues te vermijden
 FetchContent_Declare(
         SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
@@ -15,8 +19,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SFML)
 
+# Herstel BUILD_SHARED_LIBS naar default (indien je later shared wilt bouwen voor andere deps)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+
 # GoogleTest
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
@@ -24,8 +30,6 @@ FetchContent_Declare(
         GIT_SHALLOW ON
 )
 FetchContent_MakeAvailable(googletest)
-set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
-
 
 # Main executable
 add_executable(pacman
@@ -37,6 +41,9 @@ add_executable(pacman
 target_include_directories(pacman PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(pacman PRIVATE sfml-graphics sfml-window sfml-system)
 
+# Als SFML static gebouwd is, definieer SFML_STATIC voor correcte symbolen/defines
+target_compile_definitions(pacman PRIVATE SFML_STATIC)
+
 enable_testing()
 
 # Tests executable
@@ -46,6 +53,9 @@ add_executable(pacman_tests
 )
 target_include_directories(pacman_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(pacman_tests PRIVATE GTest::gtest_main sfml-graphics sfml-window sfml-system)
+
+# Definieer SFML_STATIC ook voor de tests target wanneer SFML statisch is
+target_compile_definitions(pacman_tests PRIVATE SFML_STATIC)
 
 # Zorg dat CTest toont wat er misgaat
 set(CTEST_OUTPUT_ON_FAILURE ON)
