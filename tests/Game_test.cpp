@@ -2,7 +2,7 @@
 // Created by milod on 29/10/2025.
 //
 
-#include <gtest/gtest.h>
+#include <../gtest/include/gtest/gtest.h>
 #include "../include/Game.h" // Inclusief je eigen Game header
 
 // Een 'Test Fixture' om een Game object klaar te zetten voor elke test
