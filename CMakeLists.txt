@@ -37,6 +37,18 @@ add_executable(pacman
         src/main.cpp
         src/Game.cpp
         include/Game.h
+        src/Stopwatch.cpp
+        include/Stopwatch.h
+        src/World.cpp
+        include/World.h
+        src/Entity.cpp
+        include/Entity.h
+        src/State.cpp
+        include/State.h
+        src/StateManager.cpp
+        include/StateManager.h
+        src/Camera.cpp
+        include/Camera.h
 )
 target_include_directories(pacman PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(pacman PRIVATE sfml-graphics sfml-window sfml-system)
@@ -48,6 +60,16 @@ enable_testing()
 # Tests executable (zonder SFML en zonder Game.cpp)
 add_executable(pacman_tests
         tests/Game_test.cpp
+        src/Stopwatch.cpp
+        include/Stopwatch.h
+        src/World.cpp
+        include/World.h
+        src/Entity.cpp
+        include/Entity.h
+        src/State.cpp
+        include/State.h
+        src/StateManager.cpp
+        include/StateManager.h
 )
 target_include_directories(pacman_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(pacman_tests PRIVATE GTest::gtest_main)
