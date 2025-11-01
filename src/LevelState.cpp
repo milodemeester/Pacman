@@ -8,6 +8,11 @@
 #include "SFML/Graphics/Text.hpp"
 #include <iostream>
 
+LevelState::LevelState() {
+     World* w = new World();
+     world = w;
+}
+
 std::pair<bool, State*> LevelState::proces_user_input(const sf::Event* event, StateFactory* state_factory) {
     std::pair<bool,State*> output;
     output.first = false;
@@ -40,4 +45,8 @@ void LevelState::render(sf::RenderWindow* window) {
     text.setOrigin(text.getGlobalBounds().size / 2.f + text.getLocalBounds().position); // set origin to center of the text
     text.setPosition({window_width/2-12, window_height-character_size}); // set position of the text to center of screen
     window->draw(text);
+}
+
+void LevelState::update(double delta_time, Score score) {
+    world->update(delta_time, score);
 }

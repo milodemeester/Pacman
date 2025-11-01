@@ -27,3 +27,8 @@ void StateManager::render(sf::RenderWindow* window) {
     crnt_state->render(std::move(window));
 
 }
+
+void StateManager::update(double delta_time) {
+    State* crnt_state = state_stack.top();
+    crnt_state->update(delta_time, score);
+}

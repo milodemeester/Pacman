@@ -12,6 +12,7 @@
 
 #include <utility>
 
+class Score;
 class StateFactory;
 
 class State { // Abstract product
@@ -28,6 +29,8 @@ public:
      * Method that takes care of drawing on the window in the current state
      */
     virtual void render(sf::RenderWindow*) = 0;
+
+    virtual void update(double delta_time, Score);
 };
 
 

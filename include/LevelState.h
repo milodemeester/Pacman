@@ -9,10 +9,12 @@
 #include "World.h"
 
 class LevelState final : public State{
-    World world;
+    World* world;
 public:
+    LevelState();
     std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
     void render(sf::RenderWindow*) override;
+    void update(double delta_time, Score) override;
 };
 
 #endif // PACMAN_LEVELSTATE_H

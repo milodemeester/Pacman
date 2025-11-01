@@ -4,12 +4,15 @@
 
 #include "../include/Game.h"
 
+#include "../include/Stopwatch.h"
+
 Game::Game() {
     state_manager = new StateManager();
 }
 
 
 void Game::run() {
+    Stopwatch* stopwatch = Stopwatch::create();
     window = new sf::RenderWindow(sf::VideoMode({800, 600}), "Pacman", sf::Style::Default);
     window->setFramerateLimit(60);
     window->setMouseCursorVisible(false);
@@ -29,6 +32,8 @@ void Game::run() {
             }
             state_manager->process_key_pressed(&event.value());
         }
+        state_manager->update(stopwatch->get_delta_time());
+
         window->clear(sf::Color::Black);
         state_manager->render(window);
         window->display();
