@@ -5,4 +5,8 @@
 #ifndef PACMAN_ENTITY_H
 #define PACMAN_ENTITY_H
 
+class Entity {
+
+};
+
 #endif //PACMAN_ENTITY_H

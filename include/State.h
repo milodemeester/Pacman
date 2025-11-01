@@ -5,6 +5,13 @@
 #ifndef PACMAN_STATE_H
 #define PACMAN_STATE_H
 #include "SFML/Window/Event.hpp"
+#include "SFML/Window/Window.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Texture.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
+
+#include <utility>
+
 class StateFactory;
 
 class State { // Abstract product
@@ -14,27 +21,40 @@ public:
     /*
      * Method to proces the input from the user
      */
-    virtual std::pair<bool, State*> proces_user_input(const sf::Event::KeyPressed*, StateFactory*) = 0;
-};
+    virtual std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) = 0;
 
-class LevelState final : public State{
-public:
-    std::pair<bool, State*> proces_user_input(const sf::Event::KeyPressed*, StateFactory*) override;
-};
 
-class PausedState final : public State{
-public:
-    std::pair<bool, State*> proces_user_input(const sf::Event::KeyPressed*, StateFactory*) override;
-};
-
-class VictoryState final : public State{
-public:
-    std::pair<bool, State*> proces_user_input(const sf::Event::KeyPressed*, StateFactory*) override;
+    /*
+     * Method that takes care of drawing on the window in the current state
+     */
+    virtual void render(sf::RenderWindow*) = 0;
 };
 
 class MenuState final : public State{
 public:
-    std::pair<bool, State*> proces_user_input(const sf::Event::KeyPressed*, StateFactory*) override;
+    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
+    void render(sf::RenderWindow*) override;
+
+};
+
+class LevelState final : public State{
+public:
+    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
+    void render(sf::RenderWindow*) override;
+};
+
+class PausedState final : public State{
+public:
+    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
+    void render(sf::RenderWindow*) override;
+
+};
+
+class VictoryState final : public State{
+public:
+    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
+    void render(sf::RenderWindow*) override;
+
 };
 
 class StateFactory{

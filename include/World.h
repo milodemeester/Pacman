@@ -4,9 +4,12 @@
 
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
-
+#include <vector>
+#include "Entity.h"
 
 class World{
+    std::vector<Entity*> entities;
+
 };
 
 

@@ -2,7 +2,7 @@
 // Created by milod on 29/10/2025.
 //
 
-#include "Game.h"
+#include "../include/Game.h"
 
 Game::Game() {
     Stopwatch* watch = new Stopwatch();
@@ -11,24 +11,27 @@ Game::Game() {
 
 
 void Game::run() {
-    window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "Pacman",
+    window = new sf::RenderWindow(sf::VideoMode({200, 200}), "Pacman",
                                 sf::Style::Default);
-    window.setFramerateLimit(144);
+    while (window->isOpen()) {
+        while (const std::optional event = window->pollEvent()) {
+            if (event->is<sf::Event::Resized>()) {
+                auto resized = event->getIf<sf::Event::Resized>();
+                auto size = resized->size;
+                float size_x = size.x;
+                float size_y = size.y;
+                sf::FloatRect visibleArea({0, 0}, {size_x, size_y});
+                window->setView(sf::View(visibleArea));
+            }
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::KeyPressed>()) {
-                state_manager->process_key_pressed(event->getIf<sf::Event::KeyPressed>());
+            if (event->is<sf::Event::Closed>()) {
+                window->close();
             }
-            if (event->is<sf::Event::Closed>())
-            {
-                window.close();
-            }
+            state_manager->process_key_pressed(&event.value());
         }
+        window->clear(sf::Color::Black);
+        state_manager->render(window);
+        window->display();
 
-        window.clear();
-        window.display();
     }
 }

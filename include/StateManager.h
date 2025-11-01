@@ -4,9 +4,10 @@
 
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
+#include "SFML/Graphics/RenderWindow.hpp"
 #include "State.h"
+
 #include <stack>
-#include <SFML/Graphics.hpp>
 
 class StateFactory;
 
@@ -20,7 +21,12 @@ public:
     /*
      * Method to process a key-press event
      */
-    void process_key_pressed(const sf::Event::KeyPressed*);
+    void process_key_pressed(const sf::Event*);
+
+    /*
+     *
+     */
+    void render(sf::RenderWindow* window);
 };
 
 

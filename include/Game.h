@@ -10,7 +10,7 @@
 
 
 class Game{
-    sf::RenderWindow window;
+    sf::RenderWindow* window;
     Stopwatch* stopwatch;
     StateManager* state_manager;
 public:
