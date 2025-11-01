@@ -4,10 +4,12 @@
 
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
-#include <vector>
 #include "Entity.h"
+#include "Stopwatch.h"
+#include <vector>
 
 class World{
+    Stopwatch* stopwatch;
     std::vector<Entity*> entities;
 
 };

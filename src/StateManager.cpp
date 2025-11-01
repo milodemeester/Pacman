@@ -3,6 +3,7 @@
 //
 
 #include "../include/StateManager.h"
+#include "../include/MenuState.h"
 
 StateManager::StateManager() {
     state_factory = new StateFactory();
@@ -23,6 +24,6 @@ void StateManager::process_key_pressed(const sf::Event* key_pressed) {
 
 void StateManager::render(sf::RenderWindow* window) {
     State* crnt_state = state_stack.top();
-    crnt_state->render(window);
+    crnt_state->render(std::move(window));
 
 }

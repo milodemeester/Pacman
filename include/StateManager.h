@@ -5,9 +5,8 @@
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
 #include "SFML/Graphics/RenderWindow.hpp"
-#include "State.h"
-
 #include <stack>
+class State;
 
 class StateFactory;
 

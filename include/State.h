@@ -30,41 +30,6 @@ public:
     virtual void render(sf::RenderWindow*) = 0;
 };
 
-class MenuState final : public State{
-public:
-    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
-    void render(sf::RenderWindow*) override;
-
-};
-
-class LevelState final : public State{
-public:
-    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
-    void render(sf::RenderWindow*) override;
-};
-
-class PausedState final : public State{
-public:
-    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
-    void render(sf::RenderWindow*) override;
-
-};
-
-class VictoryState final : public State{
-public:
-    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
-    void render(sf::RenderWindow*) override;
-
-};
-
-class StateFactory{
-public:
-    LevelState* create_level_state();
-    PausedState* create_paused_state();
-    VictoryState* create_victory_state();
-    MenuState* create_menu_state();
-};
-
 
 #endif //PACMAN_STATE_H
 

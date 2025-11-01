@@ -4,6 +4,14 @@
 
 #include "../include/Stopwatch.h"
 
+Stopwatch* Stopwatch::create() {
+    if (stopwatch_ == nullptr) {
+        stopwatch_ = new Stopwatch();
+    }
+    return stopwatch_;
+}
+
+
 Stopwatch::Stopwatch() {
     t_start = std::chrono::high_resolution_clock::now();
     t_previous = t_start;

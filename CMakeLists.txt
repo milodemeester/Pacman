@@ -20,6 +20,8 @@ add_library(pacman_logic STATIC
         include/World.h
         src/Entity.cpp
         include/Entity.h
+        src/Score.cpp
+        include/Score.h
         # Voeg hier enkel bestanden toe die puur game-logic bevatten (geen SFML)
 )
 # Als je warnings/treat-as-errors etc. wilt instellen kun je dat hier doen
@@ -40,6 +42,8 @@ enable_testing()
 # Tests executable — link alleen met pacman_logic en gtest
 add_executable(pacman_tests
         tests/Game_test.cpp
+        src/Score.cpp
+        include/Score.h
 )
 target_link_libraries(pacman_tests PRIVATE pacman_logic GTest::gtest_main)
 
@@ -69,6 +73,18 @@ if(BUILD_GAME_EXE)
             include/State.h
             src/StateManager.cpp
             include/StateManager.h
+            src/Score.cpp
+            include/Score.h
+            src/MenuState.cpp
+            include/MenuState.h
+            src/PausedState.cpp
+            include/PausedState.h
+            src/StateFactory.cpp
+            include/StateFactory.h
+            src/LevelState.cpp
+            include/LevelState.h
+            src/VictoryState.cpp
+            include/VictoryState.h
             # andere representation files die SFML gebruiken
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)

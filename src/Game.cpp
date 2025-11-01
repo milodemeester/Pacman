@@ -5,14 +5,15 @@
 #include "../include/Game.h"
 
 Game::Game() {
-    Stopwatch* watch = new Stopwatch();
     state_manager = new StateManager();
 }
 
 
 void Game::run() {
-    window = new sf::RenderWindow(sf::VideoMode({200, 200}), "Pacman",
-                                sf::Style::Default);
+    window = new sf::RenderWindow(sf::VideoMode({800, 600}), "Pacman", sf::Style::Default);
+    window->setFramerateLimit(60);
+    window->setMouseCursorVisible(false);
+
     while (window->isOpen()) {
         while (const std::optional event = window->pollEvent()) {
             if (event->is<sf::Event::Resized>()) {
@@ -23,7 +24,6 @@ void Game::run() {
                 sf::FloatRect visibleArea({0, 0}, {size_x, size_y});
                 window->setView(sf::View(visibleArea));
             }
-
             if (event->is<sf::Event::Closed>()) {
                 window->close();
             }
@@ -32,6 +32,5 @@ void Game::run() {
         window->clear(sf::Color::Black);
         state_manager->render(window);
         window->display();
-
     }
 }
