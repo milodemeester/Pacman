@@ -13,10 +13,11 @@ std::pair<bool, State*> MenuState::proces_user_input(const sf::Event* event,sf::
     output.first = false;
     output.second = nullptr;
     if (event->type == sf::Event::MouseButtonPressed) {
+        sf::Vector2f mouseWorld = window->mapPixelToCoords({event->mouseButton.x, event->mouseButton.y});
         auto bounds = button.getGlobalBounds();
         Coordinate upper_left_corner(bounds.left, bounds.top);
-        Coordinate lower_right_corner(bounds.left+bounds.width, bounds.top-bounds.height);
-        if (utils::contains(upper_left_corner, lower_right_corner, Coordinate(event->mouseButton.x, event->mouseButton.y))) {
+        Coordinate lower_right_corner(bounds.left + bounds.width, bounds.top + bounds.height);
+        if (utils::contains(upper_left_corner, lower_right_corner, Coordinate(mouseWorld.x, mouseWorld.y))) {
             auto* level_state = new LevelState;
             output.first = true;
             output.second = level_state;
