@@ -6,15 +6,12 @@
 #define PACMAN_STOPWATCH_H
 #include <chrono>
 
-class Stopwatch{ // TODO: Singleton principal
+class Stopwatch{
     std::chrono::system_clock::time_point t_start;
     std::chrono::system_clock::time_point t_previous;
 protected:
-    Stopwatch();
-
     static Stopwatch* stopwatch_;
-
-
+    Stopwatch();
 public:
     Stopwatch(Stopwatch& other) = delete;
 

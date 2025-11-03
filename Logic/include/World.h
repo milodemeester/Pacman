@@ -4,15 +4,18 @@
 
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
-#include "Entity.h"
 #include "Score.h"
-#include "Stopwatch.h"
 #include <vector>
+
+class Entity;
 
 class World{
     std::vector<Entity*> entities;
+    int width;
+    int height;
 public:
-
+    World(int, int);
+    void update(double delta_time);
 };
 
 

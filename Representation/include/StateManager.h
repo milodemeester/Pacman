@@ -4,18 +4,14 @@
 
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
+#include "../../Logic/include/Score.h"
 #include "SFML/Graphics/RenderWindow.hpp"
-#include "Score.h"
 #include <stack>
 class State;
 
-class StateFactory;
-
-
 class StateManager{
     std::stack<State*> state_stack;
-    StateFactory* state_factory = nullptr;
-    Score score;
+    Score* score;
 public:
     StateManager();
 

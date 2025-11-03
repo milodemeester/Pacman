@@ -22,7 +22,7 @@ public:
     /*
      * Method to proces the input from the user
      */
-    virtual std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) = 0;
+    virtual std::pair<bool, State*> proces_user_input(const sf::Event*) = 0;
 
 
     /*
@@ -30,7 +30,7 @@ public:
      */
     virtual void render(sf::RenderWindow*) = 0;
 
-    virtual void update(double delta_time, Score);
+    virtual void update(double delta_time);
 };
 
 

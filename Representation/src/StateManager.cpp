@@ -6,14 +6,13 @@
 #include "../include/MenuState.h"
 
 StateManager::StateManager() {
-    state_factory = new StateFactory();
-    MenuState* menu_state = state_factory->create_menu_state();
+    auto* menu_state = new MenuState();
     state_stack.push(menu_state);
 }
 
 void StateManager::process_key_pressed(const sf::Event* key_pressed) {
     State* crnt_state = state_stack.top();
-    std::pair<bool, State*> processed = crnt_state->proces_user_input(key_pressed, state_factory);
+    std::pair<bool, State*> processed = crnt_state->proces_user_input(key_pressed);
     if (processed.first) { // pop if true
         state_stack.pop();
     }
@@ -30,5 +29,5 @@ void StateManager::render(sf::RenderWindow* window) {
 
 void StateManager::update(double delta_time) {
     State* crnt_state = state_stack.top();
-    crnt_state->update(delta_time, score);
+    crnt_state->update(delta_time);
 }

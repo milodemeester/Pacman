@@ -4,12 +4,11 @@
 
 #ifndef PACMAN_MENUSTATE_H
 #define PACMAN_MENUSTATE_H
-#include "StateFactory.h"
 #include "State.h"
 
 class MenuState final : public State{
 public:
-    std::pair<bool, State*> proces_user_input(const sf::Event*, StateFactory*) override;
+    std::pair<bool, State*> proces_user_input(const sf::Event*) override;
     void render(sf::RenderWindow*) override;
 
 };
