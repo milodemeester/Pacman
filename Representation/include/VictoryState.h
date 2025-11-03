@@ -8,7 +8,7 @@
 
 class VictoryState final : public State{
 public:
-    std::pair<bool, State*> proces_user_input(const sf::Event*) override;
+    std::pair<bool, State*> proces_user_input(const sf::Event*, sf::RenderWindow* window) override;
     void render(sf::RenderWindow*) override;
 
 };

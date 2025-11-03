@@ -10,9 +10,9 @@ StateManager::StateManager() {
     state_stack.push(menu_state);
 }
 
-void StateManager::process_key_pressed(const sf::Event* key_pressed) {
+void StateManager::process_key_pressed(const sf::Event* key_pressed, sf::RenderWindow* window) {
     State* crnt_state = state_stack.top();
-    std::pair<bool, State*> processed = crnt_state->proces_user_input(key_pressed);
+    std::pair<bool, State*> processed = crnt_state->proces_user_input(key_pressed, window);
     if (processed.first) { // pop if true
         state_stack.pop();
     }

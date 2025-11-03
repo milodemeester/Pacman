@@ -47,6 +47,8 @@ if(BUILD_GAME_EXE)
             Representation/src/State.cpp Representation/include/State.h
             Representation/src/StateManager.cpp Representation/include/StateManager.h
             Representation/src/VictoryState.cpp Representation/include/VictoryState.h
+            Utilities/utils.cpp
+            Utilities/utils.h
 
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)

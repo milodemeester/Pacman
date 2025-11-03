@@ -18,7 +18,7 @@ public:
     /*
      * Method to process a key-press event
      */
-    void process_key_pressed(const sf::Event*);
+    void process_key_pressed(const sf::Event*, sf::RenderWindow* window);
 
     /*
      * Function that draws everyting on the window

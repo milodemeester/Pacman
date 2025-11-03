@@ -22,7 +22,7 @@ public:
     /*
      * Method to proces the input from the user
      */
-    virtual std::pair<bool, State*> proces_user_input(const sf::Event*) = 0;
+    virtual std::pair<bool, State*> proces_user_input(const sf::Event*, sf::RenderWindow* window) = 0;
 
 
     /*

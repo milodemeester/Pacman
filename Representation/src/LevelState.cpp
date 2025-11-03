@@ -14,7 +14,7 @@ LevelState::LevelState() {
      world = w;
 }
 
-std::pair<bool, State*> LevelState::proces_user_input(const sf::Event* event) {
+std::pair<bool, State*> LevelState::proces_user_input(const sf::Event* event, sf::RenderWindow* window) {
     std::pair<bool,State*> output;
     output.first = false;
     output.second = nullptr;

@@ -4,16 +4,7 @@
 
 #ifndef PACMAN_ENTITY_H
 #define PACMAN_ENTITY_H
-
-struct Coordinate {
-    double getX() {return x;}
-    double getY() {return y;}
-    Coordinate(double x, double y) : x(x), y(y) {}
-    void set_coordinates(double x, double y) {this->x = x; this->y = y;}
-private:
-    double x = 0;
-    double y = 0;
-};
+#include "../../Utilities/utils.h"
 
 class Entity {
     Coordinate position;

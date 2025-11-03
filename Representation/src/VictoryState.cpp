@@ -7,7 +7,7 @@
 #include "SFML/Graphics/Text.hpp"
 #include <iostream>
 
-std::pair<bool, State*> VictoryState::proces_user_input(const sf::Event* event) {
+std::pair<bool, State*> VictoryState::proces_user_input(const sf::Event* event, sf::RenderWindow* window) {
     // sf::Keyboard::Key key = event->code;
     std::pair<bool,State*> output;
     output.first = false;
