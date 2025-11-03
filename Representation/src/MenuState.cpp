@@ -19,7 +19,7 @@ std::pair<int, std::unique_ptr<State>> MenuState::proces_user_input(const sf::Ev
         Coordinate upper_left_corner(bounds.left, bounds.top);
         Coordinate lower_right_corner(bounds.left + bounds.width, bounds.top + bounds.height);
         if (utils::contains(upper_left_corner, lower_right_corner, Coordinate(mouseWorld.x, mouseWorld.y))) {
-            std::unique_ptr<LevelState> level_state = std::make_unique<LevelState>();
+            std::unique_ptr<LevelState> level_state = std::make_unique<LevelState>(window.getSize().x, window.getSize().y);
             output.second = std::move(level_state);
         }
     }

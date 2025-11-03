@@ -8,8 +8,9 @@
 class World;
 
 class LevelState final : public State {
+    std::unique_ptr<World> world;
 public:
-    LevelState();
+    LevelState(int width, int height);
     std::pair<int, std::unique_ptr<State>> proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
     void update(double delta_time) override;

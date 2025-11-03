@@ -11,24 +11,29 @@ StateManager::StateManager() {
 }
 
 void StateManager::process_event(const sf::Event& key_pressed, sf::RenderWindow& window) {
-    std::unique_ptr<State> crnt_state = std::move(state_stack.top());
-    std::pair<int, std::unique_ptr<State>> processed = crnt_state->proces_user_input(key_pressed, window);
+    if (state_stack.empty()) return;
+
+    // get gebruiken anders krijg je seg errors
+    State* crnt_state = state_stack.top().get();
+    auto processed = crnt_state->proces_user_input(key_pressed, window);
+
     int stack_pops = processed.first;
-    while (stack_pops > 0) {
+    while (stack_pops > 0 && !state_stack.empty()) {
         state_stack.pop();
         stack_pops--;
     }
-    if (processed.second != nullptr) { // if not nullptr, push onto stack
+
+    if (processed.second) { // push nieuwe state als die er is
         state_stack.push(std::move(processed.second));
     }
 }
 
 void StateManager::render(sf::RenderWindow& window) {
-    std::unique_ptr<State> crnt_state = std::move(state_stack.top());
-    crnt_state->render(window);
+    if (state_stack.empty()) return;
+    state_stack.top()->render(window);
 }
 
 void StateManager::update(double delta_time) {
-    std::unique_ptr<State> crnt_state = std::move(state_stack.top());
-    crnt_state->update(delta_time);
+    if (state_stack.empty()) return;
+    state_stack.top()->update(delta_time);
 }

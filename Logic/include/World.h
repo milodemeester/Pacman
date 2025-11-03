@@ -5,12 +5,14 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
 #include "Score.h"
+
+#include <memory>
 #include <vector>
 
 class Entity;
 
 class World{
-    std::vector<Entity*> entities;
+    std::vector<std::unique_ptr<Entity>> entities;
     int width;
     int height;
 public:

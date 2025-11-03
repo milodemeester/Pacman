@@ -9,7 +9,8 @@
 #include <iostream>
 #include "../../Logic/include/World.h"
 
-LevelState::LevelState() {
+LevelState::LevelState(int width, int height) {
+    std::unique_ptr<World> w = std::make_unique<World>(width, height);
 }
 
 std::pair<int, std::unique_ptr<State>> LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
