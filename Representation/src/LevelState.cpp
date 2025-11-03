@@ -10,43 +10,39 @@
 #include "../../Logic/include/World.h"
 
 LevelState::LevelState() {
-     auto* w = new World(1920,1080);
-     world = w;
 }
 
-std::pair<bool, State*> LevelState::proces_user_input(const sf::Event* event, sf::RenderWindow* window) {
-    std::pair<bool,State*> output;
-    output.first = false;
+std::pair<int, std::unique_ptr<State>> LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
+    std::pair<int,std::unique_ptr<State>> output;
+    output.first = 0;
     output.second = nullptr;
-    if (event->type == sf::Event::KeyPressed) {
-        auto key = event->key;
+    if (event.type == sf::Event::KeyPressed) {
+        auto key = event.key;
         if (key.code == sf::Keyboard::Key::Escape) {
-            auto* paused_state = new PausedState;
-            output.second = paused_state;
+            std::unique_ptr<PausedState> paused = std::make_unique<PausedState>();
+            output.second = std::move(paused);
         }
     }
     return output;
 }
 
 
-void LevelState::render(sf::RenderWindow* window) {
+void LevelState::render(sf::RenderWindow& window) {
     sf::Font font;
     if (!font.loadFromFile("../data/CrackMan.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
-    sf::Text text;
-    text.setString("LEVELSTATE");
-    float character_size = (window->getSize().x/32 + window->getSize().y/32); // TODO: make this dynamic
-    text.setCharacterSize(character_size);
+    std::string str = "LevelState";
+    unsigned int character_size = (window.getSize().x/32 + window.getSize().y/32); // TODO: make this dynamic
+    sf::Text text(str, font, character_size);
     text.setFillColor(sf::Color::Yellow);
-    sf::Vector2u window_size = window->getSize();
+    sf::Vector2u window_size = window.getSize();
     float window_width = window_size.x;
     float window_height = window_size.y;
     text.setOrigin(text.getGlobalBounds().getSize() / 2.f + text.getLocalBounds().getPosition()); // set origin to center of the text
-    text.setPosition({window_width/2-12, window_height-character_size}); // set position of the text to center of screen
-    window->draw(text);
+    text.setPosition({window_width/2-12, window_height-float(character_size)}); // set position of the text to center of screen
+    window.draw(text);
 }
 
 void LevelState::update(double delta_time) {
-    world->update(delta_time);
 }

@@ -7,12 +7,11 @@
 #include "State.h"
 class World;
 
-class LevelState final : public State{
-    World* world;
+class LevelState final : public State {
 public:
     LevelState();
-    std::pair<bool, State*> proces_user_input(const sf::Event*, sf::RenderWindow* window) override;
-    void render(sf::RenderWindow*) override;
+    std::pair<int, std::unique_ptr<State>> proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
+    void render(sf::RenderWindow& window) override;
     void update(double delta_time) override;
 };
 

@@ -9,7 +9,6 @@
 
 
 class Game{
-    sf::RenderWindow* window;
     StateManager* state_manager;
 public:
     Game();

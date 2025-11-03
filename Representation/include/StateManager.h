@@ -6,11 +6,13 @@
 #define PACMAN_STATEMANAGER_H
 #include "../../Logic/include/Score.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+
+#include <memory>
 #include <stack>
 class State;
 
 class StateManager{
-    std::stack<State*> state_stack;
+    std::stack<std::unique_ptr<State>> state_stack;
     Score* score;
 public:
     StateManager();
@@ -18,12 +20,12 @@ public:
     /*
      * Method to process a key-press event
      */
-    void process_key_pressed(const sf::Event*, sf::RenderWindow* window);
+    void process_event(const sf::Event&, sf::RenderWindow& window);
 
     /*
      * Function that draws everyting on the window
      */
-    void render(sf::RenderWindow* window);
+    void render(sf::RenderWindow& window);
 
     /*
      * Method that is used to update the game

@@ -4,12 +4,15 @@
 
 #ifndef PACMAN_VICTORYSTATE_H
 #define PACMAN_VICTORYSTATE_H
+#include "LevelState.h"
 #include "State.h"
+
+#include <memory>
 
 class VictoryState final : public State{
 public:
-    std::pair<bool, State*> proces_user_input(const sf::Event*, sf::RenderWindow* window) override;
-    void render(sf::RenderWindow*) override;
+    std::pair<int, std::unique_ptr<State>> proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
+    void render(sf::RenderWindow& window) override;
 
 };
 
