@@ -3,7 +3,6 @@
 //
 
 #include "../include/Game.h"
-
 #include "../../Logic/include/Stopwatch.h"
 
 Game::Game() {

@@ -4,6 +4,8 @@
 
 #include "../include/Stopwatch.h"
 
+Stopwatch* Stopwatch::stopwatch_ = nullptr;
+
 Stopwatch* Stopwatch::create() {
     if (stopwatch_ == nullptr) {
         stopwatch_ = new Stopwatch();

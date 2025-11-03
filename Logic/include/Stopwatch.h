@@ -7,11 +7,12 @@
 #include <chrono>
 
 class Stopwatch{
-    std::chrono::system_clock::time_point t_start;
-    std::chrono::system_clock::time_point t_previous;
 protected:
     static Stopwatch* stopwatch_;
     Stopwatch();
+private:
+    std::chrono::system_clock::time_point t_start;
+    std::chrono::system_clock::time_point t_previous;
 public:
     Stopwatch(Stopwatch& other) = delete;
 
