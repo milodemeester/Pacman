@@ -17,3 +17,13 @@ bool utils::contains(Coordinate upper_left_corner, Coordinate lower_right_corner
     if (click.getY() > bottom) return false;
     return true;
 }
+
+bool utils::intersecting(Rectangle rectangle1, Rectangle rectangle2) {
+    if (rectangle1.get_bottom_right().getX() < rectangle2.get_top_left().getX()
+        or rectangle1.get_top_left().getX() > rectangle2.get_bottom_right().getX()
+        or rectangle1.get_top_left().getY() < rectangle2.get_bottom_right().getY()
+        or rectangle1.get_bottom_right().getY() > rectangle2.get_top_left().getY()) {
+        return false;
+    }
+    return true;
+}

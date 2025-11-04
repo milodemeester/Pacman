@@ -3,15 +3,15 @@
 //
 
 #include "../include/LevelState.h"
+#include "../../Logic/include/World.h"
 #include "../include/PausedState.h"
+#include "../include/SfmlFactory.h"
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include <iostream>
-#include "../../Logic/include/World.h"
 
-LevelState::LevelState(int width, int height) {
-    std::unique_ptr<World> w = std::make_unique<World>(width, height);
-}
+LevelState::LevelState(sf::RenderWindow& window) :
+        world(World(std::make_shared<SfmlFactory>(camera), window.getSize().x, window.getSize().y)) {}
 
 std::pair<int, std::unique_ptr<State>> LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     std::pair<int,std::unique_ptr<State>> output;
@@ -29,6 +29,9 @@ std::pair<int, std::unique_ptr<State>> LevelState::proces_user_input(const sf::E
 
 
 void LevelState::render(sf::RenderWindow& window) {
+    
+
+    /*
     sf::Font font;
     if (!font.loadFromFile("../data/CrackMan.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
@@ -43,6 +46,7 @@ void LevelState::render(sf::RenderWindow& window) {
     text.setOrigin(text.getGlobalBounds().getSize() / 2.f + text.getLocalBounds().getPosition()); // set origin to center of the text
     text.setPosition({window_width/2-12, window_height-float(character_size)}); // set position of the text to center of screen
     window.draw(text);
+    */
 }
 
 void LevelState::update(double delta_time) {

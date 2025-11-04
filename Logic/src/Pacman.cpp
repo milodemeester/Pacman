@@ -3,3 +3,7 @@
 //
 
 #include "../include/Pacman.h"
+
+void Pacman::update(float dt) {
+
+}

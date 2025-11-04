@@ -14,6 +14,12 @@ add_library(pacman_logic STATIC
         Logic/src/Score.cpp  Logic/include/Score.h
         Logic/src/Stopwatch.cpp Logic/include/Stopwatch.h
         Logic/src/World.cpp Logic/include/World.h
+        Logic/src/GameFactory.cpp
+        Logic/include/GameFactory.h
+        Logic/src/Observer.cpp
+        Logic/include/Observer.h
+        Logic/src/Fruit.cpp
+        Logic/include/Fruit.h
 )
 
 # --- Tests ---
@@ -39,7 +45,7 @@ if(BUILD_GAME_EXE)
             Logic/src/Stopwatch.cpp Logic/include/Stopwatch.h
             Logic/src/World.cpp Logic/include/World.h
             Representation/src/Camera.cpp Representation/include/Camera.h
-            Representation/src/Entity.cpp Representation/include/Entity.h
+            Logic/src/Entity.cpp Logic/include/Entity.h
             Representation/src/Game.cpp Representation/include/Game.h
             Representation/src/LevelState.cpp Representation/include/LevelState.h
             Representation/src/MenuState.cpp Representation/include/MenuState.h
@@ -49,6 +55,18 @@ if(BUILD_GAME_EXE)
             Representation/src/VictoryState.cpp Representation/include/VictoryState.h
             Utilities/utils.cpp
             Utilities/utils.h
+            Logic/src/GameFactory.cpp
+            Logic/include/GameFactory.h
+            Logic/src/Wall.cpp
+            Logic/include/Wall.h
+            Logic/src/Observer.cpp
+            Logic/include/Observer.h
+            Representation/src/SfmlFactory.cpp
+            Representation/include/SfmlFactory.h
+            Logic/src/Coin.cpp
+            Logic/include/Coin.h
+            Logic/src/Fruit.cpp
+            Logic/include/Fruit.h
 
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)

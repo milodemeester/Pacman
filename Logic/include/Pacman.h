@@ -4,11 +4,12 @@
 
 #ifndef PACMAN_PACMAN_H
 #define PACMAN_PACMAN_H
-#include "../../Representation/include/Entity.h"
+#include "Entity.h"
 
 class Pacman : public Entity {
 public:
-    Pacman(Coordinate coordinate, double speed) : Entity(coordinate, speed) {}
+    Pacman() = default;
+    void update(float dt) override;
 };
 
 #endif // PACMAN_PACMAN_H

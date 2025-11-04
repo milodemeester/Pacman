@@ -4,13 +4,15 @@
 
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
-#include "../../Representation/include/Entity.h"
+#include "Entity.h"
 #include <string>
+#include <utility>
 
 class Ghost : public Entity {
     std::string name;
 public:
-    Ghost(std::string name, Coordinate coordinate, double speed) : name(name), Entity(coordinate, speed) {}
+    explicit Ghost(std::string name) : name(std::move(name)) {}
+    void update(float dt) override;
 
 };
 

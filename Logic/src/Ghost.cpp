@@ -3,3 +3,7 @@
 //
 
 #include "../include/Ghost.h"
+
+void Ghost::update(float dt) {
+
+}

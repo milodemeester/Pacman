@@ -1,7 +1,6 @@
 //
 // Created by milod on 29/10/2025.
 //
-
 #include "../include/Game.h"
 #include "../../Logic/include/Stopwatch.h"
 
@@ -19,7 +18,7 @@ void Game::run() {
     sf::View view = window.getDefaultView();
 
     while (window.isOpen()) {
-        sf::Event event;
+        sf::Event event{};
         if (window.pollEvent(event)) {
             if (event.type == sf::Event::Resized) {
                 view.setSize({static_cast<float>(event.size.width),static_cast<float>(event.size.height)});
