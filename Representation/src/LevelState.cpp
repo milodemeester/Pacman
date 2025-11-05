@@ -3,14 +3,9 @@
 //
 
 #include "../include/LevelState.h"
-#include "../../Logic/include/World.h"
 #include "../include/PausedState.h"
 #include "../include/SfmlFactory.h"
-#include "../include/State.h"
-#include "../include/StateManager.h"
-#include "SFML/Graphics/Font.hpp"
-#include "SFML/Graphics/Text.hpp"
-#include <iostream>
+#include <SFML/Window/Event.hpp>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize)
     : State(manager), camera(), factory(std::make_shared<SfmlFactory>(camera, windowSize)), world(factory, 2, 2)

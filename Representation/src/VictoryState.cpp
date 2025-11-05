@@ -3,11 +3,8 @@
 //
 
 #include "../include/VictoryState.h"
-#include "../include/LevelState.h"
-#include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include <iostream>
-#include <memory>
 
 void representation::VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     // sf::Keyboard::Key key = event->code;

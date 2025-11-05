@@ -4,14 +4,12 @@
 
 #ifndef PACMAN_VICTORYSTATE_H
 #define PACMAN_VICTORYSTATE_H
-#include "LevelState.h"
 #include "State.h"
-
-#include <memory>
 
 namespace representation {
 class VictoryState final : public State {
 public:
+    explicit VictoryState(StateManager sm) : State(sm) {}
     void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
 };

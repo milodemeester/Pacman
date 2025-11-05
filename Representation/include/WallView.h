@@ -7,14 +7,12 @@
 #include "EntityView.h"
 #include "../../Logic/include/Observer.h"
 #include <memory>
+#include "../../Logic/include/WallModel.h"
 
-namespace logic {
-class WallModel;
-}
 namespace representation {
 class WallView : public representation::EntityView, public logic::Observer {
 public:
-    explicit WallView(std::shared_ptr<logic::WallModel> model);
+    explicit WallView(const std::shared_ptr<logic::WallModel>& model);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 

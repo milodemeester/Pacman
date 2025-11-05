@@ -4,15 +4,16 @@
 
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
-#include "../../Logic/include/Score.h"
-#include "SFML/Graphics/RenderWindow.hpp"
-
+#include <SFML/System/Vector2.hpp>
 #include <memory>
 #include <stack>
 
+namespace sf {
+class Event;
+class RenderWindow;
+}
 namespace representation {
 class State;
-class MenuState;
 
 class StateManager {
     std::stack<std::unique_ptr<State>> state_stack;

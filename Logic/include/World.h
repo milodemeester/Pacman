@@ -5,9 +5,7 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
 #include "GameFactory.h"
-#include "Score.h"
 #include "Subject.h"
-#include <memory>
 #include <vector>
 
 namespace logic {
@@ -15,7 +13,7 @@ class PacmanModel;
 class GhostModel;
 
 class World {
-    std::vector<std::shared_ptr<WallModel>> walls;
+    std::vector<std::shared_ptr<Subject>> entities;
     int width;
     int height;
     std::shared_ptr<GameFactory> game_factory;

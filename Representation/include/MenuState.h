@@ -4,11 +4,8 @@
 
 #ifndef PACMAN_MENUSTATE_H
 #define PACMAN_MENUSTATE_H
-#include "../../Utilities/utils.h"
-#include "State.h"
 #include <SFML/Graphics/RectangleShape.hpp>
-
-class LevelState;
+#include "State.h"
 
 namespace representation {
 class MenuState final : public State {

@@ -4,7 +4,7 @@
 
 #include "../include/WallView.h"
 
-representation::WallView::WallView(std::shared_ptr<logic::WallModel> model) {
+representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& model) {
     model->addObserver(this);
 }
 

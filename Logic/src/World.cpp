@@ -24,8 +24,8 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory, int w,
     clyde = std::move(clyd);
     game_factory = factory;
 
-    // MAP AANMAKEN EN COINS EN FRUITS
 }
+
 
 void logic::World::update(double delta_time) {
     // move movable entities

@@ -4,9 +4,8 @@
 
 #include "../include/PausedState.h"
 #include "../../Utilities/utils.h"
-#include "../include/LevelState.h"
-#include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/Text.hpp"
+#include <SFML/Window/Event.hpp>
 #include <iostream>
 
 void representation::PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {

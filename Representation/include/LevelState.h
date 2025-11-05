@@ -4,15 +4,18 @@
 
 #ifndef PACMAN_LEVELSTATE_H
 #define PACMAN_LEVELSTATE_H
-#include "../../Logic/include/World.h"
 #include "Camera.h"
-#include "SfmlFactory.h"
 #include "State.h"
+#include "../../Logic/include/World.h"
+
+
+
 namespace representation {
+class StateManager;
+class SfmlFactory;
+
 class EntityView;
 }
-
-class StateManager;
 
 namespace representation {
 class LevelState final : public representation::State {
