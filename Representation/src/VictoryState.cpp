@@ -9,28 +9,26 @@
 #include <iostream>
 #include <memory>
 
-std::pair<int, std::unique_ptr<State>> VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
+void representation::VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     // sf::Keyboard::Key key = event->code;
-    std::pair<int,std::unique_ptr<State>> output;
-    output.first = 0;
-    output.second = nullptr;
-    return output;
 }
 
-void VictoryState::render(sf::RenderWindow& window) {
+void representation::VictoryState::render(sf::RenderWindow& window) {
     sf::Font font;
-    if (!font.loadFromFile("../data/CrackMan.TTF")) {
+    if (!font.loadFromFile("../data/Font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
     sf::Text text;
     text.setString("VICTORY STATE");
-    float character_size = (window.getSize().x/32 + window.getSize().y/32); // TODO: make this dynamic
+    float character_size = (window.getSize().x / 32 + window.getSize().y / 32); // TODO: make this dynamic
     text.setCharacterSize(character_size);
     text.setFillColor(sf::Color::Yellow);
     sf::Vector2u window_size = window.getSize();
     float window_width = window_size.x;
     float window_height = window_size.y;
-    text.setOrigin(text.getGlobalBounds().getSize() / 2.f + text.getLocalBounds().getPosition()); // set origin to center of the text
-    text.setPosition({window_width/2-12, window_height-character_size}); // set position of the text to center of screen
+    text.setOrigin(text.getGlobalBounds().getSize() / 2.f +
+                   text.getLocalBounds().getPosition()); // set origin to center of the text
+    text.setPosition(
+        {window_width / 2 - 12, window_height - character_size}); // set position of the text to center of screen
     window.draw(text);
 }

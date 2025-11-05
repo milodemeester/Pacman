@@ -6,13 +6,16 @@
 #define PACMAN_STOPWATCH_H
 #include <chrono>
 
-class Stopwatch{
+namespace logic {
+class Stopwatch {
 protected:
     static Stopwatch* stopwatch_;
     Stopwatch();
+
 private:
     std::chrono::system_clock::time_point t_start;
     std::chrono::system_clock::time_point t_previous;
+
 public:
     Stopwatch(Stopwatch& other) = delete;
 
@@ -22,6 +25,6 @@ public:
 
     double get_delta_time();
 };
+} // namespace logic
 
-
-#endif //PACMAN_STOPWATCH_H
+#endif // PACMAN_STOPWATCH_H

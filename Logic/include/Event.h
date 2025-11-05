@@ -1,0 +1,20 @@
+//
+// Created by milo on 11/5/25.
+//
+
+#ifndef PACMAN_EVENT_H
+#define PACMAN_EVENT_H
+
+namespace logic {
+enum class Event {
+    EntityPositionChanged,
+    PacmanDirectionChanged,
+    PacmanDied,
+    GhostEaten,
+    CoinCollected,
+    FruitEaten
+    // ...
+};
+} // namespace logic
+
+#endif // PACMAN_EVENT_H

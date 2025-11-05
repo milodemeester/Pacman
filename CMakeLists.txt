@@ -9,17 +9,19 @@ option(BUILD_GAME_EXE "Build the graphical game executable (requires SFML)" ON)
 
 # --- Pacman logic library ---
 add_library(pacman_logic STATIC
-        Logic/src/Ghost.cpp Logic/include/Ghost.h
-        Logic/src/Pacman.cpp Logic/include/Pacman.h
-        Logic/src/Score.cpp  Logic/include/Score.h
+        Logic/src/CoinModel.cpp Logic/include/CoinModel.h
+        Logic/src/Direction.cpp Logic/include/Direction.h
+        Logic/src/Event.cpp Logic/include/Event.h
+        Logic/src/FruitView.cpp Logic/include/FruiModel.h
+        Logic/src/GameFactory.cpp Logic/include/GameFactory.h
+        Logic/src/GhostModel.cpp Logic/include/GhostModel.h
+        Logic/src/Observer.cpp Logic/include/Observer.h
+        Logic/src/PacmanModel.cpp Logic/include/PacmanModel.h
+        Logic/src/Score.cpp Logic/include/Score.h
         Logic/src/Stopwatch.cpp Logic/include/Stopwatch.h
+        Logic/src/Subject.cpp Logic/include/Subject.h
+        Logic/src/WallModel.cpp Logic/include/WallModel.h
         Logic/src/World.cpp Logic/include/World.h
-        Logic/src/GameFactory.cpp
-        Logic/include/GameFactory.h
-        Logic/src/Observer.cpp
-        Logic/include/Observer.h
-        Logic/src/Fruit.cpp
-        Logic/include/Fruit.h
 )
 
 # --- Tests ---
@@ -35,17 +37,16 @@ include(GoogleTest)
 gtest_discover_tests(pacman_tests)
 
 # --- SFML Game executable ---
-if(BUILD_GAME_EXE)
+if (BUILD_GAME_EXE)
     find_package(SFML 2.6 COMPONENTS system window graphics REQUIRED)
     add_executable(pacman
             main.cpp
-            Logic/src/Ghost.cpp Logic/include/Ghost.h
-            Logic/src/Pacman.cpp Logic/include/Pacman.h
+            Logic/src/GhostModel.cpp Logic/include/GhostModel.h
+            Logic/src/PacmanModel.cpp Logic/include/PacmanModel.h
             Logic/src/Score.cpp Logic/include/Score.h
             Logic/src/Stopwatch.cpp Logic/include/Stopwatch.h
             Logic/src/World.cpp Logic/include/World.h
             Representation/src/Camera.cpp Representation/include/Camera.h
-            Logic/src/Entity.cpp Logic/include/Entity.h
             Representation/src/Game.cpp Representation/include/Game.h
             Representation/src/LevelState.cpp Representation/include/LevelState.h
             Representation/src/MenuState.cpp Representation/include/MenuState.h
@@ -57,17 +58,35 @@ if(BUILD_GAME_EXE)
             Utilities/utils.h
             Logic/src/GameFactory.cpp
             Logic/include/GameFactory.h
-            Logic/src/Wall.cpp
-            Logic/include/Wall.h
+            Logic/src/WallModel.cpp
+            Logic/include/WallModel.h
             Logic/src/Observer.cpp
             Logic/include/Observer.h
             Representation/src/SfmlFactory.cpp
             Representation/include/SfmlFactory.h
-            Logic/src/Coin.cpp
-            Logic/include/Coin.h
-            Logic/src/Fruit.cpp
-            Logic/include/Fruit.h
+            Logic/src/CoinModel.cpp
+            Logic/include/CoinModel.h
+            Logic/src/FruitView.cpp
+            Logic/include/FruiModel.h
+            Representation/src/EntityView.cpp
+            Representation/include/EntityView.h
+            Logic/src/Subject.cpp
+            Logic/include/Subject.h
+            Logic/src/Event.cpp
+            Logic/include/Event.h
+            Logic/src/Direction.cpp
+            Logic/include/Direction.h
+            Representation/src/PacmanView.cpp
+            Representation/include/PacmanView.h
+            Representation/src/GhostView.cpp
+            Representation/include/GhostView.h
+            Representation/src/CoinView.cpp
+            Representation/include/CoinView.h
+            Representation/src/FruitView.cpp
+            Representation/include/FruitView.h
+            Representation/src/WallView.cpp
+            Representation/include/WallView.h
 
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)
-endif()
+endif ()

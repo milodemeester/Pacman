@@ -9,11 +9,12 @@
 
 #include <memory>
 
-class VictoryState final : public State{
+namespace representation {
+class VictoryState final : public State {
 public:
-    std::pair<int, std::unique_ptr<State>> proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
+    void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
-
 };
+} // namespace representation
 
 #endif // PACMAN_VICTORYSTATE_H

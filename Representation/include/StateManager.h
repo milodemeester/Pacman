@@ -9,18 +9,31 @@
 
 #include <memory>
 #include <stack>
+
+namespace representation {
 class State;
+class MenuState;
 
-class StateManager{
+class StateManager {
     std::stack<std::unique_ptr<State>> state_stack;
-    Score* score;
-public:
-    StateManager();
+    sf::Vector2u currentWindowSize;
 
+public:
+    explicit StateManager(sf::Vector2u windowSize);
     /*
      * Method to process a key-press event
      */
     void process_event(const sf::Event&, sf::RenderWindow& window);
+
+    /*
+     * Method that pops the top of the state_stack
+     */
+    bool pop_state();
+
+    /*
+     * Pushes a state onto the stack
+     */
+    void push_state(std::unique_ptr<State> state);
 
     /*
      * Function that draws everyting on the window
@@ -32,6 +45,6 @@ public:
      */
     void update(double delta_time);
 };
+} // namespace representation
 
-
-#endif //PACMAN_STATEMANAGER_H
+#endif // PACMAN_STATEMANAGER_H

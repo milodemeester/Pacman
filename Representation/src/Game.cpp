@@ -4,27 +4,17 @@
 #include "../include/Game.h"
 #include "../../Logic/include/Stopwatch.h"
 
-Game::Game() {
-    state_manager = new StateManager();
-}
+representation::Game::Game() : window(sf::VideoMode({800, 600}), "Pacman", sf::Style::Default) ,
+    state_manager(std::make_shared<StateManager>(window.getSize())) {}
 
-
-void Game::run() {
-    Stopwatch* stopwatch = Stopwatch::create();
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "Pacman", sf::Style::Default);
+void representation::Game::run() {
+    logic::Stopwatch* stopwatch = logic::Stopwatch::create();
     int fps = 60;
     window.setFramerateLimit(fps);
 
-    sf::View view = window.getDefaultView();
-
     while (window.isOpen()) {
         sf::Event event{};
-        if (window.pollEvent(event)) {
-            if (event.type == sf::Event::Resized) {
-                view.setSize({static_cast<float>(event.size.width),static_cast<float>(event.size.height)});
-                view.setCenter(event.size.width / 2.f, event.size.height / 2.f);
-                window.setView(view);
-            }
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }

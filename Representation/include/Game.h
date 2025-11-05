@@ -7,9 +7,11 @@
 #include "StateManager.h"
 #include <SFML/Graphics.hpp>
 
+namespace representation {
+class Game {
+    sf::RenderWindow window;
+    std::shared_ptr<StateManager> state_manager;
 
-class Game{
-    StateManager* state_manager;
 public:
     Game();
 
@@ -17,8 +19,7 @@ public:
      * main game loop
      */
     void run();
-
 };
+} // namespace representation
 
-
-#endif //PACMAN_GAME_H
+#endif // PACMAN_GAME_H

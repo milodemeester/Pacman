@@ -29,6 +29,4 @@ TEST_F(GameTest, CanBeCreated) {
 
 // Een simpele test zonder Fixture.
 // Gebruik TEST als je geen setup/teardown per test nodig hebt.
-TEST(ExampleTest, BasicAssertion) {
-    EXPECT_EQ(2 + 2, 4);
-}
+TEST(ExampleTest, BasicAssertion) { EXPECT_EQ(2 + 2, 4); }

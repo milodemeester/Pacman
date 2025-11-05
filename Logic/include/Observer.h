@@ -4,13 +4,19 @@
 
 #ifndef PACMAN_OBSERVER_H
 #define PACMAN_OBSERVER_H
+#include "Event.h"
+#include "Subject.h"
 
-class Entity;
+namespace logic {
+class Subject;
+}
 
-class IView {
+namespace logic {
+class Observer {
 public:
-    virtual ~IView() = default;
-    virtual void onEntityUpdated(const Entity& entity);
+    virtual ~Observer() = default;
+    virtual void onNotify(const Subject& entity, Event& e) = 0;
 };
+} // namespace logic
 
 #endif // PACMAN_OBSERVER_H

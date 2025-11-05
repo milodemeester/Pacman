@@ -6,10 +6,14 @@
 #define PACMAN_UTILS_H
 
 struct Coordinate {
-    double getX() {return x;}
-    double getY() {return y;}
+    double getX() { return x; }
+    double getY() { return y; }
     Coordinate(double x, double y) : x(x), y(y) {}
-    void set_coordinates(double x, double y) {this->x = x; this->y = y;}
+    void set_coordinates(double x, double y) {
+        this->x = x;
+        this->y = y;
+    }
+
 private:
     double x = 0;
     double y = 0;
@@ -21,6 +25,7 @@ struct Rectangle {
     void set_top_left(const Coordinate& top_left) { this->top_left = top_left; }
     [[nodiscard]] Coordinate get_bottom_right() const { return bottom_right; }
     void set_bottom_right(const Coordinate& bottom_right) { this->bottom_right = bottom_right; }
+
 private:
     Coordinate top_left;
     Coordinate bottom_right;

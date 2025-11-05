@@ -2,14 +2,14 @@
 // Created by milod on 30/10/2025.
 //
 
-
 #include "../include/World.h"
-#include "../include/Entity.h"
-#include "../include/Ghost.h"
-#include "../include/Pacman.h"
-#include "../include/Wall.h"
+#include "../include/GhostModel.h"
+#include "../include/PacmanModel.h"
+#include "../include/Subject.h"
+#include "../include/WallModel.h"
 
-World::World(const std::shared_ptr<GameFactory>& factory, int w, int h) { // initialise the width and height and create all the entities.
+logic::World::World(const std::shared_ptr<GameFactory>& factory, int w,
+                    int h) { // initialise the width and height and create all the entities.
     width = w;
     height = h;
     auto pac = factory->createPacman();
@@ -27,15 +27,9 @@ World::World(const std::shared_ptr<GameFactory>& factory, int w, int h) { // ini
     // MAP AANMAKEN EN COINS EN FRUITS
 }
 
-void World::update(double delta_time) {
+void logic::World::update(double delta_time) {
     // move movable entities
     //...
 
     // check for each entity if they intersect ....
-    Rectangle pacman_rectangle(pacman->get_top_left(), pacman->get_bottom_right());
-    for (auto& wall : walls) {
-        if (utils::intersecting(pacman_rectangle, Rectangle(wall->get_top_left(), wall->get_bottom_right()))) {
-            // intersects; do something
-        }
-    }
 }

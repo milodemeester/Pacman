@@ -6,21 +6,21 @@
 #define PACMAN_GAMEFACTORY_H
 #include <memory>
 
-class Pacman;
-class Ghost;
-class Wall;
-class Fruit;
-class Coin;
-
+namespace logic {
+class PacmanModel;
+class GhostModel;
+class WallModel;
+class FruitModel;
+class CoinModel;
 class GameFactory {
 public:
     virtual ~GameFactory() = default;
-    virtual std::shared_ptr<Pacman> createPacman() = 0;
-    virtual std::shared_ptr<Ghost> createGhost(std::string name) = 0;
-    virtual std::shared_ptr<Wall> createWall() = 0;
-    virtual std::shared_ptr<Fruit> createFruit() = 0;
-    virtual std::shared_ptr<Coin> createCoin() = 0;
-
+    virtual std::shared_ptr<PacmanModel> createPacman() = 0;
+    virtual std::shared_ptr<GhostModel> createGhost(std::string name) = 0;
+    virtual std::shared_ptr<WallModel> createWall() = 0;
+    virtual std::shared_ptr<FruitModel> createFruit() = 0;
+    virtual std::shared_ptr<CoinModel> createCoin() = 0;
 };
+} // namespace logic
 
 #endif // PACMAN_GAMEFACTORY_H

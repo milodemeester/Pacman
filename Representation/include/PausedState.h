@@ -7,12 +7,15 @@
 #include "State.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 
-class PausedState final : public State{
+namespace representation {
+class PausedState final : public State {
     sf::RectangleShape menu_button;
     sf::RectangleShape resume_button;
-public:
-    std::pair<int, std::unique_ptr<State>> proces_user_input(const sf::Event&, sf::RenderWindow& window) override;
-    void render(sf::RenderWindow& window) override;
 
+public:
+    explicit PausedState(StateManager sm) : State(sm) {}
+    void proces_user_input(const sf::Event&, sf::RenderWindow& window) override;
+    void render(sf::RenderWindow& window) override;
 };
+} // namespace representation
 #endif // PACMAN_PAUSEDSTATE_H

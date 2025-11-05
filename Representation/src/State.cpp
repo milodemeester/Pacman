@@ -8,6 +8,4 @@
 #include <iostream>
 #include <utility>
 
-void State::update(double delta_time) {
-
-}
+void representation::State::update(double delta_time) {}
