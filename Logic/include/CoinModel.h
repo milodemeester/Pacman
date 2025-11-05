@@ -2,15 +2,14 @@
 // Created by milo on 11/4/25.
 //
 
-#ifndef PACMAN_COIN_H
-#define PACMAN_COIN_H
+#ifndef PACMAN_COINMODEL_H
+#define PACMAN_COINMODEL_H
 #include "Subject.h"
 #include <SFML/System/Vector2.hpp>
 
 namespace logic {
 class CoinModel : public Subject {
     sf::Vector2f position;
-
 public:
     CoinModel() = default;
 
@@ -19,4 +18,4 @@ public:
 };
 } // namespace logic
 
-#endif // PACMAN_COIN_H
+#endif // PACMAN_COINMODEL_H

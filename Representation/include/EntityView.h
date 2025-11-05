@@ -4,7 +4,6 @@
 
 #ifndef PACMAN_ENTITYVIEW_H
 #define PACMAN_ENTITYVIEW_H
-#include "../../Logic/include/Observer.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace representation {

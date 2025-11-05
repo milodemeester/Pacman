@@ -2,8 +2,8 @@
 // Created by milo on 11/4/25.
 //
 
-#ifndef PACMAN_WALL_H
-#define PACMAN_WALL_H
+#ifndef PACMAN_WALLMODEL_H
+#define PACMAN_WALLMODEL_H
 #include "Subject.h"
 #include <SFML/System/Vector2.hpp>
 
@@ -18,4 +18,4 @@ public:
     void set_position(const sf::Vector2f& pos) { this->position = pos; }
 };
 } // namespace logic
-#endif // PACMAN_WALL_H
+#endif // PACMAN_WALLMODEL_H

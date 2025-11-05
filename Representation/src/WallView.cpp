@@ -4,4 +4,18 @@
 
 #include "../include/WallView.h"
 
-namespace representation {} // namespace representation
+representation::WallView::WallView(std::shared_ptr<logic::WallModel> model) {
+    model->addObserver(this);
+}
+
+void representation::WallView::onNotify(const logic::Subject& entity, logic::Event& e) {
+
+}
+
+void representation::WallView::update(float dT) {
+
+}
+
+void representation::WallView::draw(sf::RenderWindow& window) {
+
+}

@@ -2,8 +2,8 @@
 // Created by milo on 11/5/25.
 //
 
-#ifndef PACMAN_PACMAN_H
-#define PACMAN_PACMAN_H
+#ifndef PACMAN_PACMANVIEW_H
+#define PACMAN_PACMANVIEW_H
 #include "../../Logic/include/Observer.h"
 #include "EntityView.h"
 
@@ -12,9 +12,8 @@ class PacmanModel;
 }
 namespace representation {
 class PacmanView : public EntityView, public logic::Observer {
-    std::shared_ptr<logic::PacmanModel> model;
 public:
-    explicit PacmanView(std::shared_ptr<logic::PacmanModel> model);
+    explicit PacmanView(const std::shared_ptr<logic::PacmanModel>& model);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
@@ -24,4 +23,4 @@ public:
 };
 } // namespace representation
 
-#endif // PACMAN_PACMAN_H
+#endif // PACMAN_PACMANVIEW_H

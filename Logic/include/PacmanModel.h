@@ -6,7 +6,6 @@
 #define PACMAN_PACMAN_H
 #include "Direction.h"
 #include "Subject.h"
-#include <SFML/System/Vector2.hpp>
 #include "../../Utilities/utils.h"
 
 namespace logic {

@@ -2,18 +2,19 @@
 // Created by milo on 11/5/25.
 //
 
-#ifndef PACMAN_FRUIT_H
-#define PACMAN_FRUIT_H
+#ifndef PACMAN_FRUITVIEW_H
+#define PACMAN_FRUITVIEW_H
 #include "EntityView.h"
-
+#include "../../Logic/include/Observer.h"
 #include <memory>
 
 namespace logic {
-class FruitView;
+class FruitModel;
 }
 namespace representation {
-class FruitView : public representation::EntityView {
-    FruitView(std::shared_ptr<logic::FruitView> model);
+class FruitView : public representation::EntityView, public logic::Observer {
+public:
+    explicit FruitView(std::shared_ptr<logic::FruitModel>& model);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
@@ -22,4 +23,4 @@ class FruitView : public representation::EntityView {
     void draw(sf::RenderWindow& window) override;
 };
 } // namespace representation
-#endif // PACMAN_FRUIT_H
+#endif // PACMAN_FRUITVIEW_H

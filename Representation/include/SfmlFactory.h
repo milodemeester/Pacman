@@ -2,10 +2,10 @@
 #define PACMAN_SFMLFACTORY_H
 #include "../../Logic/include/GameFactory.h"
 #include "Camera.h"
-#include "EntityView.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace representation {
+class EntityView;
 class SfmlFactory : public logic::GameFactory {
     representation::Camera camera;
     sf::Vector2u windowSize;

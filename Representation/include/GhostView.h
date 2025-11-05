@@ -2,17 +2,20 @@
 // Created by milo on 11/5/25.
 //
 
-#ifndef PACMAN_GHOST_H
-#define PACMAN_GHOST_H
+#ifndef PACMAN_GHOSTVIEW_H
+#define PACMAN_GHOSTVIEW_H
 #include "EntityView.h"
+#include "../../Logic/include/Observer.h"
+#include <memory>
 
 namespace logic {
-class GhostView;
+class GhostModel;
 }
 
 namespace representation {
-class GhostView : public representation::EntityView {
-    GhostView(std::shared_ptr<logic::GhostView> model);
+class GhostView : public representation::EntityView, public logic::Observer{
+public:
+    explicit GhostView(std::shared_ptr<logic::GhostModel> model);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
@@ -22,4 +25,4 @@ class GhostView : public representation::EntityView {
 };
 } // namespace representation
 
-#endif // PACMAN_GHOST_H
+#endif // PACMAN_GHOSTVIEW_H

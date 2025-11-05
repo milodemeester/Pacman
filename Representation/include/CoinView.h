@@ -2,17 +2,19 @@
 // Created by milo on 11/5/25.
 //
 
-#ifndef PACMAN_COIN_H
-#define PACMAN_COIN_H
+#ifndef PACMAN_COINVIEW_H
+#define PACMAN_COINVIEW_H
 #include "EntityView.h"
+#include "../../Logic/include/Observer.h"
 #include <memory>
 
 namespace logic {
-class CoinView;
+class CoinModel;
 }
 namespace representation {
-class CoinView : public representation::EntityView {
-    CoinView(std::shared_ptr<logic::CoinView> model);
+class CoinView : public representation::EntityView, public logic::Observer {
+public:
+    explicit CoinView(std::shared_ptr<logic::CoinModel> model);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
@@ -21,4 +23,4 @@ class CoinView : public representation::EntityView {
     void draw(sf::RenderWindow& window) override;
 };
 } // namespace representation
-#endif // PACMAN_COIN_H
+#endif // PACMAN_COINVIEW_H
