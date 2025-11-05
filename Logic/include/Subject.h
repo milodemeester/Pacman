@@ -14,6 +14,7 @@ class Subject {
     std::vector<Observer*> observers;
 
 public:
+    Subject() = default;
     virtual ~Subject() = default;
 
     void addObserver(Observer* o) { observers.push_back(o); }

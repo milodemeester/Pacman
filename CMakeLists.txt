@@ -12,7 +12,7 @@ add_library(pacman_logic STATIC
         Logic/src/CoinModel.cpp Logic/include/CoinModel.h
         Logic/src/Direction.cpp Logic/include/Direction.h
         Logic/src/Event.cpp Logic/include/Event.h
-        Logic/src/FruitView.cpp Logic/include/FruiModel.h
+        Logic/src/FruitModel.cpp Logic/include/FruitModel.h
         Logic/src/GameFactory.cpp Logic/include/GameFactory.h
         Logic/src/GhostModel.cpp Logic/include/GhostModel.h
         Logic/src/Observer.cpp Logic/include/Observer.h
@@ -66,8 +66,8 @@ if (BUILD_GAME_EXE)
             Representation/include/SfmlFactory.h
             Logic/src/CoinModel.cpp
             Logic/include/CoinModel.h
-            Logic/src/FruitView.cpp
-            Logic/include/FruiModel.h
+            Logic/src/FruitModel.cpp
+            Logic/include/FruitModel.h
             Representation/src/EntityView.cpp
             Representation/include/EntityView.h
             Logic/src/Subject.cpp

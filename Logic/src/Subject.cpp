@@ -3,7 +3,6 @@
 //
 
 #include "../include/Subject.h"
-
 #include "../include/Observer.h"
 
 void logic::Subject::removeObserver(Observer* o) {

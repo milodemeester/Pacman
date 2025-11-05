@@ -5,7 +5,6 @@
 #ifndef PACMAN_OBSERVER_H
 #define PACMAN_OBSERVER_H
 #include "Event.h"
-#include "Subject.h"
 
 namespace logic {
 class Subject;

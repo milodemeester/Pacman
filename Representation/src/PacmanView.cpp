@@ -7,7 +7,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../../Logic/include/PacmanModel.h"
 
-representation::PacmanView::PacmanView(std::shared_ptr<logic::PacmanModel> model) {
+representation::PacmanView::PacmanView(std::shared_ptr<logic::PacmanModel> m) : model(std::move(m)) {
     model->addObserver(this);
 }
 

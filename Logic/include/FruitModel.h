@@ -8,11 +8,11 @@
 #include <SFML/System/Vector2.hpp>
 
 namespace logic {
-class FruiModel : public Subject {
+class FruitModel : public Subject {
     sf::Vector2f position;
 
 public:
-    FruiModel() = default;
+    FruitModel() = default;
 
     [[nodiscard]] sf::Vector2f get_position() const { return position; }
     void set_position(const sf::Vector2f& pos) { this->position = pos; }

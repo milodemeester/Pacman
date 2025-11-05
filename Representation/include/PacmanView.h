@@ -11,9 +11,10 @@ namespace logic {
 class PacmanModel;
 }
 namespace representation {
-class PacmanView : public representation::EntityView, public logic::Observer {
+class PacmanView : public EntityView, public logic::Observer {
+    std::shared_ptr<logic::PacmanModel> model;
 public:
-    PacmanView(std::shared_ptr<logic::PacmanModel> model);
+    explicit PacmanView(std::shared_ptr<logic::PacmanModel> model);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 

@@ -4,9 +4,8 @@
 #include "../include/SfmlFactory.h"
 #include "../../Logic/include/GhostModel.h"
 #include "../../Logic/include/PacmanModel.h"
-
 #include "../../Logic/include/CoinModel.h"
-#include "../../Logic/include/FruiModel.h"
+#include "../../Logic/include/FruitModel.h"
 #include "../../Logic/include/WallModel.h"
 #include "../include/PacmanView.h"
 
@@ -23,9 +22,9 @@ std::vector<std::unique_ptr<representation::EntityView>>& representation::SfmlFa
 }
 
 std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman() {
-    std::shared_ptr<logic::PacmanModel> pacman_model = std::make_shared<logic::PacmanModel>(Coordinate(0,0),logic::Direction());
-    std::unique_ptr<PacmanView> pacman_view = std::make_unique<PacmanView>();
-    pacman_model->addObserver(pacman_view.get());
+    auto pacman_model = std::make_shared<logic::PacmanModel>(Coordinate(0,0),logic::Direction());
+    auto pacman_view = std::make_unique<PacmanView>(pacman_model);
+    createdViews.push_back(pacman_view);
     return pacman_model;
 }
 
