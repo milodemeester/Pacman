@@ -15,7 +15,6 @@ namespace logic {
 class GhostModel : public Subject {
     Coordinate position;
     Direction direction;
-
 public:
     GhostModel(Coordinate pos, Direction dir) : position(pos), direction(dir) {}
     GhostModel() = default;

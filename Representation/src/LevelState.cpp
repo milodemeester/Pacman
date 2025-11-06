@@ -42,4 +42,7 @@ void representation::LevelState::render(sf::RenderWindow& window, Camera& cam) {
 
 void representation::LevelState::update(double delta_time) {
     world.update(delta_time);
+    for (const auto& view : views) {
+        view->update(delta_time);
+    }
 }

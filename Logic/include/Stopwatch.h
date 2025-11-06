@@ -24,6 +24,8 @@ public:
     static Stopwatch* create();
 
     double get_delta_time();
+
+    double get_start_time();
 };
 } // namespace logic
 

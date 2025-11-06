@@ -33,7 +33,7 @@ std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman() 
 
 std::shared_ptr<logic::GhostModel> representation::SfmlFactory::createGhost(std::string name) {
     auto ghost_model = std::make_shared<logic::GhostModel>();
-    auto ghost_view = std::make_unique<representation::GhostView>(ghost_model);
+    auto ghost_view = std::make_unique<representation::GhostView>(ghost_model, sprite_map_, name);
     createdViews.push_back(std::move(ghost_view));
     return ghost_model;
 }

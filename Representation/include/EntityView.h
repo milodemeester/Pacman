@@ -22,6 +22,7 @@ public:
 
     virtual void draw(sf::RenderWindow& window, Camera& cam) = 0;
 
+    virtual void update(double dt) = 0;
 };
 } // namespace representation
 

@@ -19,6 +19,9 @@ public:
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
     void draw(sf::RenderWindow& window, Camera& cam) override;
+
+    void update(double dt) override {}
+
 };
 } // namespace representation
 #endif // PACMAN_COINVIEW_H

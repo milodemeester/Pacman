@@ -4,6 +4,7 @@
 
 #include "../include/PacmanView.h"
 #include "../../Logic/include/PacmanModel.h"
+#include "../../Logic/include/Stopwatch.h"
 #include "../include/Camera.h"
 #include "../include/FruitView.h"
 #include "../include/SpriteMap.h"
@@ -13,7 +14,8 @@
 
 representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map) {
     model_ = model;
-    model->addObserver(this);
+    model_->addObserver(this);
+    // ----------- sprites -----------
     sf::Sprite pacman_closed = sprite_map.getSprite(sf::IntRect(853,5,33,33));
     sf::Sprite open_right1 = sprite_map.getSprite(sf::IntRect(853,55,30,33));
     sf::Sprite open_right2 = sprite_map.getSprite(sf::IntRect(853,105,23,33));
@@ -32,17 +34,35 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>
     m_sprites.insert(std::pair(PacmanSpriteState::OPEN_DOWN_2, open_down2));
     m_sprites.insert(std::pair(PacmanSpriteState::OPEN_UP_1, open_up1));
     m_sprites.insert(std::pair(PacmanSpriteState::OPEN_UP_2, open_up2));
+
+    // ----------- animations -----------
+    std::vector<PacmanSpriteState> right_sequence{PacmanSpriteState::CLOSED,PacmanSpriteState::OPEN_RIGHT_1,PacmanSpriteState::OPEN_RIGHT_2,};
+    std::vector<PacmanSpriteState> left_suquence{PacmanSpriteState::CLOSED,PacmanSpriteState::OPEN_LEFT_1,PacmanSpriteState::OPEN_LEFT_2,};
+    std::vector<PacmanSpriteState> up_sequence{PacmanSpriteState::CLOSED,PacmanSpriteState::OPEN_UP_1,PacmanSpriteState::OPEN_UP_2,};
+    std::vector<PacmanSpriteState> down_sequence{PacmanSpriteState::CLOSED,PacmanSpriteState::OPEN_DOWN_1,PacmanSpriteState::OPEN_DOWN_2,};
+    animation_sequences[logic::Direction::North] = up_sequence;
+    animation_sequences[logic::Direction::East] = right_sequence;
+    animation_sequences[logic::Direction::South] = down_sequence;
+    animation_sequences[logic::Direction::West] = left_suquence;
 }
 
 void representation::PacmanView::onNotify(const logic::Subject& entity, logic::Event& event) {
-    if (event == logic::Event::EntityPositionChanged) {
-
-    }
 }
 
 void representation::PacmanView::draw(sf::RenderWindow& window, Camera& cam) {
     sf::Vector2f new_coords = cam.worldToScreen(model_->get_position(), window.getSize(), cam.get_world_size());
-    sf::Sprite& sprite = m_sprites.at(PacmanSpriteState::OPEN_RIGHT_1);
+    sf::Sprite& sprite = m_sprites.at(current_state);
     sprite.setPosition(new_coords.x, new_coords.y);
     window.draw(sprite);
+}
+
+void representation::PacmanView::update(double dt) {
+    animation_timer += dt;
+    if (animation_timer > animation_speed) {
+        animation_timer = 0.0f;
+        std::vector<PacmanSpriteState> crnt_sequence = animation_sequences.at(model_->get_direction());
+        current_frame_index += 1;
+        current_frame_index %= crnt_sequence.size()-1;
+        current_state = crnt_sequence[current_frame_index];
+    }
 }

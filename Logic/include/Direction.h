@@ -7,13 +7,10 @@
 
 namespace logic {
 enum class Direction {
-    EntityPositionChanged,
-    PacmanDirectionChanged,
-    PacmanDied,
-    GhostEaten,
-    CoinCollected,
-    FruitEaten
-    // ...
+    North,
+    East,
+    South,
+    West
 };
 } // namespace logic
 
