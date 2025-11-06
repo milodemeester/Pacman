@@ -37,6 +37,11 @@ public:
     bool pop_state();
 
     /*
+     * Used for popping 2 states, instead of 1 (only used when going from paused state back to manu)
+     */
+    bool double_pop_state();
+
+    /*
      * Pushes a state onto the stack
      */
     void push_state(std::unique_ptr<State> state);

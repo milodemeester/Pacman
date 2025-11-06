@@ -5,17 +5,18 @@
 #ifndef PACMAN_WALLMODEL_H
 #define PACMAN_WALLMODEL_H
 #include "Subject.h"
-#include <SFML/System/Vector2.hpp>
+#include "../../Utilities/utils.h"
 
 namespace logic {
 class WallModel : public Subject {
-    sf::Vector2f position;
+     Coordinate position;
 
 public:
     WallModel() = default;
+    explicit WallModel(Coordinate pos) : position(pos) {}
 
-    [[nodiscard]] sf::Vector2f get_position() const { return position; }
-    void set_position(const sf::Vector2f& pos) { this->position = pos; }
+    [[nodiscard]] Coordinate get_position() const { return position; }
+    void set_position(const Coordinate& pos) { this->position = pos; }
 };
 } // namespace logic
 #endif // PACMAN_WALLMODEL_H

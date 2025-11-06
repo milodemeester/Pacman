@@ -23,7 +23,6 @@ class LevelState final : public representation::State {
     std::shared_ptr<representation::SfmlFactory> factory;
     logic::World world;
     std::vector<std::unique_ptr<representation::EntityView>> views;
-
 public:
     LevelState(StateManager& manager, sf::Vector2u windowSize);
     void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;

@@ -5,17 +5,18 @@
 #ifndef PACMAN_FRUITMODEL_H
 #define PACMAN_FRUITMODEL_H
 #include "Subject.h"
-#include <SFML/System/Vector2.hpp>
+#include "../../Utilities/utils.h"
 
 namespace logic {
 class FruitModel : public Subject {
-    sf::Vector2f position;
+    Coordinate position;
 
 public:
+    explicit FruitModel(Coordinate pos) : position(pos) {}
     FruitModel() = default;
 
-    [[nodiscard]] sf::Vector2f get_position() const { return position; }
-    void set_position(const sf::Vector2f& pos) { this->position = pos; }
+    [[nodiscard]] Coordinate get_position() const { return position; }
+    void set_position(const Coordinate& pos) { this->position = pos; }
 };
 } // namespace logic
 #endif // PACMAN_FRUITMODEL_H

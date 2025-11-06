@@ -5,6 +5,7 @@
 #ifndef PACMAN_GAMEFACTORY_H
 #define PACMAN_GAMEFACTORY_H
 #include <memory>
+#include "../../Utilities/utils.h"
 
 namespace logic {
 class PacmanModel;

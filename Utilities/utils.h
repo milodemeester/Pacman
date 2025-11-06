@@ -9,6 +9,7 @@ struct Coordinate {
     double getX() { return x; }
     double getY() { return y; }
     Coordinate(double x, double y) : x(x), y(y) {}
+    Coordinate() = default;
     void set_coordinates(double x, double y) {
         this->x = x;
         this->y = y;

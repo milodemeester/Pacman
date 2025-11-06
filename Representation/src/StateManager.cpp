@@ -6,7 +6,7 @@
 #include "../include/MenuState.h"
 
 representation::StateManager::StateManager(sf::Vector2u windowSize) : currentWindowSize(windowSize) {
-    std::unique_ptr<MenuState> menu = std::make_unique<MenuState>(*this, windowSize);
+    std::unique_ptr<MenuState> menu = std::make_unique<MenuState>(*this, currentWindowSize);
     push_state(std::move(menu));
 }
 
@@ -15,6 +15,18 @@ void representation::StateManager::process_event(const sf::Event& key_pressed, s
 }
 
 bool representation::StateManager::pop_state() {
+    if (state_stack.empty()) {
+        return false;
+    }
+    state_stack.pop();
+    return true;
+}
+
+bool representation::StateManager::double_pop_state() {
+    if (state_stack.empty()) {
+        return false;
+    }
+    state_stack.pop();
     if (state_stack.empty()) {
         return false;
     }

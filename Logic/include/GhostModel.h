@@ -4,25 +4,27 @@
 
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
+#include "../../Utilities/utils.h"
 #include "Direction.h"
 #include "Subject.h"
-#include <SFML/System/Vector2.hpp>
+
 #include <string>
 #include <utility>
 
 namespace logic {
 class GhostModel : public Subject {
-    sf::Vector2f position;
+    Coordinate position;
     Direction direction;
 
 public:
+    GhostModel(Coordinate pos, Direction dir) : position(pos), direction(dir) {}
     GhostModel() = default;
     void update(float dt);
 
-    [[nodiscard]] sf::Vector2f get_position() const { return position; }
+    [[nodiscard]] Coordinate get_position() const { return position; }
     [[nodiscard]] Direction get_direction() const { return direction; }
 
-    void set_position(const sf::Vector2f& pos) { this->position = pos; }
+    void set_position(const Coordinate& pos) { this->position = pos; }
     void set_direction(Direction dir) { this->direction = dir; }
 };
 } // namespace logic

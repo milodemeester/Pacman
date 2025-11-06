@@ -7,13 +7,15 @@
 #include "GameFactory.h"
 #include "Subject.h"
 #include <vector>
+#include <fstream>
 
 namespace logic {
 class PacmanModel;
 class GhostModel;
 
 class World {
-    std::vector<std::shared_ptr<Subject>> entities;
+    void initialise_maze();
+    std::vector<std::vector<std::shared_ptr<Subject>>> entities;
     int width;
     int height;
     std::shared_ptr<GameFactory> game_factory;

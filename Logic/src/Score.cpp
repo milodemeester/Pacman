@@ -3,3 +3,7 @@
 //
 
 #include "../include/Score.h"
+
+void logic::Score::onNotify(const Subject& entity, Event& e) {
+
+}

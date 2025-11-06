@@ -14,6 +14,7 @@ class PacmanModel : public Subject {
     Direction direction;
 
 public:
+    PacmanModel() = default;
     PacmanModel(Coordinate pos, Direction dir) : position(pos), direction(dir) {}
     void update(float dt);
 

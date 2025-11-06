@@ -2,6 +2,8 @@
 // Created by milod on 29/10/2025.
 //
 #include "../include/Game.h"
+
+#include "../../Logic/include/Score.h"
 #include "../../Logic/include/Stopwatch.h"
 
 representation::Game::Game() : window(sf::VideoMode({800, 600}), "Pacman", sf::Style::Default) ,
@@ -9,6 +11,7 @@ representation::Game::Game() : window(sf::VideoMode({800, 600}), "Pacman", sf::S
 
 void representation::Game::run() {
     logic::Stopwatch* stopwatch = logic::Stopwatch::create();
+    logic::Score score;
     int fps = 60;
     window.setFramerateLimit(fps);
 

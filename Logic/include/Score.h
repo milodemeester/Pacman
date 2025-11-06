@@ -4,9 +4,14 @@
 
 #ifndef PACMAN_SCORE_H
 #define PACMAN_SCORE_H
+#include "Observer.h"
 
 namespace logic {
-class Score {};
+class Score : public Observer {
+public:
+    Score() = default;
+    void onNotify(const Subject& entity, Event& e) override;
+};
 } // namespace logic
 
 #endif // PACMAN_SCORE_H

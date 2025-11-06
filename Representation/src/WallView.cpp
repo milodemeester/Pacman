@@ -9,7 +9,6 @@ representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& mode
 }
 
 void representation::WallView::onNotify(const logic::Subject& entity, logic::Event& e) {
-
 }
 
 void representation::WallView::update(float dT) {
