@@ -5,14 +5,16 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace representation {
+class SpriteMap;
 class EntityView;
 class SfmlFactory : public logic::GameFactory {
     representation::Camera camera;
     sf::Vector2u windowSize;
     std::vector<std::unique_ptr<EntityView>> createdViews;
+    SpriteMap& sprite_map_;
 
 public:
-    SfmlFactory(representation::Camera& camera, sf::Vector2u windowSize);
+    SfmlFactory(representation::Camera& camera, sf::Vector2u windowSize, SpriteMap& sprite_map);
     ~SfmlFactory() override = default;
 
     std::vector<std::unique_ptr<EntityView>>& getCreatedViews();

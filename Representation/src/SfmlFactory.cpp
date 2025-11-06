@@ -15,7 +15,7 @@
 #include "../include/PacmanView.h"
 #include "../include/WallView.h"
 
-representation::SfmlFactory::SfmlFactory(Camera& c, sf::Vector2u w) {
+representation::SfmlFactory::SfmlFactory(Camera& c, sf::Vector2u w, SpriteMap& spriteMap) : sprite_map_(spriteMap) {
     camera = c;
     windowSize = w;
 }
@@ -26,7 +26,7 @@ std::vector<std::unique_ptr<representation::EntityView>>& representation::SfmlFa
 
 std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman() {
     auto pacman_model = std::make_shared<logic::PacmanModel>(Coordinate(0,0),logic::Direction());
-    auto pacman_view = std::make_unique<representation::PacmanView>(pacman_model);
+    auto pacman_view = std::make_unique<representation::PacmanView>(pacman_model, sprite_map_);
     createdViews.push_back(std::move(pacman_view));
     return pacman_model;
 }

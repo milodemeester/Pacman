@@ -11,10 +11,9 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
-representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>& model) {
+representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map) {
     model_ = model;
     model->addObserver(this);
-    SpriteMap sprite_map("../data/sprite.png");
     sf::Sprite pacman_closed = sprite_map.getSprite(sf::IntRect(853,5,33,33));
     sf::Sprite open_right1 = sprite_map.getSprite(sf::IntRect(853,55,30,33));
     sf::Sprite open_right2 = sprite_map.getSprite(sf::IntRect(853,105,23,33));

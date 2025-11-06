@@ -12,13 +12,10 @@
 #include <SFML/Window/Event.hpp>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize)
-    : State(manager), factory(std::make_shared<SfmlFactory>(camera, windowSize)), world(factory, 20, 11)
+    : State(manager), spriteMap_("../data/sprite.png"), factory(std::make_shared<SfmlFactory>(camera, windowSize, spriteMap_)), world(factory, 20, 11)
 {
     views = std::move(factory->getCreatedViews());
     camera.set_world_size({20,11});
-
-    // -------- initialize spritemap --------
-    SpriteMap sprite_map("../data/sprite.png");
 }
 
 void representation::LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {

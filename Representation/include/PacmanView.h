@@ -41,7 +41,7 @@ class PacmanView : public EntityView, public logic::Observer {
     std::map<PacmanSpriteState, sf::Sprite> m_sprites;
     PacmanSpriteState currentState = PacmanSpriteState::OPEN_UP_1;
 public:
-    explicit PacmanView(const std::shared_ptr<logic::PacmanModel>& model);
+    explicit PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 

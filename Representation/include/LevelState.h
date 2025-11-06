@@ -4,11 +4,10 @@
 
 #ifndef PACMAN_LEVELSTATE_H
 #define PACMAN_LEVELSTATE_H
-#include "Camera.h"
-#include "State.h"
 #include "../../Logic/include/World.h"
-
-
+#include "Camera.h"
+#include "SpriteMap.h"
+#include "State.h"
 
 namespace representation {
 class StateManager;
@@ -20,6 +19,7 @@ class EntityView;
 namespace representation {
 class LevelState final : public representation::State {
     representation::Camera camera;
+    SpriteMap spriteMap_;
     std::shared_ptr<representation::SfmlFactory> factory;
     logic::World world;
     std::vector<std::unique_ptr<representation::EntityView>> views;
