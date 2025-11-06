@@ -20,8 +20,8 @@ class EntityView;
 namespace representation {
 class LevelState final : public representation::State {
     representation::Camera camera;
-    logic::World world;
     std::shared_ptr<representation::SfmlFactory> factory;
+    logic::World world;
     std::vector<std::unique_ptr<representation::EntityView>> views;
 
 public:

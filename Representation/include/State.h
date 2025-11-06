@@ -4,13 +4,13 @@
 
 #ifndef PACMAN_STATE_H
 #define PACMAN_STATE_H
-#include "StateManager.h"
+#include <SFML/Graphics/RenderWindow.hpp>
 
 namespace representation {
-
+class StateManager;
 class State { // Abstract product
 protected:
-    StateManager manager_;
+    StateManager& manager_;
 public:
     explicit State(StateManager& manager) : manager_(manager) {}
     virtual ~State() = default;

@@ -13,7 +13,7 @@ class PausedState final : public State {
     sf::RectangleShape resume_button;
 
 public:
-    explicit PausedState(StateManager sm) : State(sm) {}
+    explicit PausedState(StateManager& sm) : State(sm) {}
     void proces_user_input(const sf::Event&, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
 };

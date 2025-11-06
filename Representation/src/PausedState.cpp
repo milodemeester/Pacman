@@ -7,6 +7,8 @@
 #include "SFML/Graphics/Text.hpp"
 #include <SFML/Window/Event.hpp>
 #include <iostream>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include "../include/StateManager.h"
 
 void representation::PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::MouseButtonPressed) {

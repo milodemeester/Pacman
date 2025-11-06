@@ -4,14 +4,16 @@
 
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
-#include <SFML/System/Vector2.hpp>
-#include <memory>
 #include <stack>
+#include <memory>
+#include <SFML/Graphics.hpp>
+#include "State.h"
 
 namespace sf {
-class Event;
 class RenderWindow;
+class Event;
 }
+
 namespace representation {
 class State;
 
@@ -20,6 +22,9 @@ class StateManager {
     sf::Vector2u currentWindowSize;
 
 public:
+    //StateManager(const StateManager&) = delete;
+    StateManager& operator=(const StateManager&) = delete;
+
     explicit StateManager(sf::Vector2u windowSize);
     /*
      * Method to process a key-press event

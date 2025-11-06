@@ -6,17 +6,12 @@
 #include "../include/MenuState.h"
 
 representation::StateManager::StateManager(sf::Vector2u windowSize) : currentWindowSize(windowSize) {
-    std::unique_ptr<MenuState> menu = std::make_unique<MenuState>(*this);
+    std::unique_ptr<MenuState> menu = std::make_unique<MenuState>(*this, windowSize);
     push_state(std::move(menu));
 }
 
 void representation::StateManager::process_event(const sf::Event& key_pressed, sf::RenderWindow& window) {
-    if (state_stack.empty())
-        return;
-
-    // get gebruiken anders krijg je seg errors
-    State* crnt_state = state_stack.top().get();
-    crnt_state->proces_user_input(key_pressed, window);
+    state_stack.top()->proces_user_input(key_pressed, window);
 }
 
 bool representation::StateManager::pop_state() {

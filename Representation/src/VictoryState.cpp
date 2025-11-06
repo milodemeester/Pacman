@@ -3,7 +3,9 @@
 //
 
 #include "../include/VictoryState.h"
-#include "SFML/Graphics/Text.hpp"
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <iostream>
 
 void representation::VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {

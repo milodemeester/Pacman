@@ -6,9 +6,11 @@
 #include "../include/PausedState.h"
 #include "../include/SfmlFactory.h"
 #include <SFML/Window/Event.hpp>
+#include "../include/StateManager.h"
+#include "../include/EntityView.h"
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize)
-    : State(manager), camera(), factory(std::make_shared<SfmlFactory>(camera, windowSize)), world(factory, 2, 2)
+    : State(manager), factory(std::make_shared<SfmlFactory>(camera, windowSize)), world(factory, 2, 2)
 {
     views = std::move(factory->getCreatedViews());
 }
