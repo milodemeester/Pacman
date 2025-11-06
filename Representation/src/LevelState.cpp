@@ -3,17 +3,22 @@
 //
 
 #include "../include/LevelState.h"
+
+#include "../include/EntityView.h"
 #include "../include/PausedState.h"
 #include "../include/SfmlFactory.h"
-#include <SFML/Window/Event.hpp>
+#include "../include/SpriteMap.h"
 #include "../include/StateManager.h"
-#include "../include/EntityView.h"
+#include <SFML/Window/Event.hpp>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize)
     : State(manager), factory(std::make_shared<SfmlFactory>(camera, windowSize)), world(factory, 20, 11)
 {
     views = std::move(factory->getCreatedViews());
+    camera.set_world_size({20,11});
 
+    // -------- initialize spritemap --------
+    SpriteMap sprite_map("../data/sprite.png");
 }
 
 void representation::LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
@@ -27,6 +32,15 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
 }
 
 void representation::LevelState::render(sf::RenderWindow& window) {
+    representation::Camera cam;
+    cam.set_world_size({float(world.get_width()), float(world.get_height())});
+    render(window, cam);
+}
+
+void representation::LevelState::render(sf::RenderWindow& window, Camera& cam) {
+    for (const auto& view : views) {
+        view->draw(window, cam);
+    }
 }
 
 void representation::LevelState::update(double delta_time) {

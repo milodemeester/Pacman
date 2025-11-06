@@ -7,6 +7,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 namespace representation {
+class Camera;
 class StateManager;
 class State { // Abstract product
 protected:
@@ -21,7 +22,12 @@ public:
     virtual void proces_user_input(const sf::Event&, sf::RenderWindow& window) = 0;
 
     /*
-     * Method that takes care of drawing on the window in the current state
+     * Method that takes care of drawing on the window in the current state (with cam for LevelState)
+     */
+    virtual void render(sf::RenderWindow& window, Camera& cam) {}
+
+    /*
+     * Method that takes care of drawing on the window in the current state (without cam for every other state)
      */
     virtual void render(sf::RenderWindow& window) = 0;
 

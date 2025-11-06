@@ -74,6 +74,8 @@ if (BUILD_GAME_EXE)
             Representation/src/WallView.cpp Representation/include/WallView.h
 
             Utilities/utils.cpp Utilities/utils.h
+            Representation/src/SpriteMap.cpp
+            Representation/include/SpriteMap.h
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)
 endif ()

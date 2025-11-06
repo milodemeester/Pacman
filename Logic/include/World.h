@@ -28,6 +28,8 @@ class World {
 public:
     World(const std::shared_ptr<GameFactory>& factory, int width, int height);
     void update(double delta_time);
+    [[nodiscard]] int get_width() const { return width; }
+    [[nodiscard]] int get_height() const { return height; }
 };
 } // namespace logic
 

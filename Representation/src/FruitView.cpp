@@ -14,10 +14,6 @@ void representation::FruitView::onNotify(const logic::Subject& entity, logic::Ev
 
 }
 
-void representation::FruitView::update(float dT) {
-
-}
-
-void representation::FruitView::draw(sf::RenderWindow& window) {
+void representation::FruitView::draw(sf::RenderWindow& window, Camera& cam) {
 
 }

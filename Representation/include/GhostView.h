@@ -19,9 +19,7 @@ public:
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
-    void update(float dT) override;
-
-    void draw(sf::RenderWindow& window) override;
+    void draw(sf::RenderWindow& window, Camera& cam) override;
 };
 } // namespace representation
 

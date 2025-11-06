@@ -13,10 +13,6 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
 
 }
 
-void representation::GhostView::update(float dT) {
-
-}
-
-void representation::GhostView::draw(sf::RenderWindow& window) {
+void representation::GhostView::draw(sf::RenderWindow& window, Camera& cam) {
 
 }

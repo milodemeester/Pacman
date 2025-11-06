@@ -13,10 +13,6 @@ void representation::CoinView::onNotify(const logic::Subject& entity, logic::Eve
 
 }
 
-void representation::CoinView::update(float dT) {
-
-}
-
-void representation::CoinView::draw(sf::RenderWindow& window) {
+void representation::CoinView::draw(sf::RenderWindow& window, Camera& cam) {
 
 }

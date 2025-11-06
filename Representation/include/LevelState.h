@@ -26,6 +26,7 @@ class LevelState final : public representation::State {
 public:
     LevelState(StateManager& manager, sf::Vector2u windowSize);
     void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
+    void render(sf::RenderWindow& window, Camera& camera) override;
     void render(sf::RenderWindow& window) override;
     void update(double delta_time) override;
 };

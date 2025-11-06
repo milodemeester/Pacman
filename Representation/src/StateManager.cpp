@@ -4,6 +4,7 @@
 
 #include "../include/StateManager.h"
 #include "../include/MenuState.h"
+#include "../include/Camera.h"
 
 representation::StateManager::StateManager(sf::Vector2u windowSize) : currentWindowSize(windowSize) {
     std::unique_ptr<MenuState> menu = std::make_unique<MenuState>(*this, currentWindowSize);

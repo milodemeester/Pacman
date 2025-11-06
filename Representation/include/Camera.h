@@ -5,6 +5,7 @@
 #ifndef PACMAN_CAMERA_H
 #define PACMAN_CAMERA_H
 #include <SFML/System/Vector2.hpp>
+#include "../../Utilities/utils.h"
 
 namespace representation {
 class Camera {
@@ -14,10 +15,12 @@ public:
     void setSize(float normWidth, float normHeight) { size = {normWidth, normHeight}; }
 
     // De belangrijkste functie: de conversie!
-    sf::Vector2f worldToScreen(sf::Vector2f worldPos, sf::Vector2u windowSize) const;
-    sf::Vector2f worldSizeToScreenSize(sf::Vector2f worldSize, sf::Vector2u windowSize) const;
+    [[nodiscard]] sf::Vector2f worldToScreen(Coordinate worldPos, sf::Vector2u windowSize, sf::Vector2f worldSize) const;
+    [[nodiscard]] sf::Vector2f get_world_size() const { return worldSize; }
+    void set_world_size(const sf::Vector2f& world_size) { worldSize = world_size; }
 
 private:
+    sf::Vector2f worldSize;
     sf::Vector2f center = {0.f, 0.f}; // Het middelpunt van de camera in wereldcoördinaten
     sf::Vector2f size = {2.f, 2.f};   // De 'breedte' en 'hoogte' van de view in wereldcoördinaten
 };
