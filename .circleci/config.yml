@@ -2,13 +2,13 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/gcc:11.4.0 # A docker image with gcc and cmake
+      - image: cimg/gcc:12.3 # Updated docker image
     steps:
       - checkout # Checks out your code
       - run:
           name: "Build and Run"
           command: |
-            mkdir build
+            mkdir -p build
             cd build
             cmake ..
             make
