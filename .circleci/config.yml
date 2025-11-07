@@ -14,7 +14,7 @@ jobs:
                 build-essential wget gpg libgtest-dev \
                 libgl1-mesa-dev libxrandr-dev libx11-dev libxcursor-dev \
                 libudev-dev libopenal-dev libflac-dev libvorbis-dev libegl1-mesa-dev \
-                libfreetype6-dev xvfb # Added xvfb for virtual display
+                libfreetype6-dev xvfb
 
             # Add Kitware's APT repository to get a newer version of CMake
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor -o /usr/share/keyrings/kitware-archive-keyring.gpg
@@ -42,9 +42,10 @@ jobs:
             cd build
             cmake ..
             make
-            # Run the executable inside a virtual display for 5 seconds, then stop it.
-            # This confirms it launches without crashing and then allows the CI job to finish.
-            xvfb-run timeout 5s ./pacman
+            # Run the executable for 5 seconds. The command will have exit code 124 if it's
+            # terminated by timeout, which is expected. We check for this and exit with 0.
+            # Any other non-zero exit code (e.g., from a crash) will still fail the build.
+            xvfb-run timeout 5s ./pacman || if [ $? = 124 ]; then exit 0; else exit $?; fi
 workflows:
   build-and-run:
     jobs:
