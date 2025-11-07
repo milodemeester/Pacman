@@ -9,12 +9,12 @@ jobs:
           name: "Install Dependencies"
           command: |
             apt-get update
-            # Install prerequisites for building, SFML, GTest, and adding the CMake repo
+            # Install prerequisites for building, SFML, GTest, xvfb, and adding the CMake repo
             apt-get install -y \
                 build-essential wget gpg libgtest-dev \
                 libgl1-mesa-dev libxrandr-dev libx11-dev libxcursor-dev \
                 libudev-dev libopenal-dev libflac-dev libvorbis-dev libegl1-mesa-dev \
-                libfreetype6-dev # Added for FreeType support (ft2build.h)
+                libfreetype6-dev xvfb # Added xvfb for virtual display
 
             # Add Kitware's APT repository to get a newer version of CMake
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor -o /usr/share/keyrings/kitware-archive-keyring.gpg
@@ -42,7 +42,8 @@ jobs:
             cd build
             cmake ..
             make
-            ./pacman
+            # Run the executable with xvfb-run to provide a virtual display
+            xvfb-run ./pacman
 workflows:
   build-and-run:
     jobs:
