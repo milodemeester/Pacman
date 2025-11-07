@@ -25,8 +25,8 @@ bool utils::contains(Coordinate upper_left_corner, Coordinate lower_right_corner
 bool utils::intersecting(Rectangle rectangle1, Rectangle rectangle2) {
     if (rectangle1.get_bottom_right().getX() < rectangle2.get_top_left().getX() ||  // links
         rectangle1.get_top_left().getX() > rectangle2.get_bottom_right().getX() ||  // rechts
-        rectangle1.get_bottom_right().getY() < rectangle2.get_top_left().getY() ||  // boven
-        rectangle1.get_top_left().getY() > rectangle2.get_bottom_right().getY())    // onder
+        rectangle1.get_bottom_right().getY() <= rectangle2.get_top_left().getY() ||  // boven
+        rectangle1.get_top_left().getY() >= rectangle2.get_bottom_right().getY())    // onder
     {
         return false;
     }

@@ -48,6 +48,16 @@ void representation::PacmanView::onNotify(const logic::Subject& entity, logic::E
     }
 }
 
+void representation::PacmanView::update(double dt) {
+    animation_timer += dt;
+    if (animation_timer > animation_speed) {
+        animation_timer = 0.0f;
+        std::vector<sf::Sprite> crnt_sequence = animation_sequences.at(world_direction);
+        current_sprite_index += 1;
+        current_sprite_index %= crnt_sequence.size();
+    }
+}
+
 void representation::PacmanView::draw(sf::RenderWindow& window, Camera& cam) {
     auto screen = cam.worldToScreen(world_position, window.getSize(), cam.get_world_size(), {32, 32});
     sf::Vector2f new_coords = screen.first;
@@ -57,14 +67,4 @@ void representation::PacmanView::draw(sf::RenderWindow& window, Camera& cam) {
     sprite.setScale(sprite_size);
     sprite.setPosition(new_coords.x, new_coords.y);
     window.draw(sprite);
-}
-
-void representation::PacmanView::update(double dt) {
-    animation_timer += dt;
-    if (animation_timer > animation_speed) {
-        animation_timer = 0.0f;
-        std::vector<sf::Sprite> crnt_sequence = animation_sequences.at(world_direction);
-        current_sprite_index += 1;
-        current_sprite_index %= crnt_sequence.size();
-    }
 }

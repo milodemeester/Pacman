@@ -45,6 +45,14 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
     }
 }
 
+void representation::LevelState::update(double delta_time) {
+    world.update(delta_time);
+    for (const auto& view : views) {
+        view->update(delta_time);
+    }
+}
+
+
 void representation::LevelState::render(sf::RenderWindow& window) {
     representation::Camera cam;
     cam.set_world_size({float(world.get_width()), float(world.get_height())});
@@ -54,12 +62,5 @@ void representation::LevelState::render(sf::RenderWindow& window) {
 void representation::LevelState::render(sf::RenderWindow& window, Camera& cam) {
     for (const auto& view : views) {
         view->draw(window, cam);
-    }
-}
-
-void representation::LevelState::update(double delta_time) {
-    world.update(delta_time);
-    for (const auto& view : views) {
-        view->update(delta_time);
     }
 }

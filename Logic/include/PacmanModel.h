@@ -9,7 +9,7 @@
 
 namespace logic {
 class PacmanModel : public Subject {
-    double speed = 0.000061; // measured in pixel/ms
+    double speed = 0.00061; // measured in pixel/ms
 
 public:
     PacmanModel() = default;

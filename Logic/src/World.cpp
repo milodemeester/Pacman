@@ -93,7 +93,6 @@ void logic::World::initialise_maze() {
                     character++;
                     auto pac = game_factory->createPacman();
                     pac->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.emplace_back(pac);
                     pacman = pac;
                     break;
                 }
@@ -123,29 +122,54 @@ void logic::World::move_up() {
     pacman->set_direction(Direction::North);
 }
 
-void nothing() {
-    int one;
-    one = 1;
-    one++;
-}
-
 
 void logic::World::update(double delta_time) {
     auto new_pos = pacman->update(delta_time);
-    bool blocked = false;
-    for (auto& vec : entities) {
-        for (auto& entity : vec) {
-            Rectangle pac_rectangle(pacman->get_position(), {pacman->get_position().getX()+(1.f/float(width)), pacman->get_position().getY()+(1.f/float(height))});
-            Rectangle entity_rectangle(entity.get()->get_position(), {entity.get()->get_position().getX()+(1.f/float(width)), entity.get()->get_position().getY()+(1.f/float(height))});
-            if (utils::intersecting(pac_rectangle, entity_rectangle)) {
-                if (std::dynamic_pointer_cast<WallModel>(entity)) {
-                    blocked = true;
-                    // Do not update location of pacman, because wall is in the way
+    auto current_pos = pacman->get_position();
+    Coordinate final_pos = current_pos;
+
+    // --- Controleer X-as ---
+    Rectangle pac_rect_x({new_pos.getX() - (1.f / float(width)), current_pos.getY() - (1.f / float(height))},
+                         {new_pos.getX() + (1.f / float(width)), current_pos.getY() + (1.f / float(height))});
+    bool blocked_x = false;
+    for (const auto& vec : entities) {
+        for (const auto& entity : vec) {
+            if (std::dynamic_pointer_cast<WallModel>(entity)) {
+                Rectangle wall_rect({entity->get_position().getX() - (1.f / float(width)), entity->get_position().getY() - (1.f / float(height))},
+                                    {entity->get_position().getX() + (1.f / float(width)), entity->get_position().getY() + (1.f / float(height))});
+                if (utils::intersecting(pac_rect_x, wall_rect)) {
+                    blocked_x = true;
+                    break;
                 }
             }
         }
+        if (blocked_x) break;
     }
-    if (!blocked) {
-        pacman->set_position(new_pos);
+    if (!blocked_x) {
+        final_pos.set_coordinates(new_pos.getX(), final_pos.getY());
     }
+
+    // --- Controleer Y-as ---
+    // Gebruik de (mogelijk nieuwe) X-positie voor een nauwkeurigere check
+    Rectangle pac_rect_y({final_pos.getX() - (1.f / float(width)), new_pos.getY() - (1.f / float(height))},
+                         {final_pos.getX() + (1.f / float(width)), new_pos.getY() + (1.f / float(height))});
+    bool blocked_y = false;
+    for (const auto& vec : entities) {
+        for (const auto& entity : vec) {
+            if (std::dynamic_pointer_cast<WallModel>(entity)) {
+                Rectangle wall_rect({entity->get_position().getX() - (1.f / float(width)), entity->get_position().getY() - (1.f / float(height))},
+                                    {entity->get_position().getX() + (1.f / float(width)), entity->get_position().getY() + (1.f / float(height))});
+                if (utils::intersecting(pac_rect_y, wall_rect)) {
+                    blocked_y = true;
+                    break;
+                }
+            }
+        }
+        if (blocked_y) break;
+    }
+    if (!blocked_y) {
+        final_pos.set_coordinates(final_pos.getX(), new_pos.getY());
+    }
+
+    pacman->set_position(final_pos);
 }
