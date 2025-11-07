@@ -13,11 +13,9 @@
 
 namespace logic {
 class GhostModel : public Subject {
-    Coordinate position;
-    Direction direction;
 public:
-    GhostModel(Coordinate pos, Direction dir) : position(pos), direction(dir) {}
-    GhostModel() = default;
+    GhostModel(Coordinate pos, Direction dir) : Subject(pos, dir) {}
+    GhostModel() : Subject({0,0}, Direction::North) {}
     void update(float dt);
 
     [[nodiscard]] Coordinate get_position() const { return position; }

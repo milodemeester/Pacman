@@ -25,7 +25,7 @@ public:
 
     double get_delta_time();
 
-    double get_start_time();
+    //double get_start_time();
 };
 } // namespace logic
 

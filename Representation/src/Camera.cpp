@@ -4,7 +4,7 @@
 
 #include "../include/Camera.h"
 
-std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(Coordinate worldPos, sf::Vector2u windowSize, sf::Vector2f worldSize) const {
+std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(Coordinate worldPos, sf::Vector2u windowSize, sf::Vector2f worldSize, sf::Vector2f char_size) const {
     std::pair<sf::Vector2f, sf::Vector2f> output;
     sf::Vector2f scale;
     double x = worldPos.getX();
@@ -24,8 +24,8 @@ std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(Coor
         float x_balk = windowSize.x - x_necassery;
         x = x*x_necassery;
         x = x+(x_balk/2);
-        scale.y = worldSize.y/windowSize.y;
-        scale.x = worldSize.x/x_necassery;
+        scale.x = 1/(char_size.x*(worldSize.x/x_necassery));
+        scale.y = 1/(char_size.y*(worldSize.y/windowSize.y));
     }
     else {
         // x is de hoofdas, dus we doen x*breedte van de window
@@ -37,10 +37,14 @@ std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(Coor
         float y_necassery = (float(windowSize.x) * worldSize.y)/ worldSize.x;
         // de zwarte balk die nog overblijft nadat de verhouding is gecorrigeerd
         float y_balk = float(windowSize.y) - y_necassery;
-        y = x*y_necassery;
+        y = y*y_necassery;
         y = y+(y_balk/2);
-        scale.x = worldSize.x/windowSize.x;
-        scale.y = worldSize.y/y_necassery;
+
+        /*
+         * For the scale:
+         */
+        scale.x = 1/(char_size.x*(worldSize.x/windowSize.x));
+        scale.y = 1/(char_size.y*(worldSize.y/y_necassery));
     }
     output.first = sf::Vector2f(x,y);
     output.second = scale;

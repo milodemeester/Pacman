@@ -19,7 +19,7 @@ public:
     /*
      * Function that returns a tuple with the first element being the new coordinate and the second element being the scale vector;
      */
-    [[nodiscard]] std::pair<sf::Vector2f, sf::Vector2f> worldToScreen(Coordinate worldPos, sf::Vector2u windowSize, sf::Vector2f worldSize) const;
+    [[nodiscard]] std::pair<sf::Vector2f, sf::Vector2f> worldToScreen(Coordinate worldPos, sf::Vector2u windowSize, sf::Vector2f worldSize, sf::Vector2f char_size) const;
 
     [[nodiscard]] sf::Vector2f get_world_size() const { return worldSize; }
 

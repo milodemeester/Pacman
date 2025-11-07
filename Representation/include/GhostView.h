@@ -8,6 +8,7 @@
 #include "../../Logic/include/Observer.h"
 #include <memory>
 #include <map>
+#include "../../Logic/include/Direction.h"
 
 namespace sf {
 class Sprite;
@@ -44,15 +45,14 @@ class GhostModel;
 namespace representation {
 class SpriteMap;
 class GhostView : public representation::EntityView, public logic::Observer{
+    std::string name_;
     std::shared_ptr<logic::GhostModel> model_;
-    std::map<GhostSpriteState, sf::Sprite> m_sprites;
-    std::map<logic::Direction, std::vector<GhostSpriteState>> animation_sequences;
-    size_t current_frame_index = 0;
-    GhostSpriteState current_state;
+    std::map<logic::Direction, std::vector<sf::Sprite>> animation_sequences;
+    size_t current_sprite_index = 0;
+    logic::Direction current_state = logic::Direction::North;
     float last_sprite_change = 0.0f; // last sprite change timestamp
     double animation_timer = 0.0;
-    const double animation_speed = 120000000; // 500 ms = 0.5s
-    std::string name_;
+    const double animation_speed = 125; // 125 ms = 0.125s
 public:
     explicit GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, std::string name);
 

@@ -26,10 +26,14 @@ class World {
     std::shared_ptr<GhostModel> clyde;
 
 public:
-    World(const std::shared_ptr<GameFactory>& factory, int width, int height);
+    World(const std::shared_ptr<GameFactory>& factory);
     void update(double delta_time);
     [[nodiscard]] int get_width() const { return width; }
     [[nodiscard]] int get_height() const { return height; }
+    void move_left();
+    void move_right();
+    void move_up();
+    void move_down();
 };
 } // namespace logic
 

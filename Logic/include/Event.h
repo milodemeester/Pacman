@@ -8,7 +8,7 @@
 namespace logic {
 enum class Event {
     EntityPositionChanged,
-    PacmanDirectionChanged,
+    EntityDirectionChanged,
     PacmanDied,
     GhostEaten,
     CoinCollected,

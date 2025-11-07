@@ -3,3 +3,48 @@
 //
 
 #include "../include/PacmanModel.h"
+
+logic::PacmanModel::PacmanModel(Coordinate pos, Direction dir) : Subject(pos, dir) {}
+
+Coordinate logic::PacmanModel::update(float dt) {
+    double increase = dt * speed;
+    Coordinate pos = get_position();
+    Direction dir = get_direction();
+    double new_x = 0;
+    double new_y = 0;
+    switch (dir) {
+        case (Direction::North) : {
+            new_x = pos.getX();
+            new_y = pos.getY() - increase;
+            break;
+        }
+        case (Direction::East) : {
+            new_x = pos.getX() + increase;
+            new_y = pos.getY();
+            break;
+        }
+        case (Direction::South) : {
+            new_x = pos.getX();
+            new_y = pos.getY() + increase;
+            break;
+        }
+        case (Direction::West) : {
+            new_x = pos.getX() - increase;
+            new_y = pos.getY();
+            break;
+        }
+    }
+    return {new_x, new_y};
+}
+
+void logic::PacmanModel::set_direction(Direction dir) {
+    direction = dir;
+    Event event = Event::EntityDirectionChanged;
+    notify(event);
+}
+
+void logic::PacmanModel::set_position(const Coordinate& pos) {
+    position = pos;
+    Event event = Event::EntityPositionChanged;
+    notify(event);
+}

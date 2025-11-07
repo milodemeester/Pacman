@@ -6,7 +6,7 @@
 #include "../../Logic/include/Score.h"
 #include "../../Logic/include/Stopwatch.h"
 
-representation::Game::Game() : window(sf::VideoMode({800, 600}), "Pacman", sf::Style::Default) ,
+representation::Game::Game() : window(sf::VideoMode({1600, 800}), "Pacman", sf::Style::Default) ,
     state_manager(std::make_shared<StateManager>(window.getSize())) {}
 
 void representation::Game::run() {
@@ -17,7 +17,7 @@ void representation::Game::run() {
 
     while (window.isOpen()) {
         sf::Event event{};
-        if (window.pollEvent(event)) {
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }

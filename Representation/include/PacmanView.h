@@ -20,31 +20,16 @@ namespace logic {
 class PacmanModel;
 }
 
-// Enum voor alle mogelijke animatie states van Pacman
-enum class PacmanSpriteState {
-    CLOSED,
-    OPEN_RIGHT_1,
-    OPEN_RIGHT_2,
-    OPEN_LEFT_1,
-    OPEN_LEFT_2,
-    OPEN_UP_1,
-    OPEN_UP_2,
-    OPEN_DOWN_1,
-    OPEN_DOWN_2,
-    FULL_CIRCLE
-};
-
 namespace representation {
 class Camera;
 class PacmanView : public EntityView, public logic::Observer {
-    std::shared_ptr<logic::PacmanModel> model_;
-    std::map<PacmanSpriteState, sf::Sprite> m_sprites;
-    std::map<logic::Direction, std::vector<PacmanSpriteState>> animation_sequences;
-    size_t current_frame_index = 0;
-    PacmanSpriteState current_state = PacmanSpriteState::OPEN_UP_1;
+    Coordinate world_position;
+    logic::Direction world_direction;
+    std::map<logic::Direction, std::vector<sf::Sprite>> animation_sequences;
+    size_t current_sprite_index = 0;
     float last_sprite_change = 0.0f; // last sprite change timestamp
     double animation_timer = 0.0;
-    const double animation_speed = 120000000; // 500 ms = 0.5s
+    const double animation_speed = 125; // 125 ms = 0.125s
 public:
     explicit PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map);
 

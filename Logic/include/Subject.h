@@ -4,6 +4,8 @@
 
 #ifndef PACMAN_ENTITYMODEL_H
 #define PACMAN_ENTITYMODEL_H
+#include "../../Utilities/utils.h"
+#include "Direction.h"
 #include "Event.h"
 #include <memory>
 #include <vector>
@@ -12,10 +14,18 @@ namespace logic {
 class Observer;
 class Subject {
     std::vector<Observer*> observers;
-
+protected:
+    Coordinate position;
+    Direction direction;
 public:
-    Subject() = default;
+    explicit Subject(Coordinate pos, Direction dir) : position(pos), direction(dir) {}
     virtual ~Subject() = default;
+
+    [[nodiscard]] Coordinate get_position() const { return position; }
+    void set_position(const Coordinate& position) { this->position = position; }
+
+    [[nodiscard]] Direction get_direction() const { return direction; }
+    void set_direction(Direction direction) { this->direction = direction; }
 
     void addObserver(Observer* o) { observers.push_back(o); }
     void removeObserver(Observer* o);

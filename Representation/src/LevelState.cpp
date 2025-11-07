@@ -12,26 +12,36 @@
 #include <SFML/Window/Event.hpp>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize)
-    : State(manager), spriteMap_("../data/sprite.png"), factory(std::make_shared<SfmlFactory>(camera, windowSize, spriteMap_)), world(factory, 20, 11)
+    : State(manager), spriteMap_("../data/sprite.png"), factory(std::make_shared<SfmlFactory>(camera, windowSize, spriteMap_)), world(factory)
 {
     views = std::move(factory->getCreatedViews());
     camera.set_world_size({20,11});
 }
 
 void representation::LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
-    switch (event.type) {
-    case sf::Event::Resized: {
+    if (event.type == sf::Event::Resized) {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
         render(window);
     }
-    case sf::Event::KeyPressed:  {
-        auto key = event.key;
-        if (key.code == sf::Keyboard::Key::Escape) {
+    else if (event.type == sf::Event::KeyPressed) {
+        auto key = event.key.code;
+        if (key == sf::Keyboard::Up) {
+            world.move_up();
+        }
+        else if (key == sf::Keyboard::Down)  {
+            world.move_down();
+        }
+        else if (key == sf::Keyboard::Right) {
+            world.move_right();
+        }
+        else if (key == sf::Keyboard::Left) {
+            world.move_left();
+        }
+        else if (key == sf::Keyboard::Escape) {
             std::unique_ptr<PausedState> paused = std::make_unique<PausedState>(manager_, window.getSize());
             manager_.push_state(std::move(paused));
         }
-    }
     }
 }
 

@@ -11,7 +11,7 @@
 #include <iostream>
 
 representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map) {
-    sf::Sprite sprite = sprite_map.getWallSprite({32, 32, 64,64});
+    sf::Sprite sprite = sprite_map.getWallSprite({32, 32, 35,35});
     m_sprites.insert(std::pair(WallSpriteState::Wall, sprite));
 
     model_ = model;
@@ -22,9 +22,11 @@ void representation::WallView::onNotify(const logic::Subject& entity, logic::Eve
 }
 
 void representation::WallView::draw(sf::RenderWindow& window, Camera& cam) {
-    std::pair<sf::Vector2f, sf::Vector2f> screen = cam.worldToScreen(model_->get_position(), window.getSize(), cam.get_world_size());
-    sf::Vector2f new_coords = screen.first;
     sf::Sprite& sprite = m_sprites.at(WallSpriteState::Wall);
+    auto local_bounds = sprite.getLocalBounds();
+    std::pair<sf::Vector2f, sf::Vector2f> screen = cam.worldToScreen(model_->get_position(), window.getSize(),
+        cam.get_world_size(), {local_bounds.width, local_bounds.height});
+    sf::Vector2f new_coords = screen.first;
     sf::Vector2f sprite_size = screen.second;
     sprite.setPosition(new_coords.x, new_coords.y);
     sprite.setScale(sprite_size);

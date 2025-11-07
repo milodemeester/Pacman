@@ -9,11 +9,9 @@
 
 namespace logic {
 class WallModel : public Subject {
-     Coordinate position;
-
 public:
-    WallModel() = default;
-    explicit WallModel(Coordinate pos) : position(pos) {}
+    WallModel() : Subject({0, 0}, Direction::North) {}
+    explicit WallModel(Coordinate pos) : Subject(pos, Direction::North) {}
 
     [[nodiscard]] Coordinate get_position() const { return position; }
     void set_position(const Coordinate& pos) { this->position = pos; }
