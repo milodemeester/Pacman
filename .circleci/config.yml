@@ -13,7 +13,8 @@ jobs:
             apt-get install -y \
                 build-essential wget gpg libgtest-dev \
                 libgl1-mesa-dev libxrandr-dev libx11-dev libxcursor-dev \
-                libudev-dev libopenal-dev libflac-dev libvorbis-dev libegl1-mesa-dev
+                libudev-dev libopenal-dev libflac-dev libvorbis-dev libegl1-mesa-dev \
+                libfreetype6-dev # Added for FreeType support (ft2build.h)
 
             # Add Kitware's APT repository to get a newer version of CMake
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor -o /usr/share/keyrings/kitware-archive-keyring.gpg
