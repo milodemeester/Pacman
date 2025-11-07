@@ -19,12 +19,19 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
 }
 
 void representation::LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
-    if (event.type == sf::Event::KeyPressed) {
+    switch (event.type) {
+    case sf::Event::Resized: {
+        sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+        window.setView(sf::View(visibleArea));
+        render(window);
+    }
+    case sf::Event::KeyPressed:  {
         auto key = event.key;
         if (key.code == sf::Keyboard::Key::Escape) {
             std::unique_ptr<PausedState> paused = std::make_unique<PausedState>(manager_, window.getSize());
             manager_.push_state(std::move(paused));
         }
+    }
     }
 }
 

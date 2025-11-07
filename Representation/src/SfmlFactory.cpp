@@ -51,7 +51,7 @@ std::shared_ptr<logic::FruitModel> representation::SfmlFactory::createFruit() {
 }
 std::shared_ptr<logic::WallModel> representation::SfmlFactory::createWall() {
     auto wall_model = std::make_shared<logic::WallModel>();
-    auto wall_view = std::make_unique<representation::WallView>(wall_model);
+    auto wall_view = std::make_unique<representation::WallView>(wall_model, sprite_map_);
     createdViews.push_back(std::move(wall_view));
     return wall_model;
 }

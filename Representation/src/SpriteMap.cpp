@@ -13,12 +13,25 @@ representation::SpriteMap::SpriteMap(const std::string& filename) {
         // In een echte game zou je hier de fout op een robuustere manier afhandelen
         exit(1);
     }
+    if (!wall_texture.loadFromFile("../data/textures/Wall.png")) {
+        // Geef een foutmelding als het laden mislukt
+        std::cerr << "Error: Kan de sprite sheet niet laden: " << filename << std::endl;
+        // In een echte game zou je hier de fout op een robuustere manier afhandelen
+        exit(1);
+    }
 }
 
 sf::Sprite representation::SpriteMap::getSprite(const sf::IntRect& rect) {
     // Maak een sprite, geef het de 'master' textuur mee
     sf::Sprite sprite(m_texture);
     // Definieer welk deel van de textuur deze sprite moet tonen
+    sprite.setTextureRect(rect);
+    return sprite;
+}
+
+sf::Sprite representation::SpriteMap::getWallSprite(const sf::IntRect& rect) {
+    sf::Sprite sprite(wall_texture);
+    sprite.setColor(sf::Color::Blue);
     sprite.setTextureRect(rect);
     return sprite;
 }

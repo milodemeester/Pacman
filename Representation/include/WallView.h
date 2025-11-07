@@ -9,10 +9,20 @@
 #include <memory>
 #include "../../Logic/include/WallModel.h"
 
+#include <SFML/Graphics/Sprite.hpp>
+#include <map>
+
+enum class WallSpriteState {
+    Wall
+};
+
 namespace representation {
+class SpriteMap;
 class WallView : public representation::EntityView, public logic::Observer {
+    std::shared_ptr<logic::WallModel> model_;
+    std::map<WallSpriteState, sf::Sprite> m_sprites;
 public:
-    explicit WallView(const std::shared_ptr<logic::WallModel>& model);
+    explicit WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 

@@ -50,8 +50,11 @@ void representation::PacmanView::onNotify(const logic::Subject& entity, logic::E
 }
 
 void representation::PacmanView::draw(sf::RenderWindow& window, Camera& cam) {
-    sf::Vector2f new_coords = cam.worldToScreen(model_->get_position(), window.getSize(), cam.get_world_size());
+    auto screen = cam.worldToScreen(model_->get_position(), window.getSize(), cam.get_world_size());
+    sf::Vector2f new_coords = screen.first;
     sf::Sprite& sprite = m_sprites.at(current_state);
+    sf::Vector2f sprite_size = screen.second;
+    sprite.setScale(sprite_size);
     sprite.setPosition(new_coords.x, new_coords.y);
     window.draw(sprite);
 }

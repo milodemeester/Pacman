@@ -21,8 +21,11 @@ public:
      * Haalt een sprite op basis van een gedefinieerde rechthoek
      */
     sf::Sprite getSprite(const sf::IntRect& rect);
+
+    sf::Sprite getWallSprite(const sf::IntRect& rect);
 private:
     sf::Texture m_texture;
+    sf::Texture wall_texture;
 };
 
 } // namespace representation
