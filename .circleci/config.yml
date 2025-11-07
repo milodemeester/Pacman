@@ -9,16 +9,31 @@ jobs:
           name: "Install Dependencies"
           command: |
             apt-get update
-            # Install prerequisites for adding a new repository and for building
-            apt-get install -y build-essential wget gpg
+            # Install prerequisites for building, SFML, GTest, and adding the CMake repo
+            apt-get install -y \
+                build-essential wget gpg libgtest-dev \
+                libgl1-mesa-dev libxrandr-dev libx11-dev libxcursor-dev \
+                libudev-dev libopenal-dev libflac-dev libvorbis-dev libegl1-mesa-dev
 
             # Add Kitware's APT repository to get a newer version of CMake
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor -o /usr/share/keyrings/kitware-archive-keyring.gpg
             echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
             
-            # Update package list again and install cmake and gtest
+            # Update package list again and install cmake
             apt-get update
-            apt-get install -y cmake libgtest-dev
+            apt-get install -y cmake
+
+            # --- Build and Install SFML 2.6.1 from source ---
+            SFML_VERSION="2.6.1"
+            wget https://github.com/SFML/SFML/archive/refs/tags/${SFML_VERSION}.tar.gz
+            tar -xzf ${SFML_VERSION}.tar.gz
+            cd SFML-${SFML_VERSION}
+            cmake .
+            make -j$(nproc)
+            make install
+            # Refresh the shared library cache
+            ldconfig
+            cd ..
       - run:
           name: "Build and Run"
           command: |
