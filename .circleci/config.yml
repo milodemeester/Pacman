@@ -42,8 +42,9 @@ jobs:
             cd build
             cmake ..
             make
-            # Run the executable with xvfb-run to provide a virtual display
-            xvfb-run ./pacman
+            # Run the executable inside a virtual display for 5 seconds, then stop it.
+            # This confirms it launches without crashing and then allows the CI job to finish.
+            xvfb-run timeout 5s ./pacman
 workflows:
   build-and-run:
     jobs:
