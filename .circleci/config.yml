@@ -42,7 +42,7 @@ jobs:
             cd build
             cmake ..
             make
-            ./Pacman
+            ./pacman
 workflows:
   build-and-run:
     jobs:
