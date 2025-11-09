@@ -12,9 +12,10 @@ namespace logic {
 class CoinModel;
 }
 namespace representation {
+class SpriteMap;
 class CoinView : public representation::EntityView, public logic::Observer {
 public:
-    explicit CoinView(std::shared_ptr<logic::CoinModel> model);
+    explicit CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 

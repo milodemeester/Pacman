@@ -76,13 +76,13 @@ void logic::World::initialise_maze() {
     }
 }
 
-bool logic::World::check_wall_collision(Coordinate& entity_pos, double entity_speed) {
+bool logic::World::check_collision(Coordinate& entity_pos, double entity_speed) {
     float entity_half_size_x = (1.f/float(width));
     float entity_half_size_y = (1.f/float(height));
 
     // Create scaled epsilon values proportional to the entity size on each axis.
-    const float epsilon_x = entity_half_size_x * entity_speed*20;
-    const float epsilon_y = entity_half_size_y * entity_speed*20;
+    const float epsilon_x = entity_half_size_x * entity_speed*8.5;
+    const float epsilon_y = entity_half_size_y * entity_speed*8.5;
     // Define the entity's bounding box, shrunk by the scaled epsilon on each axis.
     Coordinate entity_left_upper_corner = {entity_pos.getX() - entity_half_size_x + epsilon_x,
         entity_pos.getY() - entity_half_size_y + epsilon_y};
@@ -121,10 +121,10 @@ void logic::World::update(double delta_time) {
     // Als de speler een nieuwe richting kiest, kijk of die geldig is.
     if (wanted_pacman_direction != current_direction) {
         pacman->set_direction(wanted_pacman_direction);
-        Coordinate next_pos_if_turned = pacman->update(float(36));
+        Coordinate next_pos_if_turned = pacman->update(float(delta_time));
 
         // Als de nieuwe richting niet tot een botsing leidt, ga door met die richting.
-        if (!check_wall_collision(next_pos_if_turned, pacman->get_speed())) {
+        if (!check_collision(next_pos_if_turned, pacman->get_speed())) {
             pacman->set_position(next_pos_if_turned);
             return; // Klaar voor deze frame
         }
@@ -134,11 +134,11 @@ void logic::World::update(double delta_time) {
     }
 
     // Ga verder met de huidige (of herstelde) richting.
-    Coordinate next_pos = pacman->update(float(36));
+    Coordinate next_pos = pacman->update(float(delta_time));
 
     // Beweeg alleen als dit niet tot een botsing leidt.
     // Anders stopt Pacman gewoon tegen de muur.
-    if (!check_wall_collision(next_pos, pacman->get_speed())) {
+    if (!check_collision(next_pos, pacman->get_speed())) {
         pacman->set_position(next_pos);
     }
 }

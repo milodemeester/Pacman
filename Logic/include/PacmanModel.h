@@ -9,7 +9,7 @@
 
 namespace logic {
 class PacmanModel : public Subject {
-    double speed = 0.005; // measured in pixel/ms
+    double speed = 0.01; // measured in pixel/ms
 public:
     [[nodiscard]] double get_speed() const { return speed; }
     void set_speed(double speed) { this->speed = speed; }
