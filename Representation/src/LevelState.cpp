@@ -27,16 +27,16 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
     else if (event.type == sf::Event::KeyPressed) {
         auto key = event.key.code;
         if (key == sf::Keyboard::Up) {
-            world.move_up();
+            world.move_pacman(logic::Direction::North);
         }
         else if (key == sf::Keyboard::Down)  {
-            world.move_down();
+            world.move_pacman(logic::Direction::South);
         }
         else if (key == sf::Keyboard::Right) {
-            world.move_right();
+            world.move_pacman(logic::Direction::East);
         }
         else if (key == sf::Keyboard::Left) {
-            world.move_left();
+            world.move_pacman(logic::Direction::West);
         }
         else if (key == sf::Keyboard::Escape) {
             std::unique_ptr<PausedState> paused = std::make_unique<PausedState>(manager_, window.getSize());

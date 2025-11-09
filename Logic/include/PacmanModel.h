@@ -10,6 +10,8 @@
 namespace logic {
 class PacmanModel : public Subject {
     double speed = 0.00061; // measured in pixel/ms
+    int world_width;
+    int world_height;
 
 public:
     PacmanModel() = default;
@@ -25,6 +27,8 @@ public:
 
     void set_position(const Coordinate& pos);
     void set_direction(Direction dir);
+
+    void set_world_dimensions(int w, int h) {world_height = h; world_width = w;}
 };
 } // namespace logic
 

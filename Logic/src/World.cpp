@@ -2,6 +2,9 @@
 // Created by milod on 30/10/2025.
 //
 
+#include <fstream>
+#include <vector>
+#include <memory>
 #include "../include/World.h"
 #include "../include/GhostModel.h"
 #include "../include/PacmanModel.h"
@@ -9,167 +12,133 @@
 #include "../include/WallModel.h"
 #include "../include/FruitModel.h"
 #include "../include/CoinModel.h"
+#include "../include/GameFactory.h"
 
-logic::World::World(const std::shared_ptr<GameFactory>& factory) { // initialise the width and height and create all the entities.
+
+logic::World::World(const std::shared_ptr<GameFactory>& factory) {
+    // initialise the width and height and create all the entities.
     game_factory = factory;
     initialise_maze();
 }
 
 void logic::World::initialise_maze() {
-    int line = -1;
-    int character = 0;
+    int line_idx = -1; // Gebruik een duidelijkere naam
     std::string maze_line;
     std::ifstream maze_file("../data/maps/map1.txt");
     while (getline(maze_file, maze_line)) {
-        if (line == -1) {
-            size_t pos = maze_line.find('X');  // zoek de positie van 'X'
+        if (line_idx == -1) {
+            size_t pos = maze_line.find('X');
             std::string w = maze_line.substr(0, pos);
             width = std::stoi(w);
             std::string h = maze_line.substr(pos + 1);
             height = std::stoi(h);
-            line++;
+            line_idx++; // Ga naar de eerste content-lijn
         }
         else {
             std::vector<std::shared_ptr<Subject>> line_vector;
-            line_vector.reserve(width+1);
-            line++;
-            character = -1;
-            for (char entity : maze_line) {
-                switch (entity) {
-                case 'W': { // Wall
-                    character++;
-                    auto wall = game_factory->createWall();
-                    wall->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.emplace_back(wall);
-                    break;
+            line_vector.reserve(width); // Reserveer ruimte voor de rij
+
+            for (int char_idx = 0; char_idx < maze_line.length() && char_idx < width; ++char_idx) {
+                // X-positie van -1 (links) naar +1 (rechts)
+                float x_pos = 2.0f * (static_cast<float>(char_idx) + 0.5f) / static_cast<float>(width) - 1.0f;
+
+                // Y-positie van +1 (boven) naar -1 (onder)
+                float y_pos = 1.0f - 2.0f * (static_cast<float>(line_idx) + 0.5f) / static_cast<float>(height);
+
+                std::shared_ptr<Subject> current_entity = nullptr;
+                switch (maze_line[char_idx]) {
+                    case 'W': current_entity = game_factory->createWall(); break;
+                    case 'C': current_entity = game_factory->createCoin(); break;
+                    case 'B': current_entity = game_factory->createGhost("Blinky"); blinky = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
+                    case 'P': current_entity = game_factory->createGhost("Pinky"); pinky = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
+                    case 'I': current_entity = game_factory->createGhost("Inky"); inky = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
+                    case 'O': current_entity = game_factory->createGhost("Clyde"); clyde = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
+                    case 'F': current_entity = game_factory->createFruit(); break;
+                    case 'A': current_entity = game_factory->createPacman(); pacman = std::dynamic_pointer_cast<PacmanModel>(current_entity); break;
+                    default: break; // Lege ruimte
                 }
-                case 'C': { // Coin
-                    character++;
-                    auto coin = game_factory->createCoin();
-                    coin->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.emplace_back(coin);
-                    break;
+
+                if (current_entity) {
+                    current_entity->set_position({x_pos, y_pos});
                 }
-                case 'B': { // Blinky
-                    character++;
-                    auto blink = game_factory->createGhost("Blinky");
-                    blink->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.emplace_back(blink);
-                    blinky = blink;
-                    break;
-                }
-                case 'P': { // Pinky
-                    character++;
-                    auto pink = game_factory->createGhost("Pinky");
-                    pink->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.emplace_back(pink);
-                    pinky = pink;
-                    break;
-                }
-                case 'I': { // Inky
-                    character++;
-                    auto ink = game_factory->createGhost("Inky");
-                    ink->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.emplace_back(ink);
-                    inky = ink;
-                    break;
-                }
-                case 'O': { // Clyde
-                    character++;
-                    auto clyd = game_factory->createGhost("Clyde");
-                    clyd->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.emplace_back(clyd);
-                    clyde = clyd;
-                    break;
-                }
-                case 'F': { // Fruit
-                    character++;
-                    auto fruit = game_factory->createFruit();
-                    fruit->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    line_vector.push_back(fruit);
-                    break;
-                }
-                case 'A': { // Pacman
-                    character++;
-                    auto pac = game_factory->createPacman();
-                    pac->set_position({2*(float(character)/width)-1, 2*(float(line-1)/height)-1}); // coordinaten op [-1,1]
-                    pacman = pac;
-                    break;
-                }
-                case 'Z': { // Niets
-                    character++;
-                    break;
-                }
-                default:;
-                }
+                // Voeg de entity toe (of nullptr als het een lege ruimte is)
+                line_vector.push_back(current_entity);
             }
             entities.emplace_back(line_vector);
+
+            // VERHOOG HIER DE INDEX, AAN HET EIND VAN HET VERWERKEN VAN EEN RIJ
+            line_idx++;
         }
     }
     maze_file.close();
+    if (pacman) {
+        pacman->set_world_dimensions(width, height);
+    }
 }
 
-void logic::World::move_left() {
-    pacman->set_direction(Direction::West);
+bool logic::World::check_wall_collision(Coordinate& entity_pos) {
+    float entity_half_size_x = (1.f/float(width));
+    float entity_half_size_y = (1.f/float(height));
+
+    // Create scaled epsilon values proportional to the entity size on each axis.
+    const float epsilon_x = entity_half_size_x * 0.01f;
+    const float epsilon_y = entity_half_size_y * 0.01f;
+    // Define the entity's bounding box, shrunk by the scaled epsilon on each axis.
+    Coordinate entity_left_upper_corner = {entity_pos.getX() - entity_half_size_x + epsilon_x,
+        entity_pos.getY() - entity_half_size_y + epsilon_y};
+    Coordinate entity_right_lower_corner = {entity_pos.getX() + entity_half_size_x - epsilon_x,
+        entity_pos.getY() + entity_half_size_y - epsilon_y};
+    Rectangle entity_rect = {entity_left_upper_corner, entity_right_lower_corner};
+
+    for (auto& entity_vector : entities) {
+        for (auto& entity : entity_vector) {
+            std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
+            if (wall_model) {
+                // Define the wall's bounding box (remains the same).
+                Coordinate wall_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
+                    wall_model->get_position().getY() - entity_half_size_y};
+                Coordinate wall_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
+                    wall_model->get_position().getY() + entity_half_size_y};
+                Rectangle wall_rect = {wall_left_upper_corner, wall_right_lower_corner};
+                if (utils::intersecting(wall_rect, entity_rect)) {
+                    return true; // Collision detected.
+                }
+            }
+        }
+    }
+    return false; // No collision.
 }
-void logic::World::move_right() {
-    pacman->set_direction(Direction::East);
-}
-void logic::World::move_down() {
-    pacman->set_direction(Direction::South);
-}
-void logic::World::move_up() {
-    pacman->set_direction(Direction::North);
+
+void logic::World::move_pacman(logic::Direction direction) {
+    wanted_pacman_direction = direction;
 }
 
 
 void logic::World::update(double delta_time) {
-    auto new_pos = pacman->update(delta_time);
-    auto current_pos = pacman->get_position();
-    Coordinate final_pos = current_pos;
+    // Probeer eerst de gewenste nieuwe richting
+    Direction current_direction = pacman->get_direction();
 
-    // --- Controleer X-as ---
-    Rectangle pac_rect_x({new_pos.getX() - (1.f / float(width)), current_pos.getY() - (1.f / float(height))},
-                         {new_pos.getX() + (1.f / float(width)), current_pos.getY() + (1.f / float(height))});
-    bool blocked_x = false;
-    for (const auto& vec : entities) {
-        for (const auto& entity : vec) {
-            if (std::dynamic_pointer_cast<WallModel>(entity)) {
-                Rectangle wall_rect({entity->get_position().getX() - (1.f / float(width)), entity->get_position().getY() - (1.f / float(height))},
-                                    {entity->get_position().getX() + (1.f / float(width)), entity->get_position().getY() + (1.f / float(height))});
-                if (utils::intersecting(pac_rect_x, wall_rect)) {
-                    blocked_x = true;
-                    break;
-                }
-            }
+    // Als de speler een nieuwe richting kiest, kijk of die geldig is.
+    if (wanted_pacman_direction != current_direction) {
+        pacman->set_direction(wanted_pacman_direction);
+        Coordinate next_pos_if_turned = pacman->update(float(delta_time));
+
+        // Als de nieuwe richting niet tot een botsing leidt, ga door met die richting.
+        if (!check_wall_collision(next_pos_if_turned)) {
+            pacman->set_position(next_pos_if_turned);
+            return; // Klaar voor deze frame
         }
-        if (blocked_x) break;
-    }
-    if (!blocked_x) {
-        final_pos.set_coordinates(new_pos.getX(), final_pos.getY());
+
+        // Zo niet, herstel de oude richting en ga verder.
+        pacman->set_direction(current_direction);
     }
 
-    // --- Controleer Y-as ---
-    // Gebruik de (mogelijk nieuwe) X-positie voor een nauwkeurigere check
-    Rectangle pac_rect_y({final_pos.getX() - (1.f / float(width)), new_pos.getY() - (1.f / float(height))},
-                         {final_pos.getX() + (1.f / float(width)), new_pos.getY() + (1.f / float(height))});
-    bool blocked_y = false;
-    for (const auto& vec : entities) {
-        for (const auto& entity : vec) {
-            if (std::dynamic_pointer_cast<WallModel>(entity)) {
-                Rectangle wall_rect({entity->get_position().getX() - (1.f / float(width)), entity->get_position().getY() - (1.f / float(height))},
-                                    {entity->get_position().getX() + (1.f / float(width)), entity->get_position().getY() + (1.f / float(height))});
-                if (utils::intersecting(pac_rect_y, wall_rect)) {
-                    blocked_y = true;
-                    break;
-                }
-            }
-        }
-        if (blocked_y) break;
-    }
-    if (!blocked_y) {
-        final_pos.set_coordinates(final_pos.getX(), new_pos.getY());
-    }
+    // Ga verder met de huidige (of herstelde) richting.
+    Coordinate next_pos = pacman->update(float(delta_time));
 
-    pacman->set_position(final_pos);
+    // Beweeg alleen als dit niet tot een botsing leidt.
+    // Anders stopt Pacman gewoon tegen de muur.
+    if (!check_wall_collision(next_pos)) {
+        pacman->set_position(next_pos);
+    }
 }

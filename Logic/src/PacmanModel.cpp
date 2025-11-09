@@ -7,6 +7,7 @@
 logic::PacmanModel::PacmanModel(Coordinate pos, Direction dir) : Subject(pos, dir) {}
 
 Coordinate logic::PacmanModel::update(float dt) {
+    float width_height_ration = (float)world_height / (float)world_width; // Om te voorkomen dat pacman sneller naar boven gaat dan links en rechts
     double increase = dt * speed;
     Coordinate pos = get_position();
     Direction dir = get_direction();
@@ -19,7 +20,7 @@ Coordinate logic::PacmanModel::update(float dt) {
             break;
         }
         case (Direction::East) : {
-            new_x = pos.getX() + increase;
+            new_x = pos.getX() + increase*width_height_ration;
             new_y = pos.getY();
             break;
         }
@@ -29,7 +30,7 @@ Coordinate logic::PacmanModel::update(float dt) {
             break;
         }
         case (Direction::West) : {
-            new_x = pos.getX() - increase;
+            new_x = pos.getX() - increase*width_height_ration;
             new_y = pos.getY();
             break;
         }

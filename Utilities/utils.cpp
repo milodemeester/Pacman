@@ -22,13 +22,22 @@ bool utils::contains(Coordinate upper_left_corner, Coordinate lower_right_corner
     return true;
 }
 
+
 bool utils::intersecting(Rectangle rectangle1, Rectangle rectangle2) {
-    if (rectangle1.get_bottom_right().getX() < rectangle2.get_top_left().getX() ||  // links
-        rectangle1.get_top_left().getX() > rectangle2.get_bottom_right().getX() ||  // rechts
-        rectangle1.get_bottom_right().getY() <= rectangle2.get_top_left().getY() ||  // boven
-        rectangle1.get_top_left().getY() >= rectangle2.get_bottom_right().getY())    // onder
-    {
+    // Condition for no horizontal overlap:
+    // If r1 is entirely to the left of r2, or r2 is entirely to the left of r1.
+    if (rectangle1.get_bottom_right().getX() < rectangle2.get_top_left().getX() ||
+        rectangle2.get_bottom_right().getX() < rectangle1.get_top_left().getX()) {
         return false;
-    }
+        }
+
+    // Condition for no vertical overlap:
+    // If r1 is entirely above r2, or r2 is entirely above r1.
+    if (rectangle1.get_bottom_right().getY() < rectangle2.get_top_left().getY() ||
+        rectangle2.get_bottom_right().getY() < rectangle1.get_top_left().getY()) {
+        return false;
+        }
+
+    // If there is overlap on both axes, the rectangles are intersecting.
     return true;
 }
