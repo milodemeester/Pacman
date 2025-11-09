@@ -14,7 +14,7 @@ class PacmanModel;
 class GhostModel;
 
 class World {
-    bool check_wall_collision(Coordinate& new_pos);
+    bool check_wall_collision(Coordinate& new_pos, double entity_speed);
     void initialise_maze();
     std::vector<std::vector<std::shared_ptr<Subject>>> entities;
     int width;

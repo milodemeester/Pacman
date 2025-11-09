@@ -24,20 +24,21 @@ bool utils::contains(Coordinate upper_left_corner, Coordinate lower_right_corner
 
 
 bool utils::intersecting(Rectangle rectangle1, Rectangle rectangle2) {
-    // Condition for no horizontal overlap:
-    // If r1 is entirely to the left of r2, or r2 is entirely to the left of r1.
-    if (rectangle1.get_bottom_right().getX() < rectangle2.get_top_left().getX() ||
-        rectangle2.get_bottom_right().getX() < rectangle1.get_top_left().getX()) {
+    // Check for no overlap. If any of these conditions are true, they do not overlap.
+
+    // r1 is to the right of r2 OR r2 is to the right of r1
+    if (rectangle1.get_top_left().getX() > rectangle2.get_bottom_right().getX() ||
+        rectangle2.get_top_left().getX() > rectangle1.get_bottom_right().getX()) {
         return false;
         }
 
-    // Condition for no vertical overlap:
-    // If r1 is entirely above r2, or r2 is entirely above r1.
-    if (rectangle1.get_bottom_right().getY() < rectangle2.get_top_left().getY() ||
-        rectangle2.get_bottom_right().getY() < rectangle1.get_top_left().getY()) {
+    // r1 is below r2 OR r2 is below r1
+    // Note: In your coordinate system, a larger Y value means "lower" on the screen.
+    if (rectangle1.get_top_left().getY() > rectangle2.get_bottom_right().getY() ||
+        rectangle2.get_top_left().getY() > rectangle1.get_bottom_right().getY()) {
         return false;
         }
 
-    // If there is overlap on both axes, the rectangles are intersecting.
+    // If none of the above are true, they must be intersecting.
     return true;
 }
