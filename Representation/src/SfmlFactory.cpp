@@ -39,7 +39,7 @@ std::shared_ptr<logic::GhostModel> representation::SfmlFactory::createGhost(std:
 }
 std::shared_ptr<logic::CoinModel> representation::SfmlFactory::createCoin() {
     auto coin_model = std::make_shared<logic::CoinModel>();
-    auto coin_view = std::make_unique<representation::CoinView>(coin_model);
+    auto coin_view = std::make_unique<representation::CoinView>(coin_model, sprite_map_);
     createdViews.push_back(std::move(coin_view));
     return coin_model;
 }

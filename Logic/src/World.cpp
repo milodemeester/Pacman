@@ -76,7 +76,7 @@ void logic::World::initialise_maze() {
     }
 }
 
-bool logic::World::check_collision(Coordinate& entity_pos, double entity_speed) {
+bool logic::World::check_collision(Coordinate& entity_pos, double entity_speed) { // TODO: check of een epsilon implementatie misschien efficienter is (check voice memo's op GSM)
     float entity_half_size_x = (1.f/float(width));
     float entity_half_size_y = (1.f/float(height));
 
