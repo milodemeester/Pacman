@@ -20,60 +20,83 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory) {
     game_factory = factory;
     initialise_maze();
 }
-
 void logic::World::initialise_maze() {
-    int line_idx = -1; // Gebruik een duidelijkere naam
+    int line = 0;
     std::string maze_line;
     std::ifstream maze_file("../data/maps/map1.txt");
     while (getline(maze_file, maze_line)) {
-        if (line_idx == -1) {
-            size_t pos = maze_line.find('X');
+        if (line == 0) {
+            size_t pos = maze_line.find('X');  // zoek de positie van 'X'
             std::string w = maze_line.substr(0, pos);
             width = std::stoi(w);
             std::string h = maze_line.substr(pos + 1);
             height = std::stoi(h);
-            line_idx++; // Ga naar de eerste content-lijn
+            line++;
         }
         else {
             std::vector<std::shared_ptr<Subject>> line_vector;
-            line_vector.reserve(width); // Reserveer ruimte voor de rij
-
+            line_vector.reserve(width);
             for (int char_idx = 0; char_idx < maze_line.length() && char_idx < width; ++char_idx) {
                 // X-positie van -1 (links) naar +1 (rechts)
-                float x_pos = 2.0f * (static_cast<float>(char_idx) + 0.5f) / static_cast<float>(width) - 1.0f;
+                float x_pos = 2.0f * (static_cast<float>(char_idx)) / static_cast<float>(width) - 1.0f;
 
                 // Y-positie van +1 (boven) naar -1 (onder)
-                float y_pos = 1.0f - 2.0f * (static_cast<float>(line_idx) + 0.5f) / static_cast<float>(height);
-
-                std::shared_ptr<Subject> current_entity = nullptr;
+                float y_pos = 1.0f - 2.0f * (static_cast<float>(line)) / static_cast<float>(height);
+                std::shared_ptr<Subject> crnt_entity = nullptr;
                 switch (maze_line[char_idx]) {
-                    case 'W': current_entity = game_factory->createWall(); break;
-                    case 'C': current_entity = game_factory->createCoin(); break;
-                    case 'B': current_entity = game_factory->createGhost("Blinky"); blinky = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
-                    case 'P': current_entity = game_factory->createGhost("Pinky"); pinky = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
-                    case 'I': current_entity = game_factory->createGhost("Inky"); inky = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
-                    case 'O': current_entity = game_factory->createGhost("Clyde"); clyde = std::dynamic_pointer_cast<GhostModel>(current_entity); break;
-                    case 'F': current_entity = game_factory->createFruit(); break;
-                    case 'A': current_entity = game_factory->createPacman(); pacman = std::dynamic_pointer_cast<PacmanModel>(current_entity); break;
-                    default: break; // Lege ruimte
+                case 'W': { // Wall
+                    crnt_entity = game_factory->createWall();
+                    break;
                 }
-
-                if (current_entity) {
-                    current_entity->set_position({x_pos, y_pos});
+                case 'C': { // Coin
+                    crnt_entity = game_factory->createCoin();
+                    break;
                 }
-                // Voeg de entity toe (of nullptr als het een lege ruimte is)
-                line_vector.push_back(current_entity);
+                case 'B': { // Blinky
+                    crnt_entity = game_factory->createGhost("Blinky");
+                    blinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    break;
+                }
+                case 'P': { // Pinky
+                    crnt_entity = game_factory->createGhost("Pinky");
+                    pinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    break;
+                }
+                case 'I': { // Inky
+                    crnt_entity = game_factory->createGhost("Inky");
+                    inky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    break;
+                }
+                case 'O': { // Clyde
+                    crnt_entity = game_factory->createGhost("Clyde");
+                    clyde = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    break;
+                }
+                case 'F': { // Fruit
+                    crnt_entity = game_factory->createFruit();
+                    break;
+                }
+                case 'A': { // Pacman
+                    crnt_entity = game_factory->createPacman();
+                    pacman = std::dynamic_pointer_cast<PacmanModel>(crnt_entity);
+                    break;
+                }
+                case 'Z': { // Niets
+                    break;
+                }
+                default:;
+                }
+                if (crnt_entity) {
+                    line_vector.push_back(crnt_entity);
+                    crnt_entity->set_position({x_pos, y_pos});
+                }
             }
             entities.emplace_back(line_vector);
-
-            // VERHOOG HIER DE INDEX, AAN HET EIND VAN HET VERWERKEN VAN EEN RIJ
-            line_idx++;
+            line++;
         }
     }
+    pacman->set_world_dimensions(width, height);
     maze_file.close();
-    if (pacman) {
-        pacman->set_world_dimensions(width, height);
-    }
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, double entity_speed) { // TODO: check of een epsilon implementatie misschien efficienter is (check voice memo's op GSM)
