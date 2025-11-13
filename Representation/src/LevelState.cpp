@@ -3,13 +3,14 @@
 //
 
 #include "../include/LevelState.h"
-
 #include "../include/EntityView.h"
 #include "../include/PausedState.h"
 #include "../include/SfmlFactory.h"
 #include "../include/SpriteMap.h"
 #include "../include/StateManager.h"
 #include <SFML/Window/Event.hpp>
+#include "../include/PacmanView.h"
+#include "../include/GhostView.h"
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize)
     : State(manager), spriteMap_("../data/sprite.png"), factory(std::make_shared<SfmlFactory>(camera, windowSize, spriteMap_)), world(factory)
@@ -60,7 +61,22 @@ void representation::LevelState::render(sf::RenderWindow& window) {
 }
 
 void representation::LevelState::render(sf::RenderWindow& window, Camera& cam) {
-    for (const auto& view : views) {
-        view->draw(window, cam);
+    PacmanView* pacman;
+    std::vector<GhostView*> ghosts;
+
+    for (auto& view : views) {
+        if (dynamic_cast<representation::PacmanView*>(view.get())) {
+            pacman = dynamic_cast<representation::PacmanView*>(view.get());
+        }
+        else if (dynamic_cast<GhostView*>(view.get())) {
+            ghosts.push_back(dynamic_cast<GhostView*>(view.get()));
+        }
+        else {
+            view->draw(window, cam);
+        }
     }
+    for (auto& ghost : ghosts) {
+        ghost->draw(window, cam);
+    }
+    pacman->draw(window, cam);
 }

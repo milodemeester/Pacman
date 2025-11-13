@@ -8,6 +8,7 @@
 
 namespace logic {
 class Score : public Observer {
+    int score;
 public:
     Score() = default;
     void onNotify(const Subject& entity, Event& e) override;

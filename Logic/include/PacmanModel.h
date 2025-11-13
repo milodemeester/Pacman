@@ -4,8 +4,9 @@
 
 #ifndef PACMAN_PACMAN_H
 #define PACMAN_PACMAN_H
-#include "Subject.h"
 #include "../../Utilities/utils.h"
+#include "Subject.h"
+#include "World.h"
 
 namespace logic {
 class PacmanModel : public Subject {
@@ -25,7 +26,12 @@ public:
     /*
      * Gives back the new coordinate to change location
      */
-    Coordinate update(float dt);
+    Coordinate calculate_new_position(float dt);
+
+    /*
+     * Updates pacman
+     */
+    void update(float dt, Direction dir, World& world);
 
     [[nodiscard]] Coordinate get_position() const { return position; }
     [[nodiscard]] Direction get_direction() const { return direction; }

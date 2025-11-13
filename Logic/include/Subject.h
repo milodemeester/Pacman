@@ -22,7 +22,7 @@ public:
     virtual ~Subject() = default;
 
     [[nodiscard]] Coordinate get_position() const { return position; }
-    void set_position(const Coordinate& position) { this->position = position; }
+    void set_position(const Coordinate& position);
 
     [[nodiscard]] Direction get_direction() const { return direction; }
     void set_direction(Direction direction) { this->direction = direction; }

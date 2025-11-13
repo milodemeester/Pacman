@@ -5,6 +5,13 @@
 #include "../include/Subject.h"
 #include "../include/Observer.h"
 
+void logic::Subject::set_position(const Coordinate& position) {
+    this->position = position;
+    Event event = Event::EntityPositionChanged;
+    notify(event);
+}
+
+
 void logic::Subject::removeObserver(Observer* o) {
     for (int i = 0; i < observers.size(); i++) {
         if (observers[i] == o) {

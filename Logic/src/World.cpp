@@ -99,37 +99,79 @@ void logic::World::initialise_maze() {
     maze_file.close();
 }
 
-bool logic::World::check_collision(Coordinate& entity_pos, double entity_speed) { // TODO: check of een epsilon implementatie misschien efficienter is (check voice memo's op GSM)
+bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed) {
     float entity_half_size_x = (1.f/float(width));
     float entity_half_size_y = (1.f/float(height));
 
     // Create scaled epsilon values proportional to the entity size on each axis.
-    const float epsilon_x = entity_half_size_x * entity_speed*8.5;
-    const float epsilon_y = entity_half_size_y * entity_speed*8.5;
+    const float epsilon_x = entity_half_size_x * entity_speed*8.3;
+    const float epsilon_y = entity_half_size_y * entity_speed*8.3;
     // Define the entity's bounding box, shrunk by the scaled epsilon on each axis.
-    Coordinate entity_left_upper_corner = {entity_pos.getX() - entity_half_size_x + epsilon_x,
+    Coordinate entity1_left_upper_corner = {entity_pos.getX() - entity_half_size_x + epsilon_x,
         entity_pos.getY() - entity_half_size_y + epsilon_y};
-    Coordinate entity_right_lower_corner = {entity_pos.getX() + entity_half_size_x - epsilon_x,
+    Coordinate entity1_right_lower_corner = {entity_pos.getX() + entity_half_size_x - epsilon_x,
         entity_pos.getY() + entity_half_size_y - epsilon_y};
-    Rectangle entity_rect = {entity_left_upper_corner, entity_right_lower_corner};
+    Rectangle entity1_rect = {entity1_left_upper_corner, entity1_right_lower_corner};
 
+    if (utils::intersecting(entity1_rect, entity2_rect)) {
+        return true; // Collision detected.
+    }
+    return false;
+}
+
+
+bool logic::World::check_wall_collision(Coordinate& entity_pos, double entity_speed) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
             if (wall_model) {
                 // Define the wall's bounding box (remains the same).
-                Coordinate wall_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
+                float entity_half_size_x = (1.f/float(width));
+                float entity_half_size_y = (1.f/float(height));
+                Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
                     wall_model->get_position().getY() - entity_half_size_y};
-                Coordinate wall_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
+                Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
                     wall_model->get_position().getY() + entity_half_size_y};
-                Rectangle wall_rect = {wall_left_upper_corner, wall_right_lower_corner};
-                if (utils::intersecting(wall_rect, entity_rect)) {
-                    return true; // Collision detected.
+                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                    return true;
                 }
             }
         }
     }
     return false; // No collision.
+}
+
+bool logic::World::check_coin_collision(Coordinate& entity_pos, double entity_speed) {
+    for (auto& entity_vector : entities) {
+        for (auto& entity : entity_vector) {
+            std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
+            if (coin_model) {
+                // Define the wall's bounding box (remains the same).
+                Coordinate entity2_left_upper_corner = {coin_model->get_position().getX(),
+                    coin_model->get_position().getY()};
+                Coordinate entity2_right_lower_corner = {coin_model->get_position().getX(),
+                    coin_model->get_position().getY()};
+                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                    remove_entity(coin_model);
+                    return true;
+                }
+            }
+        }
+    }
+    return false; // No collision.
+}
+
+void logic::World::remove_entity(std::shared_ptr<CoinModel> model) {
+    for (auto& vec : entities) {
+        for (int i = 0; i < vec.size(); i++) {
+            if (std::dynamic_pointer_cast<Subject>(model) == vec[i]) {
+                vec.erase(vec.begin() + i);
+                model->destruct();
+            }
+        }
+    }
 }
 
 void logic::World::move_pacman(logic::Direction direction) {
@@ -138,30 +180,5 @@ void logic::World::move_pacman(logic::Direction direction) {
 
 
 void logic::World::update(double delta_time) {
-    // Probeer eerst de gewenste nieuwe richting
-    Direction current_direction = pacman->get_direction();
-
-    // Als de speler een nieuwe richting kiest, kijk of die geldig is.
-    if (wanted_pacman_direction != current_direction) {
-        pacman->set_direction(wanted_pacman_direction);
-        Coordinate next_pos_if_turned = pacman->update(float(delta_time));
-
-        // Als de nieuwe richting niet tot een botsing leidt, ga door met die richting.
-        if (!check_collision(next_pos_if_turned, pacman->get_speed())) {
-            pacman->set_position(next_pos_if_turned);
-            return; // Klaar voor deze frame
-        }
-
-        // Zo niet, herstel de oude richting en ga verder.
-        pacman->set_direction(current_direction);
-    }
-
-    // Ga verder met de huidige (of herstelde) richting.
-    Coordinate next_pos = pacman->update(float(delta_time));
-
-    // Beweeg alleen als dit niet tot een botsing leidt.
-    // Anders stopt Pacman gewoon tegen de muur.
-    if (!check_collision(next_pos, pacman->get_speed())) {
-        pacman->set_position(next_pos);
-    }
+    pacman->update(delta_time, wanted_pacman_direction, *this);
 }

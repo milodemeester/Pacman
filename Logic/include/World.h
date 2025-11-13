@@ -14,8 +14,9 @@ class PacmanModel;
 class GhostModel;
 
 class World {
-    bool check_collision(Coordinate& new_pos, double entity_speed);
+    bool check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed);
     void initialise_maze();
+    void remove_entity(std::shared_ptr<CoinModel> model);
     std::vector<std::vector<std::shared_ptr<Subject>>> entities;
     int width;
     int height;
@@ -28,6 +29,8 @@ class World {
     Direction wanted_pacman_direction;
 
 public:
+    bool check_wall_collision(Coordinate& new_pos, double entity_speed);
+    bool check_coin_collision(Coordinate& new_pos, double entity_speed);
     World(const std::shared_ptr<GameFactory>& factory);
     void update(double delta_time);
     [[nodiscard]] int get_width() const { return width; }

@@ -4,8 +4,9 @@
 
 #ifndef PACMAN_COINVIEW_H
 #define PACMAN_COINVIEW_H
-#include "EntityView.h"
 #include "../../Logic/include/Observer.h"
+#include "EntityView.h"
+#include <SFML/Graphics/Sprite.hpp>
 #include <memory>
 
 namespace logic {
@@ -14,6 +15,9 @@ class CoinModel;
 namespace representation {
 class SpriteMap;
 class CoinView : public representation::EntityView, public logic::Observer {
+    bool isEaten = false;
+    Coordinate world_position;
+    sf::Sprite sprite;
 public:
     explicit CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map);
 

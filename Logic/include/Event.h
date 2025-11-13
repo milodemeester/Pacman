@@ -12,7 +12,8 @@ enum class Event {
     PacmanDied,
     GhostEaten,
     CoinCollected,
-    FruitEaten
+    FruitEaten,
+    EntityDestruct
     // ...
 };
 } // namespace logic

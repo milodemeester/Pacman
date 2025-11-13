@@ -15,7 +15,6 @@
 representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map) {
     model->addObserver(this);
     // ----------- sprites -----------
-    world_direction = model->get_direction();
     sf::Sprite pacman_closed = sprite_map.getSprite(sf::IntRect(853,5,35,35));
     sf::Sprite open_right1 = sprite_map.getSprite(sf::IntRect(853,55,35,35));
     sf::Sprite open_right2 = sprite_map.getSprite(sf::IntRect(853,105,35,35));

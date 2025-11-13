@@ -15,6 +15,8 @@ public:
 
     [[nodiscard]] Coordinate get_position() const { return position; }
     void set_position(const Coordinate& pos) { this->position = pos; }
+
+    void destruct();
 };
 } // namespace logic
 
