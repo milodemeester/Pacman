@@ -9,8 +9,9 @@
 
 namespace representation {
 class Game {
-    sf::RenderWindow window;
-    std::shared_ptr<StateManager> state_manager;
+    std::shared_ptr<logic::Score> score_;
+    sf::RenderWindow window_;
+    std::shared_ptr<StateManager> state_manager_;
 
 public:
     Game();

@@ -14,6 +14,6 @@ void representation::FruitView::onNotify(const logic::Subject& entity, logic::Ev
 
 }
 
-void representation::FruitView::draw(sf::RenderWindow& window, Camera& cam) {
+void representation::FruitView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
 
 }

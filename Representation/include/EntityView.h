@@ -7,6 +7,7 @@
 #include "../../Utilities/utils.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <memory>
 
 namespace representation {
 class Camera;
@@ -20,7 +21,7 @@ private:
 public:
     virtual ~EntityView() = default;
 
-    virtual void draw(sf::RenderWindow& window, Camera& cam) = 0;
+    virtual void draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) = 0;
 
     virtual void update(double dt) = 0;
 };

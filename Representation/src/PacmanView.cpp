@@ -34,6 +34,7 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>
     animation_sequences[logic::Direction::North] = north;
     animation_sequences[logic::Direction::West] = west;
     animation_sequences[logic::Direction::South] = south;
+    world_direction = logic::Direction::East;
 }
 
 void representation::PacmanView::onNotify(const logic::Subject& entity, logic::Event& event) {
@@ -57,8 +58,8 @@ void representation::PacmanView::update(double dt) {
     }
 }
 
-void representation::PacmanView::draw(sf::RenderWindow& window, Camera& cam) {
-    auto screen = cam.worldToScreen(world_position, window.getSize(), cam.get_world_size(), {32, 32});
+void representation::PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
+    auto screen = cam->worldToScreen(world_position, {32, 32});
     sf::Vector2f new_coords = screen.first;
     std::vector<sf::Sprite> sprite_sequence = animation_sequences.at(world_direction);
     sf::Sprite& sprite = sprite_sequence.at(current_sprite_index);

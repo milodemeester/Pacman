@@ -5,13 +5,19 @@
 #ifndef PACMAN_SCORE_H
 #define PACMAN_SCORE_H
 #include "Observer.h"
+#include <string>
+#include <vector>
 
 namespace logic {
 class Score : public Observer {
+    std::vector<std::string> high_scores_;
     int score;
 public:
-    Score() = default;
+    Score();
     void onNotify(const Subject& entity, Event& e) override;
+
+    std::vector<std::string> get_high_scores();
+    int get_score() const;
 };
 } // namespace logic
 

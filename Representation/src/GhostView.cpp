@@ -110,8 +110,8 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
 
 }
 
-void representation::GhostView::draw(sf::RenderWindow& window, Camera& cam) {
-    auto screen = cam.worldToScreen(model_->get_position(), window.getSize(), cam.get_world_size(), {32, 32});
+void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
+    auto screen = cam->worldToScreen(model_->get_position(), {32, 32});
     sf::Vector2f new_coords = screen.first;
     std::vector<sf::Sprite> sprite_sequence = animation_sequences.at(current_state);
     sf::Sprite& sprite = sprite_sequence.at(current_sprite_index);

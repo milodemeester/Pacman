@@ -22,9 +22,9 @@ void representation::CoinView::onNotify(const logic::Subject& entity, logic::Eve
     }
 }
 
-void representation::CoinView::draw(sf::RenderWindow& window, Camera& cam) {
+void representation::CoinView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     if (!isEaten) {
-        auto screen = cam.worldToScreen(world_position, window.getSize(), cam.get_world_size(), {32, 32});
+        auto screen = cam->worldToScreen(world_position, {32, 32});
         sf::Vector2f sprite_size = screen.second;
         sf::Vector2f new_coords = screen.first;
         sprite.setScale(sprite_size);

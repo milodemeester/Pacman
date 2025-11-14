@@ -9,6 +9,9 @@
 #include <SFML/Graphics.hpp>
 #include "State.h"
 
+namespace logic {
+class Score;
+}
 namespace sf {
 class RenderWindow;
 class Event;
@@ -25,7 +28,7 @@ public:
     //StateManager(const StateManager&) = delete;
     StateManager& operator=(const StateManager&) = delete;
 
-    explicit StateManager(sf::Vector2u windowSize);
+    explicit StateManager(sf::Vector2u windowSize, std::shared_ptr<logic::Score> score);
     /*
      * Method to process a key-press event
      */

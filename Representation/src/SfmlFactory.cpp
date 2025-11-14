@@ -1,6 +1,8 @@
 //
 // Created by milo on 11/4/25.
 //
+#include <utility>
+
 #include "../include/SfmlFactory.h"
 
 #include "../../Logic/include/CoinModel.h"
@@ -15,8 +17,8 @@
 #include "../include/PacmanView.h"
 #include "../include/WallView.h"
 
-representation::SfmlFactory::SfmlFactory(Camera& c, sf::Vector2u w, SpriteMap& spriteMap) : sprite_map_(spriteMap) {
-    camera = c;
+representation::SfmlFactory::SfmlFactory(std::shared_ptr<Camera> c, sf::Vector2u w, SpriteMap& spriteMap) : sprite_map_(spriteMap) {
+    camera = std::move(c);
     windowSize = w;
 }
 

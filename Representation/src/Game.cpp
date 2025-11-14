@@ -6,26 +6,30 @@
 #include "../../Logic/include/Score.h"
 #include "../../Logic/include/Stopwatch.h"
 
-representation::Game::Game() : window(sf::VideoMode({1600, 800}), "Pacman", sf::Style::Default) ,
-    state_manager(std::make_shared<StateManager>(window.getSize())) {}
+representation::Game::Game() :
+    score_(nullptr),
+    window_(sf::VideoMode({1600, 800}), "Pacman", sf::Style::Default) ,
+    state_manager_(nullptr) {}
 
 void representation::Game::run() {
+    std::shared_ptr<logic::Score> s = std::make_shared<logic::Score>();
+    score_ = s;
+    state_manager_ = std::make_shared<StateManager>(window_.getSize(), score_);
     logic::Stopwatch* stopwatch = logic::Stopwatch::create();
-    logic::Score score;
     int fps = 60;
-    window.setFramerateLimit(fps);
+    window_.setFramerateLimit(fps);
 
-    while (window.isOpen()) {
+    while (window_.isOpen()) {
         sf::Event event{};
-        while (window.pollEvent(event)) {
+        while (window_.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
-                window.close();
+                window_.close();
             }
-            state_manager->process_event(event, window);
+            state_manager_->process_event(event, window_);
         }
-        state_manager->update(stopwatch->get_delta_time());
-        window.clear(sf::Color::Black);
-        state_manager->render(window);
-        window.display();
+        state_manager_->update(stopwatch->get_delta_time());
+        window_.clear(sf::Color::Black);
+        state_manager_->render(window_);
+        window_.display();
     }
 }

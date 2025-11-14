@@ -3,99 +3,135 @@
 //
 
 #include "../include/MenuState.h"
+#include "../../Utilities/utils.h"
+#include "../include/EntityView.h"
 #include "../include/LevelState.h"
 #include "../include/StateManager.h"
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/Text.hpp"
-#include <iostream>
-#include <memory>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
-#include "../../Utilities/utils.h"
-#include "../include/EntityView.h"
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include <utility>
 
-representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize) : State(sm) {
-    if (!font_.loadFromFile("../data/Font.TTF")) {
+representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score) : State(sm), score_(std::move(score)) {
+    if (!font_.loadFromFile("../data/fonts/pacman_font.TTF")) {
+        std::cerr << "Failed to load font." << std::endl;
+    }
+    if (!scoreFont_.loadFromFile("../data/fonts/score_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
 
-    // --- play button ---
-    playButtonText_.setFont(font_);
-    playButtonText_.setFillColor(sf::Color::Black);
-    playButtonText_.setString("Play");
+    // --- Menu Banner ---
+    menuBanner_.text.setFont(font_);
+    menuBanner_.text.setFillColor(sf::Color::Black);
+    menuBanner_.text.setString("Menu");
+    menuBanner_.background.setFillColor(sf::Color::Yellow);
+    menuBanner_.bg_height_multiplier = 1.5f;
 
-    // --- play button background ---
-    playButtonBackground_.setFillColor(sf::Color::White);
-    playButtonBackground_.setOutlineColor(sf::Color::White);
-    playButtonBackground_.setOutlineThickness(1);
+    // --- Play Button ---
+    playButton_.text.setFont(font_);
+    playButton_.text.setFillColor(sf::Color::Black);
+    playButton_.text.setString("Play");
+    playButton_.background.setFillColor(sf::Color::White);
+    playButton_.bg_height_multiplier = 1.2f;
 
-    // --- menu banner ---
-    menuBannerText_.setFont(font_);
-    menuBannerText_.setFillColor(sf::Color::Black);
-    menuBannerText_.setString("Menu");
+    // --- High Scores Title ---
+    highScoreTitle_.setFont(scoreFont_);
+    highScoreTitle_.setFillColor(sf::Color::White);
+    highScoreTitle_.setString("High Scores:");
 
-    // background of the button
-    menuBannerBackground_.setFillColor(sf::Color::Yellow);
-    menuBannerBackground_.setOutlineColor(sf::Color::White);
-    menuBannerBackground_.setOutlineThickness(1);
+    // --- High Scores List ---
+    highScores_.reserve(5);
 
-    // --- score ---
+    int line_number = 0;
+    for (auto& score : score_->get_high_scores()) {
+        sf::Text file_score;
+        file_score.setFont(scoreFont_);
+        file_score.setFillColor(sf::Color::White);
+        file_score.setString(std::to_string(line_number + 1) + ": " + score);
+        highScores_.push_back(file_score);
+        line_number++;
+    }
     updateLayout(windowsize);
+}
+
+void representation::MenuState::centerButton(Button& button, const sf::Vector2u& windowSize, float y_pos_ratio) {
+    float window_width = windowSize.x;
+    float window_height = windowSize.y;
+    unsigned int char_size = (window_width / 32 + window_height / 32);
+
+    // Centreer tekst
+    button.text.setCharacterSize(char_size);
+    sf::FloatRect text_bounds = button.text.getLocalBounds();
+    button.text.setOrigin(text_bounds.left + text_bounds.width / 2.0f, text_bounds.top + text_bounds.height / 2.0f);
+    button.text.setPosition(window_width / 2.0f, window_height * y_pos_ratio);
+
+    // Centreer achtergrond
+    button.background.setSize({char_size * button.bg_width_multiplier, char_size * button.bg_height_multiplier});
+    button.background.setOrigin(button.background.getSize() / 2.f);
+    button.background.setPosition(window_width / 2.0f, window_height * y_pos_ratio);
 }
 
 
 void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
+    // --- Menu Banner (12.5% from top)---
+    centerButton(menuBanner_, windowSize, 8.f / 64.f);
+
+    // --- Play Button (90% from top) ---
+    centerButton(playButton_, windowSize, 58.f / 64.f);
+
+    // --- High Scores ---
     float window_width = windowSize.x;
     float window_height = windowSize.y;
+    unsigned int char_size = (window_width / 64 + window_height / 64);
 
-    // --- Play Button ---
-    unsigned int character_size = (window_width / 32 + window_height / 32);
-    playButtonText_.setCharacterSize(character_size);
-    sf::FloatRect textBounds = playButtonText_.getLocalBounds();
-    playButtonText_.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
-    playButtonText_.setPosition({window_width / 2.f, window_height - float(character_size)});
+    // Titel
+    highScoreTitle_.setCharacterSize(char_size);
+    sf::FloatRect score_title_bounds = highScoreTitle_.getLocalBounds();
+    highScoreTitle_.setOrigin(score_title_bounds.left + score_title_bounds.width / 2.0f, score_title_bounds.top + score_title_bounds.height / 2.0f);
+    highScoreTitle_.setPosition(window_width / 2.f, window_height * (20.f/64.f));
 
-    // De achtergrond heeft een andere grootte, dus we moeten de tekst herpositioneren
-    playButtonBackground_.setSize({character_size * 5.f, character_size * 2.f}); // Iets groter gemaakt voor padding
-    playButtonBackground_.setOrigin(playButtonBackground_.getSize() / 2.f);
-    playButtonBackground_.setPosition({window_width / 2.f, window_height - float(character_size)});
-
-    // --- Menu Banner ---
-    unsigned int character_size2 = (window_width / 16 + window_height / 16);
-    menuBannerText_.setCharacterSize(character_size2);
-    sf::FloatRect bannerTextBounds = menuBannerText_.getLocalBounds();
-    menuBannerText_.setOrigin(bannerTextBounds.left + bannerTextBounds.width / 2.0f, bannerTextBounds.top + bannerTextBounds.height / 2.0f);
-    menuBannerText_.setPosition({window_width / 2.f, float(character_size2)});
-
-    menuBannerBackground_.setSize({character_size2 * 6.f, character_size2 * 2.f});
-    menuBannerBackground_.setOrigin(menuBannerBackground_.getSize() / 2.f);
-    menuBannerBackground_.setPosition({window_width / 2.f, float(character_size2)});
+    // Scores
+    float current_y_ratio = 28.f / 64.f;
+    for (auto& highScore : highScores_) {
+        highScore.setCharacterSize(char_size * 0.9f);
+        sf::FloatRect score_bounds = highScore.getLocalBounds();
+        // DE FIX: gebruik 'highScore' in plaats van 'highScoreText_'
+        highScore.setOrigin(score_bounds.left + score_bounds.width / 2.0f, score_bounds.top + score_bounds.height / 2.0f);
+        highScore.setPosition(window_width / 2.f, window_height * current_y_ratio);
+        current_y_ratio += (4.f / 64.f);
+    }
 }
 
 void representation::MenuState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
-    switch (event.type) {
-    case sf::Event::Resized: {
+    if (event.type == sf::Event::Resized) {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
         updateLayout({event.size.width, event.size.height});
+        return; // Voorkom doorvallen naar MouseButtonPressed
     }
-    case sf::Event::MouseButtonPressed: {
+
+    if (event.type == sf::Event::MouseButtonPressed) {
         sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-        auto bounds = playButtonBackground_.getGlobalBounds();
-        Coordinate upper_left_corner(bounds.left, bounds.top);
-        Coordinate lower_right_corner(bounds.left + bounds.width, bounds.top + bounds.height);
-        if (utils::contains(upper_left_corner, lower_right_corner, Coordinate(mouseWorld.x, mouseWorld.y))) {
-            std::unique_ptr<LevelState> level = std::make_unique<LevelState>(manager_, window.getSize());
-            manager_.push_state(std::move(level));
+        if (playButton_.background.getGlobalBounds().contains(mouseWorld)) {
+            std::shared_ptr<Camera> cam = std::make_shared<Camera>();
+            manager_.push_state(std::make_unique<LevelState>(manager_, window.getSize(), score_, cam));
         }
-    }
-    default:;
     }
 }
 
 void representation::MenuState::render(sf::RenderWindow& window) {
-    window.draw(playButtonBackground_);
-    window.draw(menuBannerBackground_);
-    window.draw(playButtonText_);
-    window.draw(menuBannerText_);
+    window.draw(menuBanner_.background);
+    window.draw(menuBanner_.text);
+
+    window.draw(playButton_.background);
+    window.draw(playButton_.text);
+
+    window.draw(highScoreTitle_);
+    for (const auto& highScore : highScores_) {
+        window.draw(highScore);
+    }
 }
