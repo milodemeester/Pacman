@@ -10,14 +10,14 @@ class EntityView;
 class SfmlFactory : public logic::GameFactory {
     std::shared_ptr<representation::Camera> camera;
     sf::Vector2u windowSize;
-    std::vector<std::unique_ptr<EntityView>> createdViews;
+    std::vector<std::shared_ptr<EntityView>> createdViews;
     SpriteMap& sprite_map_;
 
 public:
     SfmlFactory(std::shared_ptr<representation::Camera> camera, sf::Vector2u windowSize, SpriteMap& sprite_map);
     ~SfmlFactory() override = default;
 
-    std::vector<std::unique_ptr<EntityView>>& getCreatedViews();
+    std::vector<std::shared_ptr<EntityView>> getCreatedViews();
 
     std::shared_ptr<logic::PacmanModel> createPacman() override;
     std::shared_ptr<logic::GhostModel> createGhost(std::string) override;

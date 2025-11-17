@@ -20,7 +20,6 @@ private:
     int world_height;
 
 public:
-    PacmanModel() = default;
     PacmanModel(Coordinate pos, Direction dir);
 
     /*

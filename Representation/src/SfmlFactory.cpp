@@ -22,14 +22,14 @@ representation::SfmlFactory::SfmlFactory(std::shared_ptr<Camera> c, sf::Vector2u
     windowSize = w;
 }
 
-std::vector<std::unique_ptr<representation::EntityView>>& representation::SfmlFactory::getCreatedViews() {
+std::vector<std::shared_ptr<representation::EntityView>> representation::SfmlFactory::getCreatedViews() {
     return createdViews;
 }
 
 std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman() {
     auto pacman_model = std::make_shared<logic::PacmanModel>(Coordinate(0,0),logic::Direction::East);
-    auto pacman_view = std::make_unique<representation::PacmanView>(pacman_model, sprite_map_);
-    createdViews.push_back(std::move(pacman_view));
+    auto pacman_view = std::make_shared<representation::PacmanView>(pacman_model, sprite_map_);
+    createdViews.push_back(pacman_view);
     return pacman_model;
 }
 

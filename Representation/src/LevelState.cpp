@@ -28,7 +28,7 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
 
     updateLayout(windowSize);
 
-    views_ = std::move(factory_->getCreatedViews());
+    views_ = factory_->getCreatedViews();
 
     if (!scoreFont_.loadFromFile("../data/fonts/score_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
@@ -78,19 +78,18 @@ void representation::LevelState::update(double delta_time) {
     for (const auto& view : views_) {
         view->update(delta_time);
     }
-
 }
 
 void representation::LevelState::render(sf::RenderWindow& window) {
-    PacmanView* pacman;
-    std::vector<GhostView*> ghosts;
+    std::shared_ptr<PacmanView> pacman;
+    std::vector<std::shared_ptr<GhostView>> ghosts;
 
     for (auto& view : views_) {
-        if (dynamic_cast<representation::PacmanView*>(view.get())) {
-            pacman = dynamic_cast<representation::PacmanView*>(view.get());
+        if (std::dynamic_pointer_cast<PacmanView>(view)) {
+            pacman = std::dynamic_pointer_cast<PacmanView>(view);
         }
-        else if (dynamic_cast<GhostView*>(view.get())) {
-            ghosts.push_back(dynamic_cast<GhostView*>(view.get()));
+        else if (dynamic_pointer_cast<GhostView>(view)) {
+            ghosts.push_back(std::dynamic_pointer_cast<GhostView>(view));
         }
         else {
             view->draw(window, camera_);
@@ -99,7 +98,9 @@ void representation::LevelState::render(sf::RenderWindow& window) {
     for (auto& ghost : ghosts) {
         ghost->draw(window, camera_);
     }
-    pacman->draw(window, camera_);
+    if (pacman) {
+        pacman->draw(window, camera_);
+    }
 
     updateLayout(window.getSize());
     window.draw(scoreTitle_);

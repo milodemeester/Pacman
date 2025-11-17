@@ -26,7 +26,7 @@ class LevelState final : public representation::State {
     SpriteMap spriteMap_;
     std::shared_ptr<representation::SfmlFactory> factory_;
     logic::World world_;
-    std::vector<std::unique_ptr<representation::EntityView>> views_;
+    std::vector<std::shared_ptr<representation::EntityView>> views_;
 
     sf::Font scoreFont_;
     sf::Text scoreTitle_;

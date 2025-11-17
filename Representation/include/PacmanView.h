@@ -23,9 +23,10 @@ class PacmanModel;
 namespace representation {
 class Camera;
 class PacmanView : public EntityView, public logic::Observer {
+    SpriteMap& sprite_map_;
     Coordinate world_position;
     logic::Direction world_direction;
-    std::map<logic::Direction, std::vector<sf::Sprite>> animation_sequences;
+    std::map<logic::Direction, std::vector<sf::IntRect>> animation_sequences;
     size_t current_sprite_index = 0;
     float last_sprite_change = 0.0f; // last sprite change timestamp
     double animation_timer = 0.0;
