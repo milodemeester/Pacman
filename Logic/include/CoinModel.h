@@ -10,11 +10,8 @@
 namespace logic {
 class CoinModel : public Subject {
 public:
-    explicit CoinModel(Coordinate pos) : Subject(pos, Direction::North) {}
-    CoinModel() : Subject({0,0}, Direction::North) {}
-
-    [[nodiscard]] Coordinate get_position() const { return position; }
-    void set_position(const Coordinate& pos) { this->position = pos; }
+    explicit CoinModel(Coordinate pos) : Subject(pos) {}
+    CoinModel() : Subject({0,0}) {}
 
     void destruct();
 };

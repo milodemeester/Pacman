@@ -9,7 +9,7 @@
 namespace logic {
 class Stopwatch {
 protected:
-    static Stopwatch* stopwatch_;
+    inline static std::shared_ptr<Stopwatch> stopwatch_;
     Stopwatch();
 
 private:
@@ -21,7 +21,7 @@ public:
 
     void operator=(const Stopwatch& other) = delete;
 
-    static Stopwatch* create();
+    static std::shared_ptr<Stopwatch> getInstance();
 
     double get_delta_time();
 

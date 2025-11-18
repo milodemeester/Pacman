@@ -38,8 +38,26 @@ std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman() 
 }
 
 std::shared_ptr<logic::GhostModel> representation::SfmlFactory::createGhost(logic::GhostType type) {
-    auto ghost_model = std::make_shared<logic::GhostModel>();
-    auto ghost_view = std::make_unique<representation::GhostView>(ghost_model, sprite_map_, type);
+    std::shared_ptr<logic::GhostModel> ghost_model;
+    switch (type) {
+    case (logic::GhostType::Blinky) : {
+        ghost_model = std::make_shared<logic::BlinkyModel>(Coordinate{0,0}, logic::Direction::East);
+        break;
+    }
+    case (logic::GhostType::Inky) : {
+        ghost_model = std::make_shared<logic::InkyModel>(Coordinate{0,0}, logic::Direction::East);
+        break;
+    }
+    case (logic::GhostType::Pinky) : {
+        ghost_model = std::make_shared<logic::PinkyModel>(Coordinate{0,0}, logic::Direction::East);
+        break;
+    }
+    case (logic::GhostType::Clyde) : {
+        ghost_model = std::make_shared<logic::ClydeModel>(Coordinate{0,0}, logic::Direction::East);
+        break;
+    }
+    }
+    std::shared_ptr<representation::GhostView> ghost_view = std::make_unique<representation::GhostView>(ghost_model, sprite_map_, type);
     createdViews.push_back(std::move(ghost_view));
     return ghost_model;
 }

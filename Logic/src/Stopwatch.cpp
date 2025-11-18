@@ -4,11 +4,9 @@
 
 #include "../include/Stopwatch.h"
 
-logic::Stopwatch* logic::Stopwatch::stopwatch_ = nullptr;
-
-logic::Stopwatch* logic::Stopwatch::create() {
+std::shared_ptr<logic::Stopwatch> logic::Stopwatch::getInstance() {
     if (stopwatch_ == nullptr) {
-        stopwatch_ = new Stopwatch();
+        stopwatch_ = std::shared_ptr<Stopwatch>(new Stopwatch());
     }
     return stopwatch_;
 }

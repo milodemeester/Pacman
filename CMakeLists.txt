@@ -76,6 +76,8 @@ if (BUILD_GAME_EXE)
             Utilities/utils.cpp Utilities/utils.h
             Representation/src/SpriteMap.cpp
             Representation/include/SpriteMap.h
+            Logic/src/Random.cpp
+            Logic/include/Random.h
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)
 endif ()

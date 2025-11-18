@@ -7,6 +7,8 @@
 #include "../../Utilities/utils.h"
 #include "Direction.h"
 #include "Subject.h"
+
+#include <chrono>
 #include <string>
 #include <utility>
 
@@ -17,21 +19,41 @@ enum class GhostType {
     Pinky,
     Clyde
 };
-class GhostModel : public Subject {
-    GhostType type_;
-    double wait_time;
+
+class GhostModel : public MoveableSubject {
+protected:
+    std::chrono::system_clock::time_point initialize_time;
+    double wait_time = 0;
     bool chasing_mode = false;
 public:
-    GhostModel() : type_(GhostType::Inky), wait_time(0), Subject(Coordinate({0,0}), Direction::East) {};
-    GhostModel(Coordinate pos, Direction dir, GhostType ghost_type);
+    GhostModel(Coordinate pos, Direction dir);
     void update(float dt);
-
-    [[nodiscard]] Coordinate get_position() const { return position; }
-    [[nodiscard]] Direction get_direction() const { return direction; }
-
-    void set_position(const Coordinate& pos) { this->position = pos; }
-    void set_direction(Direction dir) { this->direction = dir; }
 };
+
+class InkyModel : public GhostModel {
+public:
+    InkyModel(Coordinate pos, Direction dir);
+    void update(float dt, World& world) override;
+};
+
+class BlinkyModel : public GhostModel {
+public:
+    BlinkyModel(Coordinate pos, Direction dir);
+    void update(float dt, World& world) override;
+};
+
+class PinkyModel : public GhostModel {
+public:
+    PinkyModel(Coordinate pos, Direction dir);
+    void update(float dt, World& world) override;
+};
+
+class ClydeModel : public GhostModel {
+public:
+    ClydeModel(Coordinate pos, Direction dir);
+    void update(float dt, World& world) override;
+};
+
 } // namespace logic
 
 #endif // PACMAN_GHOST_H

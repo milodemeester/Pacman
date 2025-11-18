@@ -32,11 +32,14 @@ public:
     bool check_wall_collision(Coordinate& new_pos, double entity_speed);
     bool check_coin_collision(Coordinate& new_pos, double entity_speed);
     World(const std::shared_ptr<GameFactory>& factory);
-    void update(double delta_time);
+    void update(float delta_time);
     [[nodiscard]] int get_width() const { return width; }
     [[nodiscard]] int get_height() const { return height; }
     void move_pacman(logic::Direction);
-
+    [[nodiscard]] Direction get_wanted_pacman_direction() const { return wanted_pacman_direction; }
+    void set_wanted_pacman_direction(Direction wanted_pacman_dir) {
+        this->wanted_pacman_direction = wanted_pacman_dir;
+    }
 };
 } // namespace logic
 

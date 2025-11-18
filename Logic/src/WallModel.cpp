@@ -3,9 +3,3 @@
 //
 
 #include "../include/WallModel.h"
-
-void logic::WallModel::set_position(const Coordinate& pos) {
-    this->position = pos;
-    Event e = Event::EntityPositionChanged;
-    notify(e);
-}

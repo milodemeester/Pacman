@@ -9,36 +9,19 @@
 #include "World.h"
 
 namespace logic {
-class PacmanModel : public Subject {
-    double speed = 0.01; // measured in pixel/ms
-public:
-    [[nodiscard]] double get_speed() const { return speed; }
-    void set_speed(double speed) { this->speed = speed; }
-
-private:
-    int world_width;
-    int world_height;
-
+class PacmanModel : public MoveableSubject {
 public:
     PacmanModel(Coordinate pos, Direction dir);
 
     /*
-     * Gives back the new coordinate to change location
-     */
-    Coordinate calculate_new_position(float dt);
-
-    /*
      * Updates pacman
      */
-    void update(float dt, Direction dir, World& world);
+    void update(float dt, World& world) override;
 
-    [[nodiscard]] Coordinate get_position() const { return position; }
-    [[nodiscard]] Direction get_direction() const { return direction; }
+    [[nodiscard]] Coordinate get_position() const { return position_; }
+    [[nodiscard]] Direction get_direction() const { return direction_; }
 
-    void set_position(const Coordinate& pos);
-    void set_direction(Direction dir);
-
-    void set_world_dimensions(int w, int h) {world_height = h; world_width = w;}
+    void set_world_dimensions(int w, int h) {world_height_ = h; world_width_ = w;}
 };
 } // namespace logic
 

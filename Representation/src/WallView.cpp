@@ -18,7 +18,8 @@ representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& mode
 }
 
 void representation::WallView::onNotify(const logic::Subject& entity, logic::Event& event) {
-    auto* model = dynamic_cast<const logic::WallModel*>(&entity);
+    auto* const_model = dynamic_cast<const logic::WallModel*>(&entity);
+    auto* model = const_cast<logic::WallModel*>(const_model);
     if (!model) {
         return; // Event is niet afkomstig van een WallModel, dus negeren.
     }

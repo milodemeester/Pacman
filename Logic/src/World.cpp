@@ -180,6 +180,10 @@ void logic::World::move_pacman(logic::Direction direction) {
 }
 
 
-void logic::World::update(double delta_time) {
-    pacman->update(delta_time, wanted_pacman_direction, *this);
+void logic::World::update(float delta_time) {
+    pacman->update(delta_time, *this);
+    pinky->update(delta_time);
+    inky->update(delta_time);
+    blinky->update(delta_time);
+    clyde->update(delta_time);
 }
