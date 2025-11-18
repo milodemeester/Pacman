@@ -12,13 +12,11 @@
 namespace representation {
 class Camera;
 class EntityView {
+    Coordinate world_location_;
 public:
-    [[nodiscard]] Coordinate get_location() const { return location; }
-    void set_location(const Coordinate& location) { this->location = location; }
+    [[nodiscard]] Coordinate get_location() const { return world_location_; }
+    void set_location(const Coordinate& location) { this->world_location_ = location; }
 
-private:
-    Coordinate location;
-public:
     virtual ~EntityView() = default;
 
     virtual void draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) = 0;

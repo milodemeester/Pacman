@@ -32,7 +32,6 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>
     animation_sequences[logic::Direction::South] = {pacman_closed_rect, open_down1_rect, open_down2_rect};
 }
 
-// onNotify: Gebruik dynamic_cast om veilig de methodes van PacmanModel aan te roepen.
 void representation::PacmanView::onNotify(const logic::Subject& entity, logic::Event& event) {
     auto* model = dynamic_cast<const logic::PacmanModel*>(&entity);
     if (!model) {

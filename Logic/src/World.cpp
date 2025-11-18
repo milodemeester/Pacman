@@ -45,7 +45,7 @@ void logic::World::initialise_maze() {
                 std::shared_ptr<Subject> crnt_entity = nullptr;
                 switch (maze_line[char_idx]) {
                 case 'W': { // Wall
-                    crnt_entity = game_factory->createWall();
+                    crnt_entity = game_factory->createWall(false);
                     break;
                 }
                 case 'C': { // Coin
@@ -82,6 +82,7 @@ void logic::World::initialise_maze() {
                     break;
                 }
                 case 'Z': { // Niets
+                    crnt_entity = game_factory->createWall(true);
                     break;
                 }
                 default:;

@@ -19,7 +19,7 @@ public:
     virtual ~GameFactory() = default;
     virtual std::shared_ptr<PacmanModel> createPacman() = 0;
     virtual std::shared_ptr<GhostModel> createGhost(logic::GhostType type) = 0;
-    virtual std::shared_ptr<WallModel> createWall() = 0;
+    virtual std::shared_ptr<WallModel> createWall(bool invisible) = 0;
     virtual std::shared_ptr<FruitModel> createFruit() = 0;
     virtual std::shared_ptr<CoinModel> createCoin() = 0;
 };

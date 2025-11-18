@@ -10,24 +10,35 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <iostream>
 
-representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map) {
+representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map, bool invisible) : invisible_(invisible) {
     sf::Sprite sprite = sprite_map.getWallSprite({32, 32, 35,35});
     m_sprites.insert(std::pair(WallSpriteState::Wall, sprite));
-
-    model_ = model;
-    model_->addObserver(this);
+    model->addObserver(this);
+    set_location(model->get_position());
 }
 
-void representation::WallView::onNotify(const logic::Subject& entity, logic::Event& e) {
+void representation::WallView::onNotify(const logic::Subject& entity, logic::Event& event) {
+    auto* model = dynamic_cast<const logic::WallModel*>(&entity);
+    if (!model) {
+        return; // Event is niet afkomstig van een WallModel, dus negeren.
+    }
+
+    switch (event) {
+    case (logic::Event::EntityPositionChanged): {
+        set_location(model->get_position());
+        break;
+    }
+    }
 }
 
 void representation::WallView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
-    sf::Sprite& sprite = m_sprites.at(WallSpriteState::Wall);
-    auto local_bounds = sprite.getLocalBounds();
-    auto screen = cam->worldToScreen(model_->get_position(), {32, 32});
-    sf::Vector2f new_coords = screen.first;
-    sf::Vector2f sprite_size = screen.second;
-    sprite.setPosition(new_coords.x, new_coords.y);
-    sprite.setScale(sprite_size);
-    window.draw(sprite);
+    if (!invisible_) {
+        sf::Sprite& sprite = m_sprites.at(WallSpriteState::Wall);
+        auto screen = cam->worldToScreen(get_location(), {32, 32});
+        sf::Vector2f new_coords = screen.first;
+        sf::Vector2f sprite_size = screen.second;
+        sprite.setPosition(new_coords.x, new_coords.y);
+        sprite.setScale(sprite_size);
+        window.draw(sprite);
+    }
 }

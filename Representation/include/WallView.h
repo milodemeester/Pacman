@@ -19,10 +19,10 @@ enum class WallSpriteState {
 namespace representation {
 class SpriteMap;
 class WallView : public representation::EntityView, public logic::Observer {
-    std::shared_ptr<logic::WallModel> model_;
     std::map<WallSpriteState, sf::Sprite> m_sprites;
+    bool invisible_;
 public:
-    explicit WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map);
+    explicit WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map, bool invisible);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 

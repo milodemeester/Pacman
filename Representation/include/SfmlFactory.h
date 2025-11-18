@@ -29,7 +29,7 @@ public:
     std::shared_ptr<logic::GhostModel> createGhost(logic::GhostType type) override;
     std::shared_ptr<logic::CoinModel> createCoin() override;
     std::shared_ptr<logic::FruitModel> createFruit() override;
-    std::shared_ptr<logic::WallModel> createWall() override;
+    std::shared_ptr<logic::WallModel> createWall(bool invisible) override;
 };
 } // namespace representation
 
