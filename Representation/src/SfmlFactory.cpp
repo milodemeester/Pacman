@@ -17,7 +17,10 @@
 #include "../include/PacmanView.h"
 #include "../include/WallView.h"
 
-representation::SfmlFactory::SfmlFactory(std::shared_ptr<Camera> c, sf::Vector2u w, SpriteMap& spriteMap) : sprite_map_(spriteMap) {
+representation::SfmlFactory::SfmlFactory(std::shared_ptr<Camera> c, sf::Vector2u w, SpriteMap& spriteMap, std::shared_ptr<logic::Score> score)
+    : sprite_map_(spriteMap),
+    score_(score)
+{
     camera = std::move(c);
     windowSize = w;
 }
@@ -29,13 +32,14 @@ std::vector<std::shared_ptr<representation::EntityView>> representation::SfmlFac
 std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman() {
     auto pacman_model = std::make_shared<logic::PacmanModel>(Coordinate(0,0),logic::Direction::East);
     auto pacman_view = std::make_shared<representation::PacmanView>(pacman_model, sprite_map_);
+    pacman_model->addObserver(score_.get());
     createdViews.push_back(pacman_view);
     return pacman_model;
 }
 
-std::shared_ptr<logic::GhostModel> representation::SfmlFactory::createGhost(std::string name) {
+std::shared_ptr<logic::GhostModel> representation::SfmlFactory::createGhost(logic::GhostType type) {
     auto ghost_model = std::make_shared<logic::GhostModel>();
-    auto ghost_view = std::make_unique<representation::GhostView>(ghost_model, sprite_map_, name);
+    auto ghost_view = std::make_unique<representation::GhostView>(ghost_model, sprite_map_, type);
     createdViews.push_back(std::move(ghost_view));
     return ghost_model;
 }

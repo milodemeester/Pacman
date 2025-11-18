@@ -25,7 +25,11 @@ public:
 
     double get_delta_time();
 
-    //double get_start_time();
+    double get_start_time();
+
+    std::chrono::system_clock::time_point get_now();
+
+    double get_time_between(std::chrono::system_clock::time_point time_point1, std::chrono::system_clock::time_point time_point2);
 };
 } // namespace logic
 

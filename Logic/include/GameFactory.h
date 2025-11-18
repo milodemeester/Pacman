@@ -4,8 +4,9 @@
 
 #ifndef PACMAN_GAMEFACTORY_H
 #define PACMAN_GAMEFACTORY_H
-#include <memory>
+#include "GhostModel.h"
 #include "../../Utilities/utils.h"
+#include <memory>
 
 namespace logic {
 class PacmanModel;
@@ -17,7 +18,7 @@ class GameFactory {
 public:
     virtual ~GameFactory() = default;
     virtual std::shared_ptr<PacmanModel> createPacman() = 0;
-    virtual std::shared_ptr<GhostModel> createGhost(std::string name) = 0;
+    virtual std::shared_ptr<GhostModel> createGhost(logic::GhostType type) = 0;
     virtual std::shared_ptr<WallModel> createWall() = 0;
     virtual std::shared_ptr<FruitModel> createFruit() = 0;
     virtual std::shared_ptr<CoinModel> createCoin() = 0;

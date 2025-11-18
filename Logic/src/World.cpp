@@ -23,7 +23,7 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory) {
 void logic::World::initialise_maze() {
     int line = 0;
     std::string maze_line;
-    std::ifstream maze_file("../data/maps/map3.txt");
+    std::ifstream maze_file("../data/maps/map1.txt");
     while (getline(maze_file, maze_line)) {
         if (line == 0) {
             size_t pos = maze_line.find('X');  // zoek de positie van 'X'
@@ -53,22 +53,22 @@ void logic::World::initialise_maze() {
                     break;
                 }
                 case 'B': { // Blinky
-                    crnt_entity = game_factory->createGhost("Blinky");
+                    crnt_entity = game_factory->createGhost(GhostType::Blinky);
                     blinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
                     break;
                 }
                 case 'P': { // Pinky
-                    crnt_entity = game_factory->createGhost("Pinky");
+                    crnt_entity = game_factory->createGhost(GhostType::Pinky);
                     pinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
                     break;
                 }
                 case 'I': { // Inky
-                    crnt_entity = game_factory->createGhost("Inky");
+                    crnt_entity = game_factory->createGhost(GhostType::Inky);
                     inky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
                     break;
                 }
                 case 'O': { // Clyde
-                    crnt_entity = game_factory->createGhost("Clyde");
+                    crnt_entity = game_factory->createGhost(GhostType::Clyde);
                     clyde = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
                     break;
                 }

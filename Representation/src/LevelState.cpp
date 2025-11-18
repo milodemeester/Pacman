@@ -17,12 +17,12 @@
 #include <iostream>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera)
-    : camera_(camera),
-    State(manager),
+    : State(manager),
+    score_(score),
+    camera_(camera),
     spriteMap_("../data/sprite.png"),
-    factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_)),
-    world_(factory_),
-    score_(score)
+    factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)),
+    world_(factory_)
 {
     camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
 

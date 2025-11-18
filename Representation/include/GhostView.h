@@ -10,6 +10,9 @@
 #include <map>
 #include "../../Logic/include/Direction.h"
 
+namespace logic {
+enum class GhostType;
+}
 namespace sf {
 class Sprite;
 }
@@ -45,16 +48,17 @@ class GhostModel;
 namespace representation {
 class SpriteMap;
 class GhostView : public representation::EntityView, public logic::Observer{
-    std::string name_;
-    std::shared_ptr<logic::GhostModel> model_;
+    logic::GhostType type_;
     std::map<logic::Direction, std::vector<sf::Sprite>> animation_sequences;
     size_t current_sprite_index = 0;
     logic::Direction current_state = logic::Direction::North;
     float last_sprite_change = 0.0f; // last sprite change timestamp
     double animation_timer = 0.0;
     const double animation_speed = 125; // 125 ms = 0.125s
+    Coordinate world_pos_;
+    logic::Direction world_direction_;
 public:
-    explicit GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, std::string name);
+    explicit GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, logic::GhostType ghost_type);
 
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 

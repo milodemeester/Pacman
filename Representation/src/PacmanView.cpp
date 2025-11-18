@@ -16,15 +16,15 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>
     world_position = model->get_position();
 
     // Sla alleen de texture-rechthoeken (IntRects) op, GEEN sf::Sprite objecten.
-    sf::IntRect pacman_closed_rect(853, 5, 35, 35);
-    sf::IntRect open_right1_rect(853, 55, 35, 35);
-    sf::IntRect open_right2_rect(853, 105, 35, 35);
-    sf::IntRect open_left1_rect(855, 355, 35, 35);
-    sf::IntRect open_left2_rect(862, 405, 35, 35);
-    sf::IntRect open_down1_rect(852, 205, 35, 35);
-    sf::IntRect open_down2_rect(852, 255, 35, 35);
-    sf::IntRect open_up1_rect(853, 507, 35, 35);
-    sf::IntRect open_up2_rect(853, 564, 35, 35);
+    sf::IntRect pacman_closed_rect(853, 5, 33, 33);
+    sf::IntRect open_right1_rect(853, 55, 33, 33);
+    sf::IntRect open_right2_rect(853, 105, 33, 33);
+    sf::IntRect open_left1_rect(852, 355, 33, 33);
+    sf::IntRect open_left2_rect(852, 405, 33, 33);
+    sf::IntRect open_down1_rect(852, 205, 33, 33);
+    sf::IntRect open_down2_rect(852, 255, 33, 33);
+    sf::IntRect open_up1_rect(853, 504, 33, 33);
+    sf::IntRect open_up2_rect(853, 554, 33, 33);
 
     animation_sequences[logic::Direction::East] = {pacman_closed_rect, open_right1_rect, open_right2_rect};
     animation_sequences[logic::Direction::West] = {pacman_closed_rect, open_left1_rect, open_left2_rect};
@@ -51,7 +51,6 @@ void representation::PacmanView::onNotify(const logic::Subject& entity, logic::E
     }
 }
 
-// update: Werk de animatie-index bij. Gebruik een referentie om kopiëren te voorkomen.
 void representation::PacmanView::update(double dt) {
     animation_timer += dt;
     if (animation_timer > animation_speed) {
@@ -63,7 +62,6 @@ void representation::PacmanView::update(double dt) {
     }
 }
 
-// draw: Maak de sprite "just-in-time" op de stack met de opgeslagen IntRect.
 void representation::PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     bool d = false;
     if (world_direction == logic::Direction::East) {d = true;}

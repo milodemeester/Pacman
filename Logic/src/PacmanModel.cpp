@@ -66,7 +66,10 @@ void logic::PacmanModel::update(float dt, Direction wanted_direction, World& wor
     // Anders stopt Pacman gewoon tegen de muur.
     if (!world.check_wall_collision(next_pos, get_speed())) {
         set_position(next_pos);
-        world.check_coin_collision(next_pos, speed);
+        if (world.check_coin_collision(next_pos, speed)) {
+            Event e = Event::CoinCollected;
+            notify(e);
+        }
     }
 }
 

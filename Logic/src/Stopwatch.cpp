@@ -25,10 +25,17 @@ double logic::Stopwatch::get_delta_time() {
     return delta.count();
 }
 
-
-/*
 double logic::Stopwatch::get_start_time() {
     std::chrono::system_clock::time_point now = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> delta = now - t_start;  // verschil in milliseconden
     return delta.count();
-}*/
+}
+
+double logic::Stopwatch::get_time_between(std::chrono::system_clock::time_point time_point1, std::chrono::system_clock::time_point time_point2) {
+    std::chrono::duration<double, std::milli> delta = time_point1 - time_point2;
+    return delta.count();
+}
+
+std::chrono::system_clock::time_point logic::Stopwatch::get_now() {
+    return std::chrono::high_resolution_clock::now();
+}
