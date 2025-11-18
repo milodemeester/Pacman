@@ -25,24 +25,45 @@ std::vector<logic::Direction> logic::InkyModel::get_other_direction(logic::Direc
     case (logic::Direction::North): {
         return {logic::Direction::West, logic::Direction::East, logic::Direction::South};
     }
+    default: {
+        return {};
+    }
     }
 }
 
 std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
-    int amount_of_viable_directions = 0;
     auto other_directions = get_other_direction(current_direction);
     std::vector<std::pair<Direction,Coordinate>> viable_states;
+
+    // be careful not to permanently mutate direction_ while probing moves
+    Direction original_direction = direction_;
+
     for (auto& other_direction : other_directions) {
+        // temporarily set direction_ to compute a potential new position
         direction_ = other_direction;
         auto new_pos = calculate_new_position(dt);
         if (!world.check_wall_collision(new_pos, speed_, true)) {
-            std::pair<Direction,Coordinate> p(other_direction, new_pos);
-            viable_states.push_back(p);
-            amount_of_viable_directions++;
+            viable_states.emplace_back(other_direction, new_pos);
         }
     }
+
+    // restore original direction to avoid side-effects
+    direction_ = original_direction;
+
+    // defensive: geen mogelijke richtingen gevonden => blijf daar waar je bent
+    if (viable_states.empty()) {
+        return {current_direction, current_location};
+    }
+
     auto random = Random::getInstance();
-    int new_state = random->getNumber(0, amount_of_viable_directions);
+
+    int max_index = static_cast<int>(viable_states.size()) - 1;
+    int new_state = 0;
+    if (max_index == 0) {
+        new_state = 0;
+    } else {
+        new_state = random->getNumber(0, max_index);
+    }
     return viable_states[new_state];
 }
 
@@ -50,13 +71,13 @@ void logic::InkyModel::update(float dt, World& world) {
     GhostModel::update(dt);
     Direction current_direction = direction_;
     Coordinate next_position = calculate_new_position(dt);
-    if (world.check_wall_collision(next_position, speed_, true)) {
+    if (world.check_wall_collision(next_position, speed_, true)) { // TODO: intersection check in world
         auto next_state = get_viable_state(current_direction, next_position, dt, world);
         set_position(next_state.second);
         set_direction(next_state.first);
     }
     else {
-        direction_ = current_direction;
+        set_direction(current_direction);
         set_position(next_position);
     }
 }

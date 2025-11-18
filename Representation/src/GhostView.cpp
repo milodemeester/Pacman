@@ -12,8 +12,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
                                      logic::GhostType type)
     : type_(type) {
     model->addObserver(this);
-    current_state = model->get_direction();
-    world_direction_ = model->get_direction();
+    world_direction = model->get_direction();
     world_pos_ = model->get_position();
     // ----------- sprites -----------
 
@@ -107,7 +106,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
 }
 
 void representation::GhostView::onNotify(const logic::Subject& entity, logic::Event& event) {
-    auto* model = dynamic_cast<const logic::GhostModel*>(&entity);
+    auto* model = dynamic_cast<const logic::MoveableSubject*>(&entity);
     if (!model) {
         return; // Event is niet afkomstig van een PacmanModel, dus negeren.
     }
@@ -118,7 +117,7 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
         break;
     }
     case (logic::Event::EntityDirectionChanged): {
-        world_direction_ = model->get_direction();
+         world_direction = model->get_direction();
         break;
     }
     }
@@ -127,7 +126,7 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
 void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     auto screen = cam->worldToScreen(world_pos_, {35, 35});
     sf::Vector2f new_coords = screen.first;
-    std::vector<sf::Sprite> sprite_sequence = animation_sequences.at(current_state);
+    std::vector<sf::Sprite> sprite_sequence = animation_sequences.at(world_direction);
     sf::Sprite& sprite = sprite_sequence.at(current_sprite_index);
     sf::Vector2f sprite_size = screen.second;
     sprite.setScale(sprite_size);
@@ -139,7 +138,7 @@ void representation::GhostView::update(double dt) {
     animation_timer += dt;
     if (animation_timer > animation_speed) {
         animation_timer = 0.0f;
-        std::vector<sf::Sprite> crnt_sequence = animation_sequences.at(world_direction_);
+        std::vector<sf::Sprite> crnt_sequence = animation_sequences.at(world_direction);
         current_sprite_index += 1;
         current_sprite_index %= crnt_sequence.size();
     }

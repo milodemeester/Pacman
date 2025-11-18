@@ -67,12 +67,11 @@ class GhostView : public representation::EntityView, public logic::Observer {
     logic::GhostType type_;
     std::map<logic::Direction, std::vector<sf::Sprite>> animation_sequences;
     size_t current_sprite_index = 0;
-    logic::Direction current_state = logic::Direction::North;
+    logic::Direction world_direction;
     float last_sprite_change = 0.0f; // last sprite change timestamp
     double animation_timer = 0.0;
     const double animation_speed = 125; // 125 ms = 0.125s
     Coordinate world_pos_;
-    logic::Direction world_direction_;
 
 public:
     explicit GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, logic::GhostType ghost_type);

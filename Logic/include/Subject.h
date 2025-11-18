@@ -36,7 +36,7 @@ protected:
 
 class MoveableSubject : public Subject {
 protected:
-    double speed_ = 0.01; // measured in pixel/ms
+    double speed_ = 0.0075; // measured in pixel/ms
     int world_width_;
     int world_height_;
     Direction direction_;

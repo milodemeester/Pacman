@@ -40,19 +40,19 @@ std::shared_ptr<logic::GhostModel> representation::SfmlFactory::createGhost(logi
     std::shared_ptr<logic::GhostModel> ghost_model;
     switch (type) {
     case (logic::GhostType::Blinky): {
-        ghost_model = std::make_shared<logic::BlinkyModel>(Coordinate{0, 0}, logic::Direction::East, ww, wh);
+        ghost_model = std::make_shared<logic::BlinkyModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
         break;
     }
     case (logic::GhostType::Inky): {
-        ghost_model = std::make_shared<logic::InkyModel>(Coordinate{0, 0}, logic::Direction::East, ww, wh);
+        ghost_model = std::make_shared<logic::InkyModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
         break;
     }
     case (logic::GhostType::Pinky): {
-        ghost_model = std::make_shared<logic::PinkyModel>(Coordinate{0, 0}, logic::Direction::East, ww, wh);
+        ghost_model = std::make_shared<logic::PinkyModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
         break;
     }
     case (logic::GhostType::Clyde): {
-        ghost_model = std::make_shared<logic::ClydeModel>(Coordinate{0, 0}, logic::Direction::East, ww, wh);
+        ghost_model = std::make_shared<logic::ClydeModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
         break;
     }
     }
