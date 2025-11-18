@@ -11,7 +11,7 @@
 namespace logic {
 class PacmanModel : public MoveableSubject {
 public:
-    PacmanModel(Coordinate pos, Direction dir);
+    PacmanModel(Coordinate pos, Direction dir, int world_width, int world_height);
 
     /*
      * Updates pacman
@@ -21,7 +21,10 @@ public:
     [[nodiscard]] Coordinate get_position() const { return position_; }
     [[nodiscard]] Direction get_direction() const { return direction_; }
 
-    void set_world_dimensions(int w, int h) {world_height_ = h; world_width_ = w;}
+    void set_world_dimensions(int w, int h) {
+        world_height_ = h;
+        world_width_ = w;
+    }
 };
 } // namespace logic
 

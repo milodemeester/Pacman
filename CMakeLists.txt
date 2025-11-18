@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.26)
 project(Pacman LANGUAGES CXX)
 
 
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -24,6 +23,8 @@ add_library(pacman_logic STATIC
         Logic/src/Subject.cpp Logic/include/Subject.h
         Logic/src/WallModel.cpp Logic/include/WallModel.h
         Logic/src/World.cpp Logic/include/World.h
+        Logic/src/InkyModel.cpp
+        Logic/include/InkyModel.h
 )
 
 # --- Tests ---
@@ -78,6 +79,8 @@ if (BUILD_GAME_EXE)
             Representation/include/SpriteMap.h
             Logic/src/Random.cpp
             Logic/include/Random.h
+            Logic/src/InkyModel.cpp
+            Logic/include/InkyModel.h
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)
 endif ()

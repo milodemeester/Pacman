@@ -13,6 +13,7 @@ namespace representation {
 class Camera;
 class EntityView {
     Coordinate world_location_;
+
 public:
     [[nodiscard]] Coordinate get_location() const { return world_location_; }
     void set_location(const Coordinate& location) { this->world_location_ = location; }

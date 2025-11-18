@@ -29,7 +29,8 @@ public:
 
     std::chrono::system_clock::time_point get_now();
 
-    double get_time_between(std::chrono::system_clock::time_point time_point1, std::chrono::system_clock::time_point time_point2);
+    double get_time_between(std::chrono::system_clock::time_point time_point1,
+                            std::chrono::system_clock::time_point time_point2);
 };
 } // namespace logic
 

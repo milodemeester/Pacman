@@ -16,14 +16,10 @@
 
 #include <iostream>
 
-representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera)
-    : State(manager),
-    score_(score),
-    camera_(camera),
-    spriteMap_("../data/sprite.png"),
-    factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)),
-    world_(factory_)
-{
+representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
+                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera)
+    : State(manager), score_(score), camera_(camera), spriteMap_("../data/sprite.png"),
+      factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_) {
     camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
 
     updateLayout(windowSize);
@@ -51,22 +47,17 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
 
         // Update de UI layout
         updateLayout(newSize);
-    }
-    else if (event.type == sf::Event::KeyPressed) {
+    } else if (event.type == sf::Event::KeyPressed) {
         auto key = event.key.code;
         if (key == sf::Keyboard::Up) {
             world_.move_pacman(logic::Direction::North);
-        }
-        else if (key == sf::Keyboard::Down)  {
+        } else if (key == sf::Keyboard::Down) {
             world_.move_pacman(logic::Direction::South);
-        }
-        else if (key == sf::Keyboard::Right) {
+        } else if (key == sf::Keyboard::Right) {
             world_.move_pacman(logic::Direction::East);
-        }
-        else if (key == sf::Keyboard::Left) {
+        } else if (key == sf::Keyboard::Left) {
             world_.move_pacman(logic::Direction::West);
-        }
-        else if (key == sf::Keyboard::Escape) {
+        } else if (key == sf::Keyboard::Escape) {
             std::unique_ptr<PausedState> paused = std::make_unique<PausedState>(manager_, window.getSize());
             manager_.push_state(std::move(paused));
         }
@@ -87,11 +78,9 @@ void representation::LevelState::render(sf::RenderWindow& window) {
     for (auto& view : views_) {
         if (std::dynamic_pointer_cast<PacmanView>(view)) {
             pacman = std::dynamic_pointer_cast<PacmanView>(view);
-        }
-        else if (dynamic_pointer_cast<GhostView>(view)) {
+        } else if (dynamic_pointer_cast<GhostView>(view)) {
             ghosts.push_back(std::dynamic_pointer_cast<GhostView>(view));
-        }
-        else {
+        } else {
             view->draw(window, camera_);
         }
     }
@@ -124,6 +113,6 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
 
     // Centreer en positioneer de tekst
     sf::FloatRect bounds = scoreTitle_.getLocalBounds();
-    //scoreTitle_.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
+    // scoreTitle_.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
     scoreTitle_.setPosition(window_width / 4.f, ui_bar_center_y);
 }

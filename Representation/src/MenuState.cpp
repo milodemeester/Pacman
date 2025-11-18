@@ -16,7 +16,8 @@
 #include <sstream>
 #include <utility>
 
-representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score) : State(sm), score_(std::move(score)) {
+representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score)
+    : State(sm), score_(std::move(score)) {
     if (!font_.loadFromFile("../data/fonts/pacman_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
@@ -75,7 +76,6 @@ void representation::MenuState::centerButton(Button& button, const sf::Vector2u&
     button.background.setPosition(window_width / 2.0f, window_height * y_pos_ratio);
 }
 
-
 void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
     // --- Menu Banner (12.5% from top)---
     centerButton(menuBanner_, windowSize, 8.f / 64.f);
@@ -91,8 +91,9 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
     // Titel
     highScoreTitle_.setCharacterSize(char_size);
     sf::FloatRect score_title_bounds = highScoreTitle_.getLocalBounds();
-    highScoreTitle_.setOrigin(score_title_bounds.left + score_title_bounds.width / 2.0f, score_title_bounds.top + score_title_bounds.height / 2.0f);
-    highScoreTitle_.setPosition(window_width / 2.f, window_height * (20.f/64.f));
+    highScoreTitle_.setOrigin(score_title_bounds.left + score_title_bounds.width / 2.0f,
+                              score_title_bounds.top + score_title_bounds.height / 2.0f);
+    highScoreTitle_.setPosition(window_width / 2.f, window_height * (20.f / 64.f));
 
     // Scores
     float current_y_ratio = 28.f / 64.f;
@@ -100,7 +101,8 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
         highScore.setCharacterSize(char_size * 0.9f);
         sf::FloatRect score_bounds = highScore.getLocalBounds();
         // DE FIX: gebruik 'highScore' in plaats van 'highScoreText_'
-        highScore.setOrigin(score_bounds.left + score_bounds.width / 2.0f, score_bounds.top + score_bounds.height / 2.0f);
+        highScore.setOrigin(score_bounds.left + score_bounds.width / 2.0f,
+                            score_bounds.top + score_bounds.height / 2.0f);
         highScore.setPosition(window_width / 2.f, window_height * current_y_ratio);
         current_y_ratio += (4.f / 64.f);
     }

@@ -3,4 +3,3 @@
 //
 
 #include "../include/FruitModel.h"
-

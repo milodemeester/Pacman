@@ -10,6 +10,9 @@
 #include <fstream>
 
 namespace logic {
+class InkyModel;
+}
+namespace logic {
 class PacmanModel;
 class GhostModel;
 
@@ -24,12 +27,12 @@ class World {
     std::shared_ptr<PacmanModel> pacman;
     std::shared_ptr<GhostModel> blinky;
     std::shared_ptr<GhostModel> pinky;
-    std::shared_ptr<GhostModel> inky;
+    std::shared_ptr<InkyModel> inky;
     std::shared_ptr<GhostModel> clyde;
     Direction wanted_pacman_direction;
 
 public:
-    bool check_wall_collision(Coordinate& new_pos, double entity_speed);
+    bool check_wall_collision(Coordinate& new_pos, double entity_speed, bool wall);
     bool check_coin_collision(Coordinate& new_pos, double entity_speed);
     World(const std::shared_ptr<GameFactory>& factory);
     void update(float delta_time);

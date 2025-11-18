@@ -20,13 +20,14 @@ class SfmlFactory : public logic::GameFactory {
     std::shared_ptr<logic::Score> score_;
 
 public:
-    SfmlFactory(std::shared_ptr<representation::Camera> camera, sf::Vector2u windowSize, SpriteMap& sprite_map, std::shared_ptr<logic::Score> score);
+    SfmlFactory(std::shared_ptr<representation::Camera> camera, sf::Vector2u windowSize, SpriteMap& sprite_map,
+                std::shared_ptr<logic::Score> score);
     ~SfmlFactory() override = default;
 
     std::vector<std::shared_ptr<EntityView>> getCreatedViews();
 
-    std::shared_ptr<logic::PacmanModel> createPacman() override;
-    std::shared_ptr<logic::GhostModel> createGhost(logic::GhostType type) override;
+    std::shared_ptr<logic::PacmanModel> createPacman(int world_width, int world_height) override;
+    std::shared_ptr<logic::GhostModel> createGhost(logic::GhostType type, int world_width, int world_height) override;
     std::shared_ptr<logic::CoinModel> createCoin() override;
     std::shared_ptr<logic::FruitModel> createFruit() override;
     std::shared_ptr<logic::WallModel> createWall(bool invisible) override;

@@ -13,6 +13,7 @@
 #include "../include/FruitModel.h"
 #include "../include/CoinModel.h"
 #include "../include/GameFactory.h"
+#include "../include/InkyModel.h"
 
 
 logic::World::World(const std::shared_ptr<GameFactory>& factory) {
@@ -53,22 +54,22 @@ void logic::World::initialise_maze() {
                     break;
                 }
                 case 'B': { // Blinky
-                    crnt_entity = game_factory->createGhost(GhostType::Blinky);
+                    crnt_entity = game_factory->createGhost(GhostType::Blinky, width, height);
                     blinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
                     break;
                 }
                 case 'P': { // Pinky
-                    crnt_entity = game_factory->createGhost(GhostType::Pinky);
+                    crnt_entity = game_factory->createGhost(GhostType::Pinky, width, height);
                     pinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
                     break;
                 }
                 case 'I': { // Inky
-                    crnt_entity = game_factory->createGhost(GhostType::Inky);
-                    inky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    crnt_entity = game_factory->createGhost(GhostType::Inky, width, height);
+                    inky = std::dynamic_pointer_cast<InkyModel>(crnt_entity);
                     break;
                 }
                 case 'O': { // Clyde
-                    crnt_entity = game_factory->createGhost(GhostType::Clyde);
+                    crnt_entity = game_factory->createGhost(GhostType::Clyde, width, height);
                     clyde = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
                     break;
                 }
@@ -77,7 +78,7 @@ void logic::World::initialise_maze() {
                     break;
                 }
                 case 'A': { // Pacman
-                    crnt_entity = game_factory->createPacman();
+                    crnt_entity = game_factory->createPacman(width, height);
                     pacman = std::dynamic_pointer_cast<PacmanModel>(crnt_entity);
                     break;
                 }
@@ -121,7 +122,7 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
 }
 
 
-bool logic::World::check_wall_collision(Coordinate& entity_pos, double entity_speed) {
+bool logic::World::check_wall_collision(Coordinate& entity_pos, double entity_speed, bool ghost) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
@@ -134,7 +135,8 @@ bool logic::World::check_wall_collision(Coordinate& entity_pos, double entity_sp
                 Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
                     wall_model->get_position().getY() + entity_half_size_y};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                if (ghost && wall_model->has_ghost_acces()) {}
+                else if (check_collision(entity_pos, entity2_rect, entity_speed)) {
                     return true;
                 }
             }
@@ -183,7 +185,7 @@ void logic::World::move_pacman(logic::Direction direction) {
 void logic::World::update(float delta_time) {
     pacman->update(delta_time, *this);
     pinky->update(delta_time);
-    inky->update(delta_time);
+    inky->update(delta_time, *this);
     blinky->update(delta_time);
     clyde->update(delta_time);
 }

@@ -4,11 +4,11 @@
 
 #include "../include/CoinView.h"
 #include "../../Logic/include/CoinModel.h"
-#include "../include/SpriteMap.h"
 #include "../include/Camera.h"
+#include "../include/SpriteMap.h"
 
-representation::CoinView::CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map) :
-    sprite(sprite_map.getSprite(sf::IntRect(404,402,35,35))) {
+representation::CoinView::CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map)
+    : sprite(sprite_map.getSprite(sf::IntRect(404, 402, 35, 35))) {
     world_position = model->get_position();
     model->addObserver(this);
 }
@@ -16,8 +16,7 @@ representation::CoinView::CoinView(std::shared_ptr<logic::CoinModel> model, Spri
 void representation::CoinView::onNotify(const logic::Subject& entity, logic::Event& e) {
     if (e == logic::Event::EntityPositionChanged) {
         world_position = entity.get_position();
-    }
-    else if (e == logic::Event::EntityDestruct) {
+    } else if (e == logic::Event::EntityDestruct) {
         isEaten = true;
     }
 }

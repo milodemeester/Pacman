@@ -3,10 +3,10 @@
 //
 
 #include "../include/GhostModel.h"
-
 #include "../include/Stopwatch.h"
+#include "../include/World.h"
 
-logic::GhostModel::GhostModel(Coordinate pos, Direction dir): MoveableSubject(pos, dir){
+logic::GhostModel::GhostModel(Coordinate pos, Direction dir, int world_width, int world_height) : MoveableSubject(pos, dir, world_width, world_height) {
     std::shared_ptr<Stopwatch> stopwatch = Stopwatch::getInstance();
     initialize_time = stopwatch->get_now();
 }
@@ -19,35 +19,12 @@ void logic::GhostModel::update(float dt) {
     }
 }
 
-logic::InkyModel::InkyModel(Coordinate pos, Direction dir) : GhostModel(pos, dir) {
-    wait_time = 0;
-}
+logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 0; }
 
-logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir) : GhostModel(pos, dir) {
-    wait_time = 0;
-}
+logic::BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 5000; }
 
-logic::BlinkyModel::BlinkyModel(Coordinate pos, Direction dir) : GhostModel(pos, dir) {
-    wait_time = 5000;
-}
+logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 10000; }
 
-logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir) : GhostModel(pos, dir) {
-    wait_time = 10000;
-}
-
-void logic::InkyModel::update(float dt, World& world) {
-    GhostModel::update(dt);
-
-}
-void logic::BlinkyModel::update(float dt, World& world) {
-    GhostModel::update(dt);
-
-}
-void logic::PinkyModel::update(float dt, World& world) {
-    GhostModel::update(dt);
-
-}
-void logic::ClydeModel::update(float dt, World& world) {
-    GhostModel::update(dt);
-
-}
+void logic::BlinkyModel::update(float dt, World& world) { GhostModel::update(dt); }
+void logic::PinkyModel::update(float dt, World& world) { GhostModel::update(dt); }
+void logic::ClydeModel::update(float dt, World& world) { GhostModel::update(dt); }

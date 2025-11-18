@@ -6,10 +6,8 @@
 #include "../../Logic/include/Score.h"
 #include "../../Logic/include/Stopwatch.h"
 
-representation::Game::Game() :
-    score_(nullptr),
-    window_(sf::VideoMode({1600, 800}), "Pacman", sf::Style::Default) ,
-    state_manager_(nullptr) {}
+representation::Game::Game()
+    : score_(nullptr), window_(sf::VideoMode({1600, 800}), "Pacman", sf::Style::Default), state_manager_(nullptr) {}
 
 void representation::Game::run() {
     std::shared_ptr<logic::Score> s = std::make_shared<logic::Score>();

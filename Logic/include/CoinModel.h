@@ -11,7 +11,7 @@ namespace logic {
 class CoinModel : public Subject {
 public:
     explicit CoinModel(Coordinate pos) : Subject(pos) {}
-    CoinModel() : Subject({0,0}) {}
+    CoinModel() : Subject({0, 0}) {}
 
     void destruct();
 };

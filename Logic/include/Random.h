@@ -22,6 +22,6 @@ public:
 
     int getNumber(int min, int max);
 };
-}
+} // namespace logic
 
 #endif // PACMAN_RANDOM_H

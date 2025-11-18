@@ -16,7 +16,7 @@ namespace representation {
 class StateManager;
 class SfmlFactory;
 class EntityView;
-}
+} // namespace representation
 
 namespace representation {
 class LevelState final : public representation::State {
@@ -32,8 +32,8 @@ class LevelState final : public representation::State {
     sf::Text scoreTitle_;
 
 public:
-
-    LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera);
+    LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score,
+               std::shared_ptr<Camera> camera);
     void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
     void update(double delta_time) override;

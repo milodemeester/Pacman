@@ -22,7 +22,6 @@ bool utils::contains(Coordinate upper_left_corner, Coordinate lower_right_corner
     return true;
 }
 
-
 bool utils::intersecting(Rectangle rectangle1, Rectangle rectangle2) {
     // Check for no overlap. If any of these conditions are true, they do not overlap.
 
@@ -30,14 +29,14 @@ bool utils::intersecting(Rectangle rectangle1, Rectangle rectangle2) {
     if (rectangle1.get_top_left().getX() > rectangle2.get_bottom_right().getX() ||
         rectangle2.get_top_left().getX() > rectangle1.get_bottom_right().getX()) {
         return false;
-        }
+    }
 
     // r1 is below r2 OR r2 is below r1
     // Note: In your coordinate system, a larger Y value means "lower" on the screen.
     if (rectangle1.get_top_left().getY() > rectangle2.get_bottom_right().getY() ||
         rectangle2.get_top_left().getY() > rectangle1.get_bottom_right().getY()) {
         return false;
-        }
+    }
 
     // If none of the above are true, they must be intersecting.
     return true;

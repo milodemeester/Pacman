@@ -4,11 +4,13 @@
 
 #include "../include/GhostView.h"
 #include "../../Logic/include/GhostModel.h"
+#include "../include/Camera.h"
 #include "../include/SpriteMap.h"
 #include <SFML/Graphics/Sprite.hpp>
-#include "../include/Camera.h"
 
-representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, logic::GhostType type) : type_(type) {
+representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map,
+                                     logic::GhostType type)
+    : type_(type) {
     model->addObserver(this);
     current_state = model->get_direction();
     world_direction_ = model->get_direction();
@@ -17,14 +19,14 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
 
     if (type == logic::GhostType::Blinky) {
         // ----------- blinky -----------
-        sf::Sprite BLINKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(1,4,33,33));
-        sf::Sprite BLINKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(1,54,33,33));
-        sf::Sprite BLINKY_LEFT_1 = sprite_map.getSprite(sf::IntRect(1,204,33,33));
-        sf::Sprite BLINKY_LEFT_2 = sprite_map.getSprite(sf::IntRect(1,254,33,33));
-        sf::Sprite BLINKY_DOWN_1 = sprite_map.getSprite(sf::IntRect(1,104,33,33));
-        sf::Sprite BLINKY_DOWN_2 = sprite_map.getSprite(sf::IntRect(1,154,33,33));
-        sf::Sprite BLINKY_UP_1 = sprite_map.getSprite(sf::IntRect(1,304,33,33));
-        sf::Sprite BLINKY_UP_2 = sprite_map.getSprite(sf::IntRect(1,354,33,33));
+        sf::Sprite BLINKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(1, 4, 33, 33));
+        sf::Sprite BLINKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(1, 54, 33, 33));
+        sf::Sprite BLINKY_LEFT_1 = sprite_map.getSprite(sf::IntRect(1, 204, 33, 33));
+        sf::Sprite BLINKY_LEFT_2 = sprite_map.getSprite(sf::IntRect(1, 254, 33, 33));
+        sf::Sprite BLINKY_DOWN_1 = sprite_map.getSprite(sf::IntRect(1, 104, 33, 33));
+        sf::Sprite BLINKY_DOWN_2 = sprite_map.getSprite(sf::IntRect(1, 154, 33, 33));
+        sf::Sprite BLINKY_UP_1 = sprite_map.getSprite(sf::IntRect(1, 304, 33, 33));
+        sf::Sprite BLINKY_UP_2 = sprite_map.getSprite(sf::IntRect(1, 354, 33, 33));
 
         std::vector<sf::Sprite> east{BLINKY_RIGHT_1, BLINKY_RIGHT_2};
         std::vector<sf::Sprite> west{BLINKY_LEFT_1, BLINKY_LEFT_2};
@@ -39,14 +41,14 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
 
     else if (type == logic::GhostType::Inky) {
         // ----------- inky -----------
-        sf::Sprite INKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(101,4,35,35));
-        sf::Sprite INKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(101,54,35,35));
-        sf::Sprite INKY_LEFT_1 = sprite_map.getSprite(sf::IntRect(101,204,35,35));
-        sf::Sprite INKY_LEFT_2 = sprite_map.getSprite(sf::IntRect(101,254,35,35));
-        sf::Sprite INKY_DOWN_1 = sprite_map.getSprite(sf::IntRect(101,104,35,35));
-        sf::Sprite INKY_DOWN_2 = sprite_map.getSprite(sf::IntRect(101,154,35,35));
-        sf::Sprite INKY_UP_1 = sprite_map.getSprite(sf::IntRect(101,304,35,35));
-        sf::Sprite INKY_UP_2 = sprite_map.getSprite(sf::IntRect(101,354,35,35));
+        sf::Sprite INKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(101, 4, 35, 35));
+        sf::Sprite INKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(101, 54, 35, 35));
+        sf::Sprite INKY_LEFT_1 = sprite_map.getSprite(sf::IntRect(101, 204, 35, 35));
+        sf::Sprite INKY_LEFT_2 = sprite_map.getSprite(sf::IntRect(101, 254, 35, 35));
+        sf::Sprite INKY_DOWN_1 = sprite_map.getSprite(sf::IntRect(101, 104, 35, 35));
+        sf::Sprite INKY_DOWN_2 = sprite_map.getSprite(sf::IntRect(101, 154, 35, 35));
+        sf::Sprite INKY_UP_1 = sprite_map.getSprite(sf::IntRect(101, 304, 35, 35));
+        sf::Sprite INKY_UP_2 = sprite_map.getSprite(sf::IntRect(101, 354, 35, 35));
 
         std::vector<sf::Sprite> east{INKY_RIGHT_1, INKY_RIGHT_2};
         std::vector<sf::Sprite> west{INKY_LEFT_1, INKY_LEFT_2};
@@ -61,14 +63,14 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
 
     else if (type == logic::GhostType::Pinky) {
         // ----------- pinky -----------
-        sf::Sprite PINKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(51,4,35,35));
-        sf::Sprite PINKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(51,54,35,35));
-        sf::Sprite PINKY_DOWN_1 = sprite_map.getSprite(sf::IntRect(51,104,35,35));
-        sf::Sprite PINKY_DOWN_2 = sprite_map.getSprite(sf::IntRect(51,154,35,35));
-        sf::Sprite PINKY_LEFT_1 = sprite_map.getSprite(sf::IntRect(51,204,35,35));
-        sf::Sprite PINKY_LEFT_2 = sprite_map.getSprite(sf::IntRect(51,254,35,35));
-        sf::Sprite PINKY_UP_1 = sprite_map.getSprite(sf::IntRect(51,304,35,35));
-        sf::Sprite PINKY_UP_2 = sprite_map.getSprite(sf::IntRect(51,354,35,35));
+        sf::Sprite PINKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(51, 4, 35, 35));
+        sf::Sprite PINKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(51, 54, 35, 35));
+        sf::Sprite PINKY_DOWN_1 = sprite_map.getSprite(sf::IntRect(51, 104, 35, 35));
+        sf::Sprite PINKY_DOWN_2 = sprite_map.getSprite(sf::IntRect(51, 154, 35, 35));
+        sf::Sprite PINKY_LEFT_1 = sprite_map.getSprite(sf::IntRect(51, 204, 35, 35));
+        sf::Sprite PINKY_LEFT_2 = sprite_map.getSprite(sf::IntRect(51, 254, 35, 35));
+        sf::Sprite PINKY_UP_1 = sprite_map.getSprite(sf::IntRect(51, 304, 35, 35));
+        sf::Sprite PINKY_UP_2 = sprite_map.getSprite(sf::IntRect(51, 354, 35, 35));
 
         std::vector<sf::Sprite> east{PINKY_RIGHT_1, PINKY_RIGHT_2};
         std::vector<sf::Sprite> west{PINKY_LEFT_1, PINKY_LEFT_2};
@@ -83,14 +85,14 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
 
     else if (type == logic::GhostType::Clyde) {
         // ----------- clyde -----------
-        sf::Sprite CLYDED_RIGHT_1 = sprite_map.getSprite(sf::IntRect(151,4,35,35));
-        sf::Sprite CLYDED_RIGHT_2 = sprite_map.getSprite(sf::IntRect(151,54,35,35));
-        sf::Sprite CLYDED_LEFT_1 = sprite_map.getSprite(sf::IntRect(151,204,35,35));
-        sf::Sprite CLYDED_LEFT_2 = sprite_map.getSprite(sf::IntRect(151,254,35,35));
-        sf::Sprite CLYDED_DOWN_1 = sprite_map.getSprite(sf::IntRect(151,104,35,35));
-        sf::Sprite CLYDED_DOWN_2 = sprite_map.getSprite(sf::IntRect(151,154,35,35));
-        sf::Sprite CLYDED_UP_1 = sprite_map.getSprite(sf::IntRect(151,304,35,35));
-        sf::Sprite CLYDED_UP_2 = sprite_map.getSprite(sf::IntRect(151,354,35,35));
+        sf::Sprite CLYDED_RIGHT_1 = sprite_map.getSprite(sf::IntRect(151, 4, 35, 35));
+        sf::Sprite CLYDED_RIGHT_2 = sprite_map.getSprite(sf::IntRect(151, 54, 35, 35));
+        sf::Sprite CLYDED_LEFT_1 = sprite_map.getSprite(sf::IntRect(151, 204, 35, 35));
+        sf::Sprite CLYDED_LEFT_2 = sprite_map.getSprite(sf::IntRect(151, 254, 35, 35));
+        sf::Sprite CLYDED_DOWN_1 = sprite_map.getSprite(sf::IntRect(151, 104, 35, 35));
+        sf::Sprite CLYDED_DOWN_2 = sprite_map.getSprite(sf::IntRect(151, 154, 35, 35));
+        sf::Sprite CLYDED_UP_1 = sprite_map.getSprite(sf::IntRect(151, 304, 35, 35));
+        sf::Sprite CLYDED_UP_2 = sprite_map.getSprite(sf::IntRect(151, 354, 35, 35));
 
         std::vector<sf::Sprite> east{CLYDED_RIGHT_1, CLYDED_RIGHT_2};
         std::vector<sf::Sprite> west{CLYDED_LEFT_1, CLYDED_LEFT_2};
@@ -123,7 +125,7 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
 }
 
 void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
-    auto screen = cam->worldToScreen(world_pos_, {32, 32});
+    auto screen = cam->worldToScreen(world_pos_, {35, 35});
     sf::Vector2f new_coords = screen.first;
     std::vector<sf::Sprite> sprite_sequence = animation_sequences.at(current_state);
     sf::Sprite& sprite = sprite_sequence.at(current_sprite_index);

@@ -18,6 +18,7 @@ class CoinView : public representation::EntityView, public logic::Observer {
     bool isEaten = false;
     Coordinate world_position;
     sf::Sprite sprite;
+
 public:
     explicit CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map);
 
@@ -26,7 +27,6 @@ public:
     void draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) override;
 
     void update(double dt) override {}
-
 };
 } // namespace representation
 #endif // PACMAN_COINVIEW_H

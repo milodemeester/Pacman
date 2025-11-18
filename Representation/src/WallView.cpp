@@ -10,8 +10,10 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <iostream>
 
-representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map, bool invisible) : invisible_(invisible) {
-    sf::Sprite sprite = sprite_map.getWallSprite({32, 32, 35,35});
+representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map,
+                                   bool invisible)
+    : invisible_(invisible) {
+    sf::Sprite sprite = sprite_map.getWallSprite({32, 32, 35, 35});
     m_sprites.insert(std::pair(WallSpriteState::Wall, sprite));
     model->addObserver(this);
     set_location(model->get_position());

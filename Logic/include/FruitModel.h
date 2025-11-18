@@ -4,8 +4,8 @@
 
 #ifndef PACMAN_FRUITMODEL_H
 #define PACMAN_FRUITMODEL_H
-#include "Subject.h"
 #include "../../Utilities/utils.h"
+#include "Subject.h"
 
 namespace logic {
 class FruitModel : public Subject {
@@ -13,7 +13,7 @@ class FruitModel : public Subject {
 
 public:
     explicit FruitModel(Coordinate pos) : Subject(pos) {}
-    FruitModel() : Subject({0,0}) {}
+    FruitModel() : Subject({0, 0}) {}
 
     [[nodiscard]] Coordinate get_position() const { return position; }
     void set_position(const Coordinate& pos) { this->position = pos; }

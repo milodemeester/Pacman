@@ -32,10 +32,8 @@ void representation::Camera::updateScreenSize(sf::Vector2u windowSize, sf::Vecto
     board_bottom_y_ = top_offset_ + board_height_in_pixels_;
 }
 
-std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(
-    Coordinate worldPos,
-    sf::Vector2f char_size) const
-{
+std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(Coordinate worldPos,
+                                                                            sf::Vector2f char_size) const {
     // Gebruik de opgeslagen waarden voor een snelle berekening
     float x_norm = (worldPos.getX() + 1) / 2.0f;
     float y_norm = (worldPos.getY() + 1) / 2.0f;
@@ -48,6 +46,4 @@ std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(
     return {sf::Vector2f(screen_x, screen_y), scale};
 }
 
-float representation::Camera::getBoardBottomY() const {
-    return board_bottom_y_;
-}
+float representation::Camera::getBoardBottomY() const { return board_bottom_y_; }

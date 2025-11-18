@@ -5,7 +5,7 @@
 #include "../include/Random.h"
 #include <random>
 
-logic::Random::Random() :  mt(std::random_device{}()) {}
+logic::Random::Random() : mt(std::random_device{}()) {}
 
 std::shared_ptr<logic::Random> logic::Random::getInstance() {
     if (random_ == nullptr) {

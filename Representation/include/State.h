@@ -12,7 +12,7 @@ namespace representation {
 struct Button {
     sf::Text text;
     sf::RectangleShape background;
-    float bg_width_multiplier = 5.f; // Multiplier voor achtergrondbreedte
+    float bg_width_multiplier = 5.f;   // Multiplier voor achtergrondbreedte
     float bg_height_multiplier = 1.3f; // Multiplier voor achtergrondhoogte
 };
 
@@ -21,6 +21,7 @@ class StateManager;
 class State { // Abstract product
 protected:
     StateManager& manager_;
+
 public:
     explicit State(StateManager& manager) : manager_(manager) {}
     virtual ~State() = default;

@@ -16,8 +16,10 @@ class Observer;
 
 class Subject {
     std::vector<Observer*> observers_;
+
 protected:
     Coordinate position_;
+
 public:
     explicit Subject(Coordinate pos) : position_(pos) {}
     virtual ~Subject() = default;
@@ -44,11 +46,15 @@ protected:
      *@param dt delta time between updates
      */
     Coordinate calculate_new_position(float dt);
+
 public:
-    MoveableSubject(Coordinate pos, Direction dir) : Subject(pos), direction_(dir) {}
+    MoveableSubject(Coordinate pos, Direction dir, int world_width, int world_height) : world_width_(world_width),
+        world_height_(world_height),
+        Subject(pos),
+        direction_(dir) {}
 
     void set_direction(Direction direction);
-    Direction get_direction() const {return direction_; }
+    Direction get_direction() const { return direction_; }
 
     virtual void update(float dt, World& world) = 0;
 };

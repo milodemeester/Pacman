@@ -5,10 +5,10 @@
 #ifndef PACMAN_PACMANVIEW_H
 #define PACMAN_PACMANVIEW_H
 #include "../../Logic/include/Observer.h"
+#include "../../Logic/include/PacmanModel.h"
 #include "../../Utilities/utils.h"
 #include "EntityView.h"
 #include "SpriteMap.h"
-#include "../../Logic/include/PacmanModel.h"
 
 #include <map>
 #include <memory>

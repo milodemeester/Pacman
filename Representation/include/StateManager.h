@@ -4,10 +4,10 @@
 
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
-#include <stack>
-#include <memory>
-#include <SFML/Graphics.hpp>
 #include "State.h"
+#include <SFML/Graphics.hpp>
+#include <memory>
+#include <stack>
 
 namespace logic {
 class Score;
@@ -15,7 +15,7 @@ class Score;
 namespace sf {
 class RenderWindow;
 class Event;
-}
+} // namespace sf
 
 namespace representation {
 class State;
@@ -25,7 +25,7 @@ class StateManager {
     sf::Vector2u currentWindowSize;
 
 public:
-    //StateManager(const StateManager&) = delete;
+    // StateManager(const StateManager&) = delete;
     StateManager& operator=(const StateManager&) = delete;
 
     explicit StateManager(sf::Vector2u windowSize, std::shared_ptr<logic::Score> score);

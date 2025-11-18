@@ -23,6 +23,7 @@ public:
     sf::Sprite getSprite(const sf::IntRect& rect);
 
     sf::Sprite getWallSprite(const sf::IntRect& rect);
+
 private:
     sf::Texture m_texture;
     sf::Texture wall_texture;

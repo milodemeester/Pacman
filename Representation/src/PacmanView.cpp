@@ -39,14 +39,14 @@ void representation::PacmanView::onNotify(const logic::Subject& entity, logic::E
     }
 
     switch (event) {
-        case (logic::Event::EntityPositionChanged): {
-            world_position = model->get_position();
-            break;
-        }
-        case (logic::Event::EntityDirectionChanged): {
-            world_direction = model->get_direction();
-            break;
-        }
+    case (logic::Event::EntityPositionChanged): {
+        world_position = model->get_position();
+        break;
+    }
+    case (logic::Event::EntityDirectionChanged): {
+        world_direction = model->get_direction();
+        break;
+    }
     }
 }
 
@@ -63,10 +63,18 @@ void representation::PacmanView::update(double dt) {
 
 void representation::PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     bool d = false;
-    if (world_direction == logic::Direction::East) {d = true;}
-    if (world_direction == logic::Direction::North) {d = true;}
-    if (world_direction == logic::Direction::South) {d = true;}
-    if (world_direction == logic::Direction::West) {d = true;}
+    if (world_direction == logic::Direction::East) {
+        d = true;
+    }
+    if (world_direction == logic::Direction::North) {
+        d = true;
+    }
+    if (world_direction == logic::Direction::South) {
+        d = true;
+    }
+    if (world_direction == logic::Direction::West) {
+        d = true;
+    }
     if (d == false) {
         return;
     }

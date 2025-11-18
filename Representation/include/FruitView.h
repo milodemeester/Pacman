@@ -4,8 +4,8 @@
 
 #ifndef PACMAN_FRUITVIEW_H
 #define PACMAN_FRUITVIEW_H
-#include "EntityView.h"
 #include "../../Logic/include/Observer.h"
+#include "EntityView.h"
 #include <memory>
 
 namespace logic {
@@ -21,7 +21,6 @@ public:
     void draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) override;
 
     void update(double dt) override {}
-
 };
 } // namespace representation
 #endif // PACMAN_FRUITVIEW_H

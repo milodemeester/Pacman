@@ -17,7 +17,6 @@ void logic::MoveableSubject::set_direction(Direction direction) {
     notify(event);
 }
 
-
 void logic::Subject::removeObserver(Observer* o) {
     for (int i = 0; i < observers_.size(); i++) {
         if (observers_[i] == o) {
@@ -33,29 +32,29 @@ void logic::Subject::notify(Event event) {
 }
 
 Coordinate logic::MoveableSubject::calculate_new_position(float dt) {
-    double epsx = 1/double(world_width_);
-    double epsy = 1/double(world_height_);
+    double epsx = 1 / double(world_width_);
+    double epsy = 1 / double(world_height_);
     double increase = dt * speed_;
     double new_x = 0;
     double new_y = 0;
     switch (direction_) {
-    case (Direction::North) : {
+    case (Direction::North): {
         new_x = position_.getX();
-        new_y = position_.getY() - increase*epsy;
+        new_y = position_.getY() - increase * epsy;
         break;
     }
-    case (Direction::East) : {
-        new_x = position_.getX() + increase*epsx;
+    case (Direction::East): {
+        new_x = position_.getX() + increase * epsx;
         new_y = position_.getY();
         break;
     }
-    case (Direction::South) : {
+    case (Direction::South): {
         new_x = position_.getX();
-        new_y = position_.getY() + increase*epsy;
+        new_y = position_.getY() + increase * epsy;
         break;
     }
-    case (Direction::West) : {
-        new_x = position_.getX() - increase*epsx;
+    case (Direction::West): {
+        new_x = position_.getX() - increase * epsx;
         new_y = position_.getY();
         break;
     }

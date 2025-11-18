@@ -15,6 +15,7 @@ class Score : public Observer {
     std::chrono::system_clock::time_point previous_coin_time;
     std::vector<std::string> high_scores_;
     int score;
+
 public:
     Score();
 

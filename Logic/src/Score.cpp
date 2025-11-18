@@ -5,8 +5,8 @@
 #include "../include/Score.h"
 #include "../include/Stopwatch.h"
 #include <fstream>
-#include <string>
 #include <math.h>
+#include <string>
 
 logic::Score::Score() {
     score = 0;
@@ -28,19 +28,14 @@ void logic::Score::onNotify(const Subject& entity, Event& e) {
         if (first_coin_collected == false) {
             first_coin_collected = true;
             score += standard_increase;
-        }
-        else {
+        } else {
             double time_between = stopwatch->get_time_between(now, previous_coin_time);
-            score += std::lround(standard_increase*(1/(time_between/1000)));
+            score += std::lround(standard_increase * (1 / (time_between / 1000)));
         }
         previous_coin_time = now;
     }
 }
 
-std::vector<std::string> logic::Score::get_high_scores() {
-    return high_scores_;
-}
+std::vector<std::string> logic::Score::get_high_scores() { return high_scores_; }
 
-int logic::Score::get_score() const {
-    return score;
-}
+int logic::Score::get_score() const { return score; }

@@ -13,6 +13,8 @@ class WallModel : public Subject {
 public:
     explicit WallModel(bool ghost_access) : Subject({0, 0}), ghost_access_(ghost_access) {}
     explicit WallModel(Coordinate pos, bool ghost_access) : Subject(pos), ghost_access_(ghost_access) {}
+
+    bool has_ghost_acces() const {return ghost_access_; }
 };
 } // namespace logic
 #endif // PACMAN_WALLMODEL_H

@@ -17,9 +17,11 @@ The template starts out very basic, but might receive additional features over t
 1. Install [Git](https://git-scm.com/downloads) and [CMake](https://cmake.org/download/). Use your system's package
    manager if available.
 2.
+
 Follow [GitHub's instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
 for how to use their project template feature to create your own project. If you don't want to use GitHub, see the
 section below.
+
 3. Clone your new GitHub repo and open the repo in your text editor of choice.
 4. Open [CMakeLists.txt](CMakeLists.txt). Rename the project and the target name of the executable to whatever name you
    want. Make sure to change all occurrences.
@@ -69,8 +71,10 @@ Using a Visual Studio workspace is the simplest way to get started on windows.
 1. Ensure you have
    the [required components installed](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio#installation).
 2.
+
 Follow [GitHub's instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
 for how to use their project template feature to create your own project.
+
 3. If you have already cloned this repo, you
    can [open the folder](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio0#ide-integration).
 4. If not, you
