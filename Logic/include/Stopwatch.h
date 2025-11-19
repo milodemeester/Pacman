@@ -5,6 +5,7 @@
 #ifndef PACMAN_STOPWATCH_H
 #define PACMAN_STOPWATCH_H
 #include <chrono>
+#include <memory>
 
 namespace logic {
 class Stopwatch {
