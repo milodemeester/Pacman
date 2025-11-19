@@ -15,7 +15,7 @@ class World;
 class Observer;
 
 class Subject : public std::enable_shared_from_this<Subject> {
-    std::vector<std::shared_ptr<Observer>> observers_; // vector with all of the observers
+    std::vector<Observer*> observers_; // vector with all of the observers
 
 protected:
     /**
@@ -47,12 +47,12 @@ public:
      * @brief adds a new observer to the observer vector
      * @param observer the new observer
      */
-    void addObserver(std::shared_ptr<Observer> observer) { observers_.push_back(observer); }
+    void addObserver(Observer* observer) { observers_.push_back(observer); }
 
     /**
      * @param observer a pointer to the observer that needs to be removed
      */
-    void removeObserver(std::shared_ptr<Observer> observer);
+    void removeObserver(Observer* observer);
 };
 
 class MoveableSubject : public Subject {

@@ -97,7 +97,6 @@ void logic::World::initialise_maze() {
             line++;
         }
     }
-    pacman->set_world_dimensions(width, height);
     maze_file.close();
 }
 

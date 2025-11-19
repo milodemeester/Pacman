@@ -27,8 +27,8 @@ logic::Direction logic::InkyModel::get_opposite_direction(logic::Direction dir) 
         return logic::Direction::East;
     }
     }
+    return logic::Direction::East;
 }
-
 
 std::vector<logic::Direction> logic::InkyModel::get_other_direction(logic::Direction dir) {
     switch (dir) {
