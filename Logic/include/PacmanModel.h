@@ -11,20 +11,28 @@
 namespace logic {
 class PacmanModel : public MoveableSubject {
 public:
+    /**
+     * @brief constructor
+     * @param pos the initial position of the model
+     * @param dir the initial direction of the model
+     * @param world_width the width of the world the model is in
+     * @param world_height the height of the world the model is in
+     */
     PacmanModel(Coordinate pos, Direction dir, int world_width, int world_height);
 
-    /*
-     * Updates pacman
+    /**
+     * @brief updates the position and direction of pacman based on the amount of time passed between update-calls
+     * @param dt the time passed since the last upate
+     * @param world the world that pacman lives in
      */
     void update(float dt, World& world) override;
 
-    [[nodiscard]] Coordinate get_position() const { return position_; }
-    [[nodiscard]] Direction get_direction() const { return direction_; }
-
-    void set_world_dimensions(int w, int h) {
-        world_height_ = h;
-        world_width_ = w;
-    }
+    /**
+     * @brief update the dimensions of the world
+     * @param width the (new) width of the world
+     * @param height the (new) height of the world
+     */
+    void set_world_dimensions(int width, int height);
 };
 } // namespace logic
 

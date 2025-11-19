@@ -17,12 +17,28 @@ class PacmanModel;
 class GhostModel;
 
 class World {
+    /**
+     * @brief checks if there is a collision between two entities
+     * @param entity_pos the position of the moving entity
+     * @param entity2_rect the position of the other entity
+     * @param entity_speed the speed of the moving entity (used for calculating the offset
+     * @return a boolean value that determines if there is a collision between the two entities
+     */
     bool check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed);
+
+    /**
+     * @brief reads a map and initializes all of the entities in this map
+     */
     void initialise_maze();
+
+    /**
+     * @param model the model that needs to be removed from the world
+     */
     void remove_entity(std::shared_ptr<CoinModel> model);
-    std::vector<std::vector<std::shared_ptr<Subject>>> entities;
-    int width;
-    int height;
+
+    std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities int he world
+    int width; // width of the world
+    int height; // height of the world
     std::shared_ptr<GameFactory> game_factory;
     std::shared_ptr<PacmanModel> pacman;
     std::shared_ptr<GhostModel> blinky;
@@ -32,17 +48,45 @@ class World {
     Direction wanted_pacman_direction;
 
 public:
-    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool wall);
+    // constructor
+    explicit World(const std::shared_ptr<GameFactory>& factory);
+
+    /**
+     * @brief checks if there is a wall where the entity wants to go
+     * @param new_pos the new position of the entity
+     * @param entity_direction the direction where the entity is going
+     * @param entity_speed the speed of the entity
+     * @param ghost set to true if the entity is a ghost (which means the entity can pass through invisible walls)
+     * @return a boolean value that determines if there is a collision
+     */
+    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost);
+
+    /**
+     * @brief checks if there is a coin where the entity wants to go
+     * @param new_pos the new position of the entity
+     * @param entity_speed the speed of the entity
+     * @return a boolean value that determines if there is a collission
+     */
     bool check_coin_collision(Coordinate& new_pos, double entity_speed);
-    World(const std::shared_ptr<GameFactory>& factory);
+
+    /**
+     * @brief updates every "important entity in the world"
+     * @param delta_time the time difference between this update and the previous one
+     */
     void update(float delta_time);
+
+    /**
+     * @brief changes the wanted direction of pacman
+     * @param dir new direction of pacman
+     */
+    void move_pacman(logic::Direction dir);
+
+
+    // getters
     [[nodiscard]] int get_width() const { return width; }
     [[nodiscard]] int get_height() const { return height; }
-    void move_pacman(logic::Direction);
     [[nodiscard]] Direction get_wanted_pacman_direction() const { return wanted_pacman_direction; }
-    void set_wanted_pacman_direction(Direction wanted_pacman_dir) {
-        this->wanted_pacman_direction = wanted_pacman_dir;
-    }
+
 };
 } // namespace logic
 

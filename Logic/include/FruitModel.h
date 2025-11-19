@@ -12,11 +12,9 @@ class FruitModel : public Subject {
     Coordinate position;
 
 public:
+    // Constructor
     explicit FruitModel(Coordinate pos) : Subject(pos) {}
     FruitModel() : Subject({0, 0}) {}
-
-    [[nodiscard]] Coordinate get_position() const { return position; }
-    void set_position(const Coordinate& pos) { this->position = pos; }
 };
 } // namespace logic
 #endif // PACMAN_FRUITMODEL_H

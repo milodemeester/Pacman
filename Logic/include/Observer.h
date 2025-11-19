@@ -13,7 +13,14 @@ class Subject;
 namespace logic {
 class Observer {
 public:
+    // destructor
     virtual ~Observer() = default;
+
+    /**
+     * @brief pure virtual function that handles an event
+     * @param entity the entity that the event is sent in by
+     * @param e the type of event
+     */
     virtual void onNotify(const Subject& entity, Event& e) = 0;
 };
 } // namespace logic
