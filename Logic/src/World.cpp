@@ -122,7 +122,7 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
 }
 
 
-bool logic::World::check_wall_collision(Coordinate& entity_pos, double entity_speed, bool ghost) {
+bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed, bool ghost) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
@@ -135,7 +135,7 @@ bool logic::World::check_wall_collision(Coordinate& entity_pos, double entity_sp
                 Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
                     wall_model->get_position().getY() + entity_half_size_y};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (ghost && wall_model->has_ghost_acces()) {}
+                if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {}
                 else if (check_collision(entity_pos, entity2_rect, entity_speed)) {
                     return true;
                 }

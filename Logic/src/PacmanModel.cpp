@@ -18,7 +18,7 @@ void logic::PacmanModel::update(float dt, World& world) {
         Coordinate next_pos_if_turned = calculate_new_position(float(dt));
 
         // Als de nieuwe richting niet tot een botsing leidt, ga door met die richting.
-        if (!world.check_wall_collision(next_pos_if_turned, speed_, false)) {
+        if (!world.check_wall_collision(next_pos_if_turned, direction_, speed_, false)) {
             set_position(next_pos_if_turned);
             return; // Klaar voor deze frame
         }
@@ -32,7 +32,7 @@ void logic::PacmanModel::update(float dt, World& world) {
 
     // Beweeg alleen als dit niet tot een botsing leidt.
     // Anders stopt Pacman gewoon tegen de muur.
-    if (!world.check_wall_collision(next_pos, speed_, false)) {
+    if (!world.check_wall_collision(next_pos, direction_, speed_, false)) {
         set_position(next_pos);
         if (world.check_coin_collision(next_pos, speed_)) {
             Event e = Event::CoinCollected;

@@ -11,6 +11,24 @@
 
 logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 0; }
 
+logic::Direction logic::InkyModel::get_opposite_direction(logic::Direction dir) {
+    switch (dir) {
+    case (logic::Direction::North) : {
+        return logic::Direction::South;
+    }
+        case (logic::Direction::East) : {
+        return logic::Direction::West;
+    }
+        case (logic::Direction::South) : {
+        return logic::Direction::North;
+    }
+        case (logic::Direction::West) : {
+        return logic::Direction::East;
+    }
+    }
+}
+
+
 std::vector<logic::Direction> logic::InkyModel::get_other_direction(logic::Direction dir) {
     switch (dir) {
     case (logic::Direction::East): {
@@ -42,9 +60,13 @@ std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(logic:
         // temporarily set direction_ to compute a potential new position
         direction_ = other_direction;
         auto new_pos = calculate_new_position(dt);
-        if (!world.check_wall_collision(new_pos, speed_, true)) {
+        if (!world.check_wall_collision(new_pos, other_direction, speed_, true)) {
             viable_states.emplace_back(other_direction, new_pos);
         }
+    }
+
+    if (viable_states.size() == 2 && viable_states[0].first == get_opposite_direction(viable_states[1].first)) {
+        return std::make_pair(current_direction, current_location);
     }
 
     // restore original direction to avoid side-effects
@@ -71,13 +93,7 @@ void logic::InkyModel::update(float dt, World& world) {
     GhostModel::update(dt);
     Direction current_direction = direction_;
     Coordinate next_position = calculate_new_position(dt);
-    if (world.check_wall_collision(next_position, speed_, true)) { // TODO: intersection check in world
-        auto next_state = get_viable_state(current_direction, next_position, dt, world);
-        set_position(next_state.second);
-        set_direction(next_state.first);
-    }
-    else {
-        set_direction(current_direction);
-        set_position(next_position);
-    }
+    auto next_state = get_viable_state(current_direction, next_position, dt, world);
+    set_position(next_state.second);
+    set_direction(next_state.first);
 }

@@ -32,7 +32,7 @@ class World {
     Direction wanted_pacman_direction;
 
 public:
-    bool check_wall_collision(Coordinate& new_pos, double entity_speed, bool wall);
+    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool wall);
     bool check_coin_collision(Coordinate& new_pos, double entity_speed);
     World(const std::shared_ptr<GameFactory>& factory);
     void update(float delta_time);
