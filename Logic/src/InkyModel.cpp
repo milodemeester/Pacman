@@ -8,6 +8,7 @@
 #include "../include/World.h"
 
 #include <map>
+#include <algorithm> // Nodig voor std::find
 
 logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 0; }
 
@@ -50,50 +51,40 @@ std::vector<logic::Direction> logic::InkyModel::get_other_direction(logic::Direc
 }
 
 std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
-    auto other_directions = get_other_direction(current_direction);
+    std::vector<logic::Direction> possible_directions = {Direction::North, Direction::South, Direction::East, Direction::West};
+    possible_directions.erase(std::remove(possible_directions.begin(), possible_directions.end(), get_opposite_direction(current_direction)), possible_directions.end());
+
     std::vector<std::pair<Direction,Coordinate>> viable_states;
 
-    // be careful not to permanently mutate direction_ while probing moves
-    Direction original_direction = direction_;
-
-    for (auto& other_direction : other_directions) {
-        // temporarily set direction_ to compute a potential new position
-        direction_ = other_direction;
-        auto new_pos = calculate_new_position(dt);
-        if (!world.check_wall_collision(new_pos, other_direction, speed_, true)) {
-            viable_states.emplace_back(other_direction, new_pos);
+    for (auto& direction_option : possible_directions) {
+        // Gebruik een kopie van de positie voor elke simulatie
+        Coordinate next_pos = calculate_new_position(dt, direction_option, current_location);
+        if (!world.check_wall_collision(next_pos, direction_option, speed_, true)) {
+            viable_states.emplace_back(direction_option, next_pos);
         }
     }
 
-    if (viable_states.size() == 2 && viable_states[0].first == get_opposite_direction(viable_states[1].first)) {
-        return std::make_pair(current_direction, current_location);
-    }
-
-    // restore original direction to avoid side-effects
-    direction_ = original_direction;
-
-    // defensive: geen mogelijke richtingen gevonden => blijf daar waar je bent
     if (viable_states.empty()) {
-        return {current_direction, current_location};
+        // Als er geen opties zijn (doodlopende weg), draai dan om.
+        Direction opposite_dir = get_opposite_direction(current_direction);
+        Coordinate next_pos = calculate_new_position(dt, opposite_dir, current_location);
+        return {opposite_dir, next_pos};
     }
 
     auto random = Random::getInstance();
-
-    int max_index = static_cast<int>(viable_states.size()) - 1;
-    int new_state = 0;
-    if (max_index == 0) {
-        new_state = 0;
-    } else {
-        new_state = random->getNumber(0, max_index);
-    }
-    return viable_states[new_state];
+    int new_state_index = random->getNumber(0, static_cast<int>(viable_states.size()) - 1);
+    return viable_states[new_state_index];
 }
 
+
 void logic::InkyModel::update(float dt, World& world) {
-    GhostModel::update(dt);
     Direction current_direction = direction_;
-    Coordinate next_position = calculate_new_position(dt);
-    auto next_state = get_viable_state(current_direction, next_position, dt, world);
+    Coordinate current_position = position_; // Gebruik de huidige positie om de volgende te bepalen
+
+    // Bepaal de volgende staat (richting en positie) op basis van de HUIDIGE staat.
+    auto next_state = get_viable_state(current_direction, current_position, dt, world);
+
+    // Werk de positie en richting in één keer bij naar de nieuwe staat.
     set_position(next_state.second);
     set_direction(next_state.first);
 }

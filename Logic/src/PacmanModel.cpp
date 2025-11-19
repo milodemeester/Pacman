@@ -14,21 +14,17 @@ void logic::PacmanModel::update(float dt, World& world) {
     Direction wanted_direction = world.get_wanted_pacman_direction();
     // Als de speler een nieuwe richting kiest, kijk of die geldig is.
     if (wanted_direction != current_direction) {
-        set_direction(wanted_direction);
-        Coordinate next_pos_if_turned = calculate_new_position(float(dt));
+        Coordinate next_pos_if_turned = calculate_new_position(float(dt), wanted_direction, position_);
 
         // Als de nieuwe richting niet tot een botsing leidt, ga door met die richting.
-        if (!world.check_wall_collision(next_pos_if_turned, direction_, speed_, false)) {
+        if (!world.check_wall_collision(next_pos_if_turned, wanted_direction, speed_, false)) {
             set_position(next_pos_if_turned);
+            set_direction(wanted_direction);
             return; // Klaar voor deze frame
         }
-
-        // Zo niet, herstel de oude richting en ga verder.
-        set_direction(current_direction);
     }
 
-    // Ga verder met de huidige (of herstelde) richting.
-    Coordinate next_pos = calculate_new_position(float(dt));
+    Coordinate next_pos = calculate_new_position(float(dt), direction_, position_);
 
     // Beweeg alleen als dit niet tot een botsing leidt.
     // Anders stopt Pacman gewoon tegen de muur.

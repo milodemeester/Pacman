@@ -45,7 +45,7 @@ protected:
      *@brief Gives back the new coordinate to change location
      *@param dt delta time between updates
      */
-    Coordinate calculate_new_position(float dt);
+    Coordinate calculate_new_position(float dt, logic::Direction direction, Coordinate position);
 
 public:
     MoveableSubject(Coordinate pos, Direction dir, int world_width, int world_height) : world_width_(world_width),

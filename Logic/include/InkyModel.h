@@ -9,7 +9,7 @@
 namespace logic {
 class InkyModel : public GhostModel {
     std::vector<logic::Direction> get_other_direction(logic::Direction dir);
-    static logic::Direction get_opposite_direction(logic::Direction dir);
+    logic::Direction get_opposite_direction(logic::Direction dir);
 public:
     InkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
     void update(float dt, World& world) override;
