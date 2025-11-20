@@ -17,9 +17,27 @@ enum class GhostType { Inky, Blinky, Pinky, Clyde };
 
 class GhostModel : public MoveableSubject {
 protected:
+    double speed_ = 0.005; // measured in pixel/ms
+    double get_speed() override;
+
+    /**
+     * @brief computes all the directions that are not the current direction
+     * @param dir the direction that the ghost is currently travelling in
+     * @return a vector of directions
+     */
+    static std::vector<logic::Direction> get_other_direction(logic::Direction dir);
+
+    /**
+     * @brief computes the opposite direction of the direction that the ghost is currently travelling at
+     * @param dir the direction that the ghost is currently travelling in
+     * @return a direction
+     */
+    static logic::Direction get_opposite_direction(logic::Direction dir);
+
     std::chrono::system_clock::time_point initialize_time; // the time_point where this object was initialized
     double wait_time = 0; // the time the ghost has to wait before it can escape the center
-    bool chasing_mode = false; // false = fear mode, true = chasing mode
+    bool chasing_mode = true; // false = fear mode, true = chasing mode
+    bool waiting = true;
 public:
     // constructor
     GhostModel(Coordinate pos, Direction dir, int world_width, int world_height);
@@ -31,24 +49,11 @@ public:
     void update(float dt);
 };
 
-class BlinkyModel : public GhostModel {
-public:
-    BlinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
-    void update(float dt, World& world) override;
-};
-
-class PinkyModel : public GhostModel {
-public:
-    PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
-    void update(float dt, World& world) override;
-};
-
 class ClydeModel : public GhostModel {
 public:
     ClydeModel(Coordinate pos, Direction dir, int world_width, int world_height);
     void update(float dt, World& world) override;
 };
-
 } // namespace logic
 
 #endif // PACMAN_GHOST_H

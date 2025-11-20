@@ -6,6 +6,44 @@
 #include "../include/Stopwatch.h"
 #include "../include/World.h"
 
+logic::Direction logic::GhostModel::get_opposite_direction(logic::Direction dir) {
+    switch (dir) {
+    case (logic::Direction::North) : {
+        return logic::Direction::South;
+    }
+    case (logic::Direction::East) : {
+        return logic::Direction::West;
+    }
+    case (logic::Direction::South) : {
+        return logic::Direction::North;
+    }
+    case (logic::Direction::West) : {
+        return logic::Direction::East;
+    }
+    }
+    return logic::Direction::East;
+}
+
+std::vector<logic::Direction> logic::GhostModel::get_other_direction(logic::Direction dir) {
+    switch (dir) {
+    case (logic::Direction::East): {
+        return {logic::Direction::North, logic::Direction::South, logic::Direction::West};
+    }
+    case (logic::Direction::South): {
+        return {logic::Direction::North, logic::Direction::East, logic::Direction::West};
+    }
+    case (logic::Direction::West): {
+        return {logic::Direction::North, logic::Direction::East, logic::Direction::South};
+    }
+    case (logic::Direction::North): {
+        return {logic::Direction::East, logic::Direction::South, logic::Direction::West};
+    }
+    default: {
+        return {};
+    }
+    }
+}
+
 logic::GhostModel::GhostModel(Coordinate pos, Direction dir, int world_width, int world_height) : MoveableSubject(pos, dir, world_width, world_height) {
     std::shared_ptr<Stopwatch> stopwatch = Stopwatch::getInstance();
     initialize_time = stopwatch->get_now();
@@ -15,16 +53,14 @@ void logic::GhostModel::update(float dt) {
     std::shared_ptr<Stopwatch> stopwatch = Stopwatch::getInstance();
     auto time_waited = stopwatch->get_time_between(stopwatch->get_now(), initialize_time);
     if (wait_time < time_waited) {
-        chasing_mode = true;
+        waiting = false;
     }
 }
 
-logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 0; }
-
-logic::BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 5000; }
+double logic::GhostModel::get_speed() {
+    return speed_;
+}
 
 logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 10000; }
 
-void logic::BlinkyModel::update(float dt, World& world) { GhostModel::update(dt); }
-void logic::PinkyModel::update(float dt, World& world) { GhostModel::update(dt); }
 void logic::ClydeModel::update(float dt, World& world) { GhostModel::update(dt); }

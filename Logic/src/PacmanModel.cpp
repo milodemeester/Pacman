@@ -36,3 +36,7 @@ void logic::PacmanModel::update(float dt, World& world) {
         }
     }
 }
+
+double logic::PacmanModel::get_speed() {
+    return speed_;
+}

@@ -81,6 +81,12 @@ if (BUILD_GAME_EXE)
             Logic/include/Random.h
             Logic/src/InkyModel.cpp
             Logic/include/InkyModel.h
+            Logic/src/PinkyModel.cpp
+            Logic/include/PinkyModel.h
+            Logic/src/Type2Ghost.cpp
+            Logic/include/Type2Ghost.h
+            Logic/src/BlinkyModel.cpp
+            Logic/include/BlinkyModel.h
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)
 endif ()

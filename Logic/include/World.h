@@ -6,15 +6,21 @@
 #define PACMAN_WORLD_H
 #include "GameFactory.h"
 #include "Subject.h"
-#include <vector>
 #include <fstream>
+#include <vector>
 
+namespace logic {
+class BlinkyModel;
+}
+namespace logic {
+class PinkyModel;
+}
 namespace logic {
 class InkyModel;
 }
 namespace logic {
-class PacmanModel;
 class GhostModel;
+class PacmanModel;
 
 class World {
     /**
@@ -41,8 +47,8 @@ class World {
     int height; // height of the world
     std::shared_ptr<GameFactory> game_factory;
     std::shared_ptr<PacmanModel> pacman;
-    std::shared_ptr<GhostModel> blinky;
-    std::shared_ptr<GhostModel> pinky;
+    std::shared_ptr<BlinkyModel> blinky;
+    std::shared_ptr<PinkyModel> pinky;
     std::shared_ptr<InkyModel> inky;
     std::shared_ptr<GhostModel> clyde;
     Direction wanted_pacman_direction;
@@ -86,6 +92,8 @@ public:
     [[nodiscard]] int get_width() const { return width; }
     [[nodiscard]] int get_height() const { return height; }
     [[nodiscard]] Direction get_wanted_pacman_direction() const { return wanted_pacman_direction; }
+    [[nodiscard]] Direction get_pacman_direction() const;
+    [[nodiscard]] Coordinate get_pacman_position() const;
 
 };
 } // namespace logic

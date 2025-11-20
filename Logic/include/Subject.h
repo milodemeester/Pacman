@@ -57,7 +57,6 @@ public:
 
 class MoveableSubject : public Subject {
 protected:
-    double speed_ = 0.0075; // measured in pixel/ms
     int world_width_; // width of the world
     int world_height_; // height of the world
     Direction direction_; // the current direction
@@ -70,6 +69,8 @@ protected:
      * @return the new position
      */
     Coordinate calculate_new_position(float dt, logic::Direction direction, Coordinate position);
+
+    virtual double get_speed() = 0;
 
 public:
     // constructor

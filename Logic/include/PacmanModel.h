@@ -10,6 +10,9 @@
 
 namespace logic {
 class PacmanModel : public MoveableSubject {
+protected:
+    double get_speed() override;
+    double speed_ = 0.0075; // measured in pixel/ms
 public:
     /**
      * @brief constructor
@@ -26,13 +29,6 @@ public:
      * @param world the world that pacman lives in
      */
     void update(float dt, World& world) override;
-
-    /**
-     * @brief update the dimensions of the world
-     * @param width the (new) width of the world
-     * @param height the (new) height of the world
-     */
-    void set_world_dimensions(int width, int height);
 };
 } // namespace logic
 

@@ -14,6 +14,8 @@
 #include "../include/CoinModel.h"
 #include "../include/GameFactory.h"
 #include "../include/InkyModel.h"
+#include "../include/PinkyModel.h"
+#include "../include/BlinkyModel.h"
 
 
 logic::World::World(const std::shared_ptr<GameFactory>& factory) {
@@ -55,12 +57,12 @@ void logic::World::initialise_maze() {
                 }
                 case 'B': { // Blinky
                     crnt_entity = game_factory->createGhost(GhostType::Blinky, width, height);
-                    blinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    blinky = std::dynamic_pointer_cast<BlinkyModel>(crnt_entity);
                     break;
                 }
                 case 'P': { // Pinky
                     crnt_entity = game_factory->createGhost(GhostType::Pinky, width, height);
-                    pinky = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    pinky = std::dynamic_pointer_cast<PinkyModel>(crnt_entity);
                     break;
                 }
                 case 'I': { // Inky
@@ -183,8 +185,15 @@ void logic::World::move_pacman(logic::Direction direction) {
 
 void logic::World::update(float delta_time) {
     pacman->update(delta_time, *this);
-    pinky->update(delta_time);
+    pinky->update(delta_time, *this);
     inky->update(delta_time, *this);
-    blinky->update(delta_time);
+    blinky->update(delta_time, *this);
     clyde->update(delta_time);
+}
+
+[[nodiscard]] logic::Direction logic::World::get_pacman_direction() const {
+    return pacman->get_direction();
+}
+[[nodiscard]] Coordinate logic::World::get_pacman_position() const {
+    return pacman->get_position();
 }

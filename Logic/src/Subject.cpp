@@ -34,7 +34,7 @@ void logic::Subject::notify(Event event) {
 Coordinate logic::MoveableSubject::calculate_new_position(float dt, logic::Direction direction, Coordinate position) {
     double epsx = 1 / double(world_width_);
     double epsy = 1 / double(world_height_);
-    double increase = dt * speed_;
+    double increase = dt * get_speed();
     double new_x = 0;
     double new_y = 0;
     switch (direction) {

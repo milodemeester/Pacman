@@ -5,10 +5,12 @@
 
 #include "../include/SfmlFactory.h"
 
+#include "../../Logic/include/BlinkyModel.h"
 #include "../../Logic/include/CoinModel.h"
 #include "../../Logic/include/FruitModel.h"
 #include "../../Logic/include/InkyModel.h"
 #include "../../Logic/include/PacmanModel.h"
+#include "../../Logic/include/PinkyModel.h"
 #include "../../Logic/include/WallModel.h"
 
 #include "../include/CoinView.h"
