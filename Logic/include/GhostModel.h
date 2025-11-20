@@ -48,12 +48,6 @@ public:
      */
     void update(float dt);
 };
-
-class ClydeModel : public GhostModel {
-public:
-    ClydeModel(Coordinate pos, Direction dir, int world_width, int world_height);
-    void update(float dt, World& world) override;
-};
-} // namespace logic
+}
 
 #endif // PACMAN_GHOST_H

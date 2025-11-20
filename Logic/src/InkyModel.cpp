@@ -10,7 +10,21 @@
 #include <map>
 #include <algorithm> // Nodig voor std::find
 
-logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 0; }
+logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
+    wait_time = 0;
+}
+
+void logic::InkyModel::update(float dt, World& world) {
+    Direction current_direction = direction_;
+    Coordinate current_position = position_; // Gebruik de huidige positie om de volgende te bepalen
+
+    // Bepaal de volgende staat (richting en positie) op basis van de HUIDIGE staat.
+    auto next_state = get_viable_state(current_direction, current_position, dt, world);
+
+    // Werk de positie en richting in één keer bij naar de nieuwe staat.
+    set_position(next_state.second);
+    set_direction(next_state.first);
+}
 
 logic::Direction logic::InkyModel::get_opposite_direction(logic::Direction dir) {
     switch (dir) {
@@ -74,17 +88,4 @@ std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(logic:
     auto random = Random::getInstance();
     int new_state_index = random->getNumber(0, static_cast<int>(viable_states.size()) - 1);
     return viable_states[new_state_index];
-}
-
-
-void logic::InkyModel::update(float dt, World& world) {
-    Direction current_direction = direction_;
-    Coordinate current_position = position_; // Gebruik de huidige positie om de volgende te bepalen
-
-    // Bepaal de volgende staat (richting en positie) op basis van de HUIDIGE staat.
-    auto next_state = get_viable_state(current_direction, current_position, dt, world);
-
-    // Werk de positie en richting in één keer bij naar de nieuwe staat.
-    set_position(next_state.second);
-    set_direction(next_state.first);
 }

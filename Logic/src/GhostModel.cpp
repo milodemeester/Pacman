@@ -60,7 +60,3 @@ void logic::GhostModel::update(float dt) {
 double logic::GhostModel::get_speed() {
     return speed_;
 }
-
-logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) { wait_time = 10000; }
-
-void logic::ClydeModel::update(float dt, World& world) { GhostModel::update(dt); }

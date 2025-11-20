@@ -16,6 +16,7 @@
 #include "../include/InkyModel.h"
 #include "../include/PinkyModel.h"
 #include "../include/BlinkyModel.h"
+#include "../include/ClydeModel.h"
 
 
 logic::World::World(const std::shared_ptr<GameFactory>& factory) {
@@ -72,7 +73,7 @@ void logic::World::initialise_maze() {
                 }
                 case 'O': { // Clyde
                     crnt_entity = game_factory->createGhost(GhostType::Clyde, width, height);
-                    clyde = std::dynamic_pointer_cast<GhostModel>(crnt_entity);
+                    clyde = std::dynamic_pointer_cast<ClydeModel>(crnt_entity);
                     break;
                 }
                 case 'F': { // Fruit
@@ -188,7 +189,7 @@ void logic::World::update(float delta_time) {
     pinky->update(delta_time, *this);
     inky->update(delta_time, *this);
     blinky->update(delta_time, *this);
-    clyde->update(delta_time);
+    clyde->update(delta_time, *this);
 }
 
 [[nodiscard]] logic::Direction logic::World::get_pacman_direction() const {

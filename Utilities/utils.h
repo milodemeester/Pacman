@@ -40,6 +40,8 @@ public:
     static bool contains(Coordinate upper_left_corner, Coordinate lower_right_corner, Coordinate click);
 
     static bool intersecting(Rectangle rectangle1, Rectangle rectangle2);
+
+    static double compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2);
 };
 
 #endif // PACMAN_UTILS_H

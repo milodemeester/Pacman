@@ -87,6 +87,8 @@ if (BUILD_GAME_EXE)
             Logic/include/Type2Ghost.h
             Logic/src/BlinkyModel.cpp
             Logic/include/BlinkyModel.h
+            Logic/src/ClydeModel.cpp
+            Logic/include/ClydeModel.h
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)
 endif ()

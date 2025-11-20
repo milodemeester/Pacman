@@ -3,6 +3,7 @@
 //
 
 #include "utils.h"
+#include <cmath>
 
 bool utils::contains(Coordinate upper_left_corner, Coordinate lower_right_corner, Coordinate click) {
     // Verwachte conventie: upper_left = (left, top), lower_right = (right, bottom)
@@ -40,4 +41,9 @@ bool utils::intersecting(Rectangle rectangle1, Rectangle rectangle2) {
 
     // If none of the above are true, they must be intersecting.
     return true;
+}
+
+double utils::compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2) {
+    double distance = std::abs(pos1.getX() - pos2.getX()) + std::abs(pos1.getY() - pos2.getY());
+    return distance;
 }

@@ -11,6 +11,7 @@
 #include "../../Logic/include/InkyModel.h"
 #include "../../Logic/include/PacmanModel.h"
 #include "../../Logic/include/PinkyModel.h"
+#include "../../Logic/include/ClydeModel.h"
 #include "../../Logic/include/WallModel.h"
 
 #include "../include/CoinView.h"

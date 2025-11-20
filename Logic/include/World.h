@@ -10,6 +10,9 @@
 #include <vector>
 
 namespace logic {
+class ClydeModel;
+}
+namespace logic {
 class BlinkyModel;
 }
 namespace logic {
@@ -50,7 +53,7 @@ class World {
     std::shared_ptr<BlinkyModel> blinky;
     std::shared_ptr<PinkyModel> pinky;
     std::shared_ptr<InkyModel> inky;
-    std::shared_ptr<GhostModel> clyde;
+    std::shared_ptr<ClydeModel> clyde;
     Direction wanted_pacman_direction;
 
 public:

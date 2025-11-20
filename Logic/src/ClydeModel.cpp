@@ -1,72 +1,41 @@
 //
 // Created by milo on 11/20/25.
 //
-
-#include "../include/Type2Ghost.h"
+#include "../include/ClydeModel.h"
 #include "../include/World.h"
 #include "../include/Random.h"
 
-logic::Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
+logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
+    wait_time = 10000;
+}
 
-void logic::Type2Ghost::update(float dt, World& world) {
+void logic::ClydeModel::update(float dt, World& world) {
     GhostModel::update(dt);
+
     if (!waiting) {
-        // Bepaal de volgende staat en werk de position en direction bij.
-        auto state = get_viable_state(direction_, position_, dt, world);
-        set_direction(state.first);
-        set_position(state.second);
+        Direction current_direction = direction_;
+        Coordinate current_position = position_; // Gebruik de huidige positie om de volgende te bepalen
+
+        // Bepaal de volgende staat (richting en positie) op basis van de HUIDIGE staat.
+        auto next_state = get_viable_state(current_direction, current_position, dt, world);
+
+        // Werk de positie en richting in één keer bij naar de nieuwe staat.
+        set_position(next_state.second);
+        set_direction(next_state.first);
     }
 }
 
-
-Coordinate compute_pacman_forward_pos(logic::World& world) {
-    Coordinate pacman_location = world.get_pacman_position();
-    logic::Direction pacman_direction = world.get_pacman_direction();
-
-    float target_x = ((pacman_location.getX()+1)/2)*world.get_width();
-    float target_y = ((pacman_location.getY()+1)/2)*world.get_height();
-
-    // De "4" is de offset. Deze moet misschien worden aangepast aan de schaal van je wereld.
-    const float offset = 4.0f;
-
-    switch (pacman_direction) {
-        case logic::Direction::East:
-            target_x += offset;
-            break;
-        case logic::Direction::West:
-            target_x -= offset;
-            break;
-        case logic::Direction::North:
-            target_y -= offset;
-            break;
-        case logic::Direction::South:
-            target_y += offset;
-            break;
-    }
-    if (target_x < 0) {
-        target_x = 0;
-    }
-    else if (target_x > world.get_width()) {
-        target_x = world.get_width();
-    }
-    if (target_y < 0) {
-        target_y = 0;
-    }
-    else if (target_y > world.get_height()) {
-        target_y = world.get_height();
-    }
-    return {target_x, target_y};
-}
-
-std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
     // 1. Bepaal het doelwit "voor" Pac-Man
-    Coordinate target_location = compute_pacman_forward_pos(world);
+    Coordinate pac_pos = world.get_pacman_position();
+    Coordinate target_location = {((pac_pos.getX()+1)/2)*world_width_, ((pac_pos.getY()+1)/2)*world_height_};
 
     std::vector<Direction> best_directions;
     double smallest_manhattan = std::numeric_limits<double>::max();
 
     // 2. Evalueer alle mogelijke richtingen (behalve omkeren)
     auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
+    //std::vector<Direction> possible_directions = {Direction::East, Direction::North, Direction::South, Direction::West};
 
     for (auto& direction : possible_directions) {
         // Simuleer een stap in deze richting
