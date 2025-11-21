@@ -71,7 +71,7 @@ std::shared_ptr<logic::CoinModel> representation::SfmlFactory::createCoin() {
 }
 std::shared_ptr<logic::FruitModel> representation::SfmlFactory::createFruit() {
     auto fruit_model = std::make_shared<logic::FruitModel>();
-    auto fruit_view = std::make_unique<representation::FruitView>(fruit_model);
+    auto fruit_view = std::make_unique<representation::FruitView>(fruit_model, sprite_map_);
     createdViews.push_back(std::move(fruit_view));
     return fruit_model;
 }

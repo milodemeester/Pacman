@@ -4,9 +4,30 @@
 
 #include "../include/FruitView.h"
 #include "../../Logic/include/FruitModel.h"
+#include "../include/Camera.h"
 
-representation::FruitView::FruitView(std::shared_ptr<logic::FruitModel>& model) { model->addObserver(this); }
 
-void representation::FruitView::onNotify(const logic::Subject& entity, logic::Event& e) {}
+representation::FruitView::FruitView(std::shared_ptr<logic::FruitModel>& model, representation::SpriteMap& sprite_map)
+    : sprite(sprite_map.getSprite(sf::IntRect(601, 153, 36, 36))) {
+    world_position = model->get_position();
+    model->addObserver(this);
+}
+void representation::FruitView::onNotify(const logic::Subject& entity, logic::Event& e) {
+    switch (e) {
+        case (logic::Event::EntityPositionChanged) : {
+            world_position = entity.get_position();
+            break;
+        }
+    }
+}
 
-void representation::FruitView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {}
+void representation::FruitView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
+    if (!isEaten) {
+        auto screen = cam->worldToScreen(world_position, {36, 36});
+        sf::Vector2f sprite_size = screen.second;
+        sf::Vector2f new_coords = screen.first;
+        sprite.setScale(sprite_size);
+        sprite.setPosition(new_coords.x, new_coords.y);
+        window.draw(sprite);
+    }
+}

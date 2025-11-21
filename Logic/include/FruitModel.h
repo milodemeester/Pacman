@@ -9,8 +9,6 @@
 
 namespace logic {
 class FruitModel : public Subject {
-    Coordinate position;
-
 public:
     // Constructor
     explicit FruitModel(Coordinate pos) : Subject(pos) {}
