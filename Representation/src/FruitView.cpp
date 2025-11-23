@@ -18,6 +18,10 @@ void representation::FruitView::onNotify(const logic::Subject& entity, logic::Ev
             world_position = entity.get_position();
             break;
         }
+        case (logic::Event::EntityDestruct) : {
+            isEaten = true;
+            break;
+        }
     }
 }
 

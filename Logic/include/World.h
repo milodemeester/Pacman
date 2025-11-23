@@ -10,6 +10,9 @@
 #include <vector>
 
 namespace logic {
+class CollectableSubject;
+}
+namespace logic {
 class ClydeModel;
 }
 namespace logic {
@@ -27,6 +30,11 @@ class PacmanModel;
 
 class World {
     /**
+     * @param model the coin model that needs to be removed from the world
+     */
+    void remove_entity(std::shared_ptr<CollectableSubject> model);
+
+    /**
      * @brief checks if there is a collision between two entities
      * @param entity_pos the position of the moving entity
      * @param entity2_rect the position of the other entity
@@ -40,11 +48,6 @@ class World {
      */
     void initialise_maze();
 
-    /**
-     * @param model the model that needs to be removed from the world
-     */
-    void remove_entity(std::shared_ptr<CoinModel> model);
-
     std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities int he world
     int width; // width of the world
     int height; // height of the world
@@ -55,7 +58,7 @@ class World {
     std::shared_ptr<InkyModel> inky;
     std::shared_ptr<ClydeModel> clyde;
     Direction wanted_pacman_direction;
-
+    std::chrono::system_clock::time_point fear_mode_begin;
 public:
     // constructor
     explicit World(const std::shared_ptr<GameFactory>& factory);
@@ -76,7 +79,7 @@ public:
      * @param entity_speed the speed of the entity
      * @return a boolean value that determines if there is a collission
      */
-    bool check_coin_collision(Coordinate& new_pos, double entity_speed);
+    logic::Event check_collectable_collision(Coordinate& new_pos, double entity_speed);
 
     /**
      * @brief updates every "important entity in the world"

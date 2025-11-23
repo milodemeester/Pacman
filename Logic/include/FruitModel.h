@@ -5,14 +5,14 @@
 #ifndef PACMAN_FRUITMODEL_H
 #define PACMAN_FRUITMODEL_H
 #include "../../Utilities/utils.h"
-#include "Subject.h"
+#include "CollectableSubject.h"
 
 namespace logic {
-class FruitModel : public Subject {
+class FruitModel : public CollectableSubject {
 public:
     // Constructor
-    explicit FruitModel(Coordinate pos) : Subject(pos) {}
-    FruitModel() : Subject({0, 0}) {}
+    explicit FruitModel(Coordinate pos) : CollectableSubject(pos) {}
+    FruitModel() : CollectableSubject({0, 0}) {}
 };
 } // namespace logic
 #endif // PACMAN_FRUITMODEL_H

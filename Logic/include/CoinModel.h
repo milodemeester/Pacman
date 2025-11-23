@@ -5,19 +5,14 @@
 #ifndef PACMAN_COINMODEL_H
 #define PACMAN_COINMODEL_H
 #include "../../Utilities/utils.h"
-#include "Subject.h"
+#include "CollectableSubject.h"
 
 namespace logic {
-class CoinModel : public Subject {
+class CoinModel : public CollectableSubject {
 public:
     // Constructor
-    explicit CoinModel(Coordinate pos) : Subject(pos) {}
-    CoinModel() : Subject({0, 0}) {}
-
-    /**
-     * @brief this function notifies observers that it is destructed
-     */
-    void destruct();
+    explicit CoinModel(Coordinate pos) : CollectableSubject(pos) {}
+    CoinModel() : CollectableSubject({0, 0}) {}
 };
 } // namespace logic
 

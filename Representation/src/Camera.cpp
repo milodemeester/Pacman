@@ -6,16 +6,16 @@
 #include <algorithm>
 
 void representation::Camera::updateScreenSize(sf::Vector2u windowSize, sf::Vector2f worldSize) {
-    // 1. Definieer het tekengebied (bovenste 90%)
+    // 1. Definieer het speel veld (bovenste 90%)
     float bottom_ui_offset = windowSize.y * 0.1f;
     sf::Vector2u game_area_size(windowSize.x, windowSize.y - bottom_ui_offset);
 
-    // 2. Bepaal de afmetingen van het vierkant
+    // 2. Bepaal de afmetingen vh vierkant
     int square_length = std::min(game_area_size.x, game_area_size.y);
     int x_balk = game_area_size.x - square_length;
     int y_balk = game_area_size.y - square_length;
 
-    // 3. Bereken block size en bordafmetingen in pixels
+    // 3. Bereken block size en boardafmetingen in pixels
     block_size_ = square_length / std::max(worldSize.x, worldSize.y);
     board_width_in_pixels_ = block_size_ * worldSize.x;
     board_height_in_pixels_ = block_size_ * worldSize.y;

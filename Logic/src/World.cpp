@@ -2,22 +2,22 @@
 // Created by milod on 30/10/2025.
 //
 
-#include <fstream>
-#include <vector>
-#include <memory>
 #include "../include/World.h"
-#include "../include/GhostModel.h"
-#include "../include/PacmanModel.h"
-#include "../include/Subject.h"
-#include "../include/WallModel.h"
-#include "../include/FruitModel.h"
-#include "../include/CoinModel.h"
-#include "../include/GameFactory.h"
-#include "../include/InkyModel.h"
-#include "../include/PinkyModel.h"
 #include "../include/BlinkyModel.h"
 #include "../include/ClydeModel.h"
-
+#include "../include/CoinModel.h"
+#include "../include/FruitModel.h"
+#include "../include/GameFactory.h"
+#include "../include/GhostModel.h"
+#include "../include/InkyModel.h"
+#include "../include/PacmanModel.h"
+#include "../include/PinkyModel.h"
+#include "../include/Stopwatch.h"
+#include "../include/Subject.h"
+#include "../include/WallModel.h"
+#include <fstream>
+#include <memory>
+#include <vector>
 
 logic::World::World(const std::shared_ptr<GameFactory>& factory) {
     // initialise the width and height and create all the entities.
@@ -147,10 +147,11 @@ bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entit
     return false; // No collision.
 }
 
-bool logic::World::check_coin_collision(Coordinate& entity_pos, double entity_speed) {
+logic::Event logic::World::check_collectable_collision(Coordinate& entity_pos, double entity_speed) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
+            std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(entity);
             if (coin_model) {
                 // Define the wall's bounding box (remains the same).
                 Coordinate entity2_left_upper_corner = {coin_model->get_position().getX(),
@@ -160,15 +161,29 @@ bool logic::World::check_coin_collision(Coordinate& entity_pos, double entity_sp
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (check_collision(entity_pos, entity2_rect, entity_speed)) {
                     remove_entity(coin_model);
-                    return true;
+                    return Event::CoinCollected;
+                }
+            }
+            else if (fruit_model) {
+                // Define the wall's bounding box (remains the same).
+                Coordinate entity2_left_upper_corner = {fruit_model->get_position().getX(),
+                    fruit_model->get_position().getY()};
+                Coordinate entity2_right_lower_corner = {fruit_model->get_position().getX(),
+                    fruit_model->get_position().getY()};
+                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                    remove_entity(fruit_model);
+                    auto score = Stopwatch::getInstance();
+                    fear_mode_begin = std::chrono::system_clock::now();
+                    return Event::FruitEaten;
                 }
             }
         }
     }
-    return false; // No collision.
+    return Event::Nothing; // No collision.
 }
 
-void logic::World::remove_entity(std::shared_ptr<CoinModel> model) {
+void logic::World::remove_entity(std::shared_ptr<CollectableSubject> model) {
     for (auto& vec : entities) {
         for (int i = 0; i < vec.size(); i++) {
             if (std::dynamic_pointer_cast<Subject>(model) == vec[i]) {
@@ -185,6 +200,19 @@ void logic::World::move_pacman(logic::Direction direction) {
 
 
 void logic::World::update(float delta_time) {
+    auto stopwatch = Stopwatch::getInstance();
+    if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < 6000) {
+        pinky->set_fear_mode(true);
+        inky->set_fear_mode(true);
+        blinky->set_fear_mode(true);
+        clyde->set_fear_mode(true);
+    }
+    else {
+        pinky->set_fear_mode(false);
+        inky->set_fear_mode(false);
+        blinky->set_fear_mode(false);
+        clyde->set_fear_mode(false);
+    }
     pacman->update(delta_time, *this);
     pinky->update(delta_time, *this);
     inky->update(delta_time, *this);

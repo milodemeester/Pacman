@@ -30,8 +30,13 @@ void logic::PacmanModel::update(float dt, World& world) {
     // Anders stopt Pacman gewoon tegen de muur.
     if (!world.check_wall_collision(next_pos, direction_, speed_, false)) {
         set_position(next_pos);
-        if (world.check_coin_collision(next_pos, speed_)) {
+        auto event = world.check_collectable_collision(next_pos, speed_);
+        if (event == Event::CoinCollected) {
             Event e = Event::CoinCollected;
+            notify(e);
+        }
+        else if (event == Event::FruitEaten) {
+            Event e = Event::FruitEaten;
             notify(e);
         }
     }

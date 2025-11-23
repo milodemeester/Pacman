@@ -22,17 +22,21 @@ logic::Score::Score() {
 
 void logic::Score::onNotify(const Subject& entity, Event& e) {
     if (e == Event::CoinCollected) {
-        double standard_increase = 20;
+        double standard_increase = 10;
         auto stopwatch = Stopwatch::getInstance();
         auto now = stopwatch->get_now();
         if (first_coin_collected == false) {
             first_coin_collected = true;
             score += standard_increase;
-        } else {
+        }
+        else {
             double time_between = stopwatch->get_time_between(now, previous_coin_time);
             score += std::lround(standard_increase * (1 / (time_between / 1000)));
         }
         previous_coin_time = now;
+    }
+    else if (e == Event::FruitEaten) {
+        score += 50;
     }
 }
 

@@ -63,7 +63,7 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic
     Coordinate target_location = compute_pacman_forward_pos(world);
 
     std::vector<Direction> best_directions;
-    double smallest_manhattan = std::numeric_limits<double>::max();
+    double best_manhattan = std::numeric_limits<double>::max();
 
     // 2. Evalueer alle mogelijke richtingen (behalve omkeren)
     auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
@@ -72,19 +72,39 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic
         // Simuleer een stap in deze richting
         Coordinate next_pos = calculate_new_position(dt, direction, current_location);
 
-        // Controleer of de zet geldig is (geen muur)
-        if (!world.check_wall_collision(next_pos, direction, speed_, true)) {
-            next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
-            double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
+        if (chasing_mode) {
+            // Controleer of de zet geldig is (geen muur)
+            if (!world.check_wall_collision(next_pos, direction, speed_, true)) {
+                next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
+                double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
 
-            if (mnhtn_distance < smallest_manhattan) {
-                // Dit is een nieuwe, betere richting.
-                smallest_manhattan = mnhtn_distance;
-                best_directions.clear();
-                best_directions.push_back(direction);
-            } else if (mnhtn_distance == smallest_manhattan) {
-                // Er is een gelijkspel. Voeg deze richting toe aan de opties.
-                best_directions.push_back(direction);
+                if (mnhtn_distance < best_manhattan) {
+                    // Dit is een nieuwe, betere richting.
+                    best_manhattan = mnhtn_distance;
+                    best_directions.clear();
+                    best_directions.push_back(direction);
+                } else if (mnhtn_distance == best_manhattan) {
+                    // Er is een gelijkspel. Voeg deze richting toe aan de opties.
+                    best_directions.push_back(direction);
+                }
+            }
+        }
+        else {
+            best_manhattan = std::numeric_limits<double>::min();
+            // Controleer of de zet geldig is (geen muur)
+            if (!world.check_wall_collision(next_pos, direction, speed_, true)) {
+                next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
+                double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
+
+                if (mnhtn_distance > best_manhattan) {
+                    // Dit is een nieuwe, betere richting.
+                    best_manhattan = mnhtn_distance;
+                    best_directions.clear();
+                    best_directions.push_back(direction);
+                } else if (mnhtn_distance == best_manhattan) {
+                    // Er is een gelijkspel. Voeg deze richting toe aan de opties.
+                    best_directions.push_back(direction);
+                }
             }
         }
     }

@@ -3,8 +3,3 @@
 //
 
 #include "../include/CoinModel.h"
-
-void logic::CoinModel::destruct() {
-    Event e = Event::EntityDestruct;
-    notify(e);
-}

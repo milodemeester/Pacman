@@ -89,6 +89,8 @@ if (BUILD_GAME_EXE)
             Logic/include/BlinkyModel.h
             Logic/src/ClydeModel.cpp
             Logic/include/ClydeModel.h
+            Logic/src/CollectableSubject.cpp
+            Logic/include/CollectableSubject.h
     )
     target_link_libraries(pacman PRIVATE pacman_logic sfml-graphics sfml-window sfml-system)
 endif ()

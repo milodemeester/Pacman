@@ -47,6 +47,8 @@ public:
      * @param dt the delta time between this update and the update prior to this one
      */
     void update(float dt);
+
+    void set_fear_mode(bool is_fear);
 };
 }
 
