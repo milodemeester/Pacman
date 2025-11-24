@@ -29,6 +29,10 @@ public:
      */
     std::pair<logic::Direction,Coordinate> get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt,
                                                              logic::World& world);
+
+    void go_to_center() override;
+
+    void reset_() override;
 };
 }
 #endif // PACMAN_CLYDEMODEL_H

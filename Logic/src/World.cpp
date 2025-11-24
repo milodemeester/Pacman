@@ -15,6 +15,7 @@
 #include "../include/Stopwatch.h"
 #include "../include/Subject.h"
 #include "../include/WallModel.h"
+#include "../include/Score.h"
 #include <fstream>
 #include <memory>
 #include <vector>
@@ -148,11 +149,12 @@ bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entit
     return false; // No collision.
 }
 
-logic::Event logic::World::check_collectable_collision(Coordinate& entity_pos, double entity_speed) {
+logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double entity_speed) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
             std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(entity);
+            std::shared_ptr<GhostModel> ghost_model = std::dynamic_pointer_cast<GhostModel>(entity);
             if (coin_model) {
                 // Define the wall's bounding box (remains the same).
                 Coordinate entity2_left_upper_corner = {coin_model->get_position().getX(),
@@ -177,6 +179,22 @@ logic::Event logic::World::check_collectable_collision(Coordinate& entity_pos, d
                     auto score = Stopwatch::getInstance();
                     fear_mode_begin = std::chrono::system_clock::now();
                     return Event::FruitEaten;
+                }
+            }
+            else if (ghost_model) {
+                // Define the wall's bounding box (remains the same).
+                Coordinate entity2_left_upper_corner = {ghost_model->get_position().getX(),
+                    ghost_model->get_position().getY()};
+                Coordinate entity2_right_lower_corner = {ghost_model->get_position().getX(),
+                    ghost_model->get_position().getY()};
+                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                    if (pacman_dead(ghost_model)) {
+                        return Event::PacmanDied;
+                    }
+                    else {
+                        return Event::GhostEaten;
+                    }
                 }
             }
         }
@@ -221,13 +239,36 @@ void logic::World::update(float delta_time) {
     clyde->update(delta_time, *this);
 }
 
+bool logic::World::pacman_dead(std::shared_ptr<logic::GhostModel> model) {
+    bool fear_mode = !model->is_chasing_mode();
+    if (fear_mode) {
+        model->go_to_center();
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 [[nodiscard]] logic::Direction logic::World::get_pacman_direction() const {
     return pacman->get_direction();
 }
 [[nodiscard]] Coordinate logic::World::get_pacman_position() const {
     return pacman->get_position();
 }
+[[nodiscard]] int logic::World::get_pacman_lives() const {
+    return pacman->get_lives();
+}
 
 void logic::World::begin_fear_mode() {
     fear_mode_begin = std::chrono::system_clock::now();
+}
+
+void logic::World::reset_() {
+    for (auto& vector : entities) {
+        for (auto& entity : vector) {
+            entity->reset_();
+            int a = 1;
+        }
+    }
 }

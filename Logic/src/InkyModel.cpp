@@ -6,12 +6,24 @@
 
 #include "../include/Random.h"
 #include "../include/World.h"
+#include "../include/Stopwatch.h"
 
 #include <map>
 #include <algorithm> // Nodig voor std::find
 
 logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
     wait_time = 0;
+}
+
+void logic::InkyModel::reset_() {
+    GhostModel::reset_();
+    wait_time = 0;
+    auto stopwatch = Stopwatch::getInstance();
+    initialize_time = stopwatch->get_now();
+}
+
+void logic::InkyModel::go_to_center() {
+    set_position(starting_position_);
 }
 
 void logic::InkyModel::update(float dt, World& world) {

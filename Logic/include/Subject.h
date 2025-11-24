@@ -16,7 +16,6 @@ class Observer;
 
 class Subject : public std::enable_shared_from_this<Subject> {
     std::vector<Observer*> observers_; // vector with all of the observers
-
 protected:
     /**
      * @brief notifies all the observers of a certain event
@@ -25,7 +24,8 @@ protected:
     void notify(Event event);
 
     Coordinate position_; // the current position of the subject
-
+    Coordinate starting_position_; // the position where the entity spawned in
+    bool is_complete = false; // waits until location is set
 public:
     // constructor
     explicit Subject(Coordinate pos) : position_(pos) {}
@@ -53,6 +53,8 @@ public:
      * @param observer a pointer to the observer that needs to be removed
      */
     void removeObserver(Observer* observer);
+
+    virtual void reset_();
 };
 
 class MoveableSubject : public Subject {

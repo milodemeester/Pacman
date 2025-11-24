@@ -48,6 +48,8 @@ class World {
      */
     void initialise_maze();
 
+    bool pacman_dead(std::shared_ptr<GhostModel> model);
+
     std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities int he world
     int width; // width of the world
     int height; // height of the world
@@ -74,12 +76,12 @@ public:
     bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost);
 
     /**
-     * @brief checks if there is a coin where the entity wants to go
+     * @brief checks if there is an entity where the entity wants to go
      * @param new_pos the new position of the entity
      * @param entity_speed the speed of the entity
      * @return a boolean value that determines if there is a collission
      */
-    logic::Event check_collectable_collision(Coordinate& new_pos, double entity_speed);
+    logic::Event check_entity_collision(Coordinate& new_pos, double entity_speed);
 
     /**
      * @brief updates every "important entity in the world"
@@ -95,6 +97,8 @@ public:
 
     void begin_fear_mode();
 
+    void reset_();
+
 
     // getters
     [[nodiscard]] int get_width() const { return width; }
@@ -102,6 +106,7 @@ public:
     [[nodiscard]] Direction get_wanted_pacman_direction() const { return wanted_pacman_direction; }
     [[nodiscard]] Direction get_pacman_direction() const;
     [[nodiscard]] Coordinate get_pacman_position() const;
+    [[nodiscard]] int get_pacman_lives() const;
 
 };
 } // namespace logic

@@ -2,8 +2,9 @@
 // Created by milo on 11/20/25.
 //
 #include "../include/ClydeModel.h"
-#include "../include/World.h"
 #include "../include/Random.h"
+#include "../include/Stopwatch.h"
+#include "../include/World.h"
 
 logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
     wait_time = 10000;
@@ -103,4 +104,15 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(logic
     // 4. Bereken de uiteindelijke nieuwe positie en retourneer de staat.
     Coordinate final_pos = calculate_new_position(dt, chosen_direction, current_location);
     return {chosen_direction, final_pos};
+}
+
+void logic::ClydeModel::go_to_center() {
+    set_position(starting_position_);
+}
+
+void logic::ClydeModel::reset_() {
+    GhostModel::reset_();
+    wait_time = 10000;
+    auto stopwatch = Stopwatch::getInstance();
+    initialize_time = stopwatch->get_now();
 }

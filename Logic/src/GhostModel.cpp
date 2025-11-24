@@ -72,3 +72,7 @@ void logic::GhostModel::set_chase_mode() {
     Event e = Event::ChaseMode;
     notify(e);
 }
+
+bool logic::GhostModel::is_chasing_mode() {
+    return chasing_mode;
+}

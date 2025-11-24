@@ -13,6 +13,7 @@ class PacmanModel : public MoveableSubject {
 protected:
     double get_speed() override;
     double speed_ = 0.008; // measured in pixel/ms
+    int lives = 3;
 public:
     /**
      * @brief constructor
@@ -29,6 +30,8 @@ public:
      * @param world the world that pacman lives in
      */
     void update(float dt, World& world) override;
+
+    int get_lives();
 };
 } // namespace logic
 

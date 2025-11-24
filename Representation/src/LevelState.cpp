@@ -22,13 +22,17 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
       factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_) {
 
     // Font inladen
-    if (!scoreFont_.loadFromFile("../data/fonts/score_font.TTF")) {
+    if (!font_.loadFromFile("../data/fonts/score_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
 
-    scoreTitle_.setFont(scoreFont_);
-    scoreTitle_.setFillColor(sf::Color::White);
+    scoreTitle_.setFont(font_);
+    scoreTitle_.setFillColor(sf::Color::Yellow);
     scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
+
+    livesTitle_.setFont(font_);
+    livesTitle_.setFillColor(sf::Color::Yellow);
+    livesTitle_.setString("#Lives: " + std::to_string(world_.get_pacman_lives()));
 
     // Camera initialiseren
     camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
@@ -94,6 +98,7 @@ void representation::LevelState::render(sf::RenderWindow& window) {
 
     updateLayout(window.getSize());
     window.draw(scoreTitle_);
+    window.draw(livesTitle_);
 }
 
 void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
@@ -117,6 +122,19 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
     scoreTitle_.setCharacterSize(camera_->getBlockSize());
     scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
 
+    sf::FloatRect bounds = scoreTitle_.getLocalBounds();
+    scoreTitle_.setOrigin(bounds.left, bounds.top + bounds.height / 2.f);
+
     // Horizontaal gecentreerd in het venster; verticaal: midden van UI-balk onder het bord
     scoreTitle_.setPosition(camera_->getBoardLeftX(), board_bottom + ui_bar_height / 2.f);
+
+    // Update de lives tekst en grootte
+    livesTitle_.setCharacterSize(camera_->getBlockSize());
+    livesTitle_.setString("#Lives: " + std::to_string(world_.get_pacman_lives()));
+
+    bounds = livesTitle_.getLocalBounds();
+    livesTitle_.setOrigin(bounds.left + bounds.width, bounds.top + bounds.height / 2.f);
+
+    // Horizontaal gecentreerd in het venster; verticaal: midden van UI-balk onder het bord
+    livesTitle_.setPosition(camera_->getBoardLeftX() + camera_->getBlockSize()*world_.get_width(), board_bottom + ui_bar_height / 2.f);
 }

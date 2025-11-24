@@ -28,8 +28,9 @@ class LevelState final : public representation::State {
     logic::World world_;
     std::vector<std::shared_ptr<representation::EntityView>> views_;
 
-    sf::Font scoreFont_;
+    sf::Font font_;
     sf::Text scoreTitle_;
+    sf::Text livesTitle_;
 
 public:
     LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score,

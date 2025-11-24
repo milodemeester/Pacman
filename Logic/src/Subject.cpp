@@ -7,6 +7,10 @@
 
 void logic::Subject::set_position(const Coordinate& position) {
     this->position_ = position;
+    if (!is_complete) {
+        starting_position_ = position;
+        is_complete = true;
+    }
     Event event = Event::EntityPositionChanged;
     notify(event);
 }
@@ -60,4 +64,8 @@ Coordinate logic::MoveableSubject::calculate_new_position(float dt, logic::Direc
     }
     }
     return {new_x, new_y};
+}
+
+void logic::Subject::reset_() {
+    set_position(starting_position_);
 }
