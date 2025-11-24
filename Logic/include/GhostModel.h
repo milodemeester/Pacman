@@ -17,7 +17,7 @@ enum class GhostType { Inky, Blinky, Pinky, Clyde };
 
 class GhostModel : public MoveableSubject {
 protected:
-    double speed_ = 0.005; // measured in pixel/ms
+    double speed_ = 0.007; // measured in pixel/ms
     double get_speed() override;
 
     /**
@@ -37,6 +37,7 @@ protected:
     std::chrono::system_clock::time_point initialize_time; // the time_point where this object was initialized
     double wait_time = 0; // the time the ghost has to wait before it can escape the center
     bool chasing_mode = true; // false = fear mode, true = chasing mode
+    bool was_frightened_ = false; // onthoud vorige frightened state zodat we overgang detecteren
     bool waiting = true;
 public:
     // constructor
@@ -48,7 +49,9 @@ public:
      */
     void update(float dt);
 
-    void set_fear_mode(bool is_fear);
+    void set_fear_mode();
+
+    void set_chase_mode();
 };
 }
 

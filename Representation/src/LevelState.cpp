@@ -20,20 +20,21 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
                                        std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera)
     : State(manager), score_(score), camera_(camera), spriteMap_("../data/sprite.png"),
       factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_) {
-    camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
 
-    updateLayout(windowSize);
-
-    views_ = factory_->getCreatedViews();
-
+    // Font inladen
     if (!scoreFont_.loadFromFile("../data/fonts/score_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
 
-    // --- Score text ---
     scoreTitle_.setFont(scoreFont_);
     scoreTitle_.setFillColor(sf::Color::White);
-    scoreTitle_.setString("Score: 0");
+    scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
+
+    // Camera initialiseren
+    camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
+    updateLayout(windowSize);
+
+    views_ = factory_->getCreatedViews();
 }
 
 void representation::LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
@@ -96,23 +97,26 @@ void representation::LevelState::render(sf::RenderWindow& window) {
 }
 
 void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
-    float window_width = windowSize.x;
-    float window_height = windowSize.y;
+    float window_width = static_cast<float>(windowSize.x);
+    float window_height = static_cast<float>(windowSize.y);
 
-    // Haal de positie van de onderkant van het bord direct uit de camera
+    // Opgeslagen pos van onderkant speelbord in cameraa
     float board_bottom = camera_->getBoardBottomY();
 
-    // Bepaal het midden van de UI-balk die eronder zit
-    float ui_bar_center_y = board_bottom + (window_height - board_bottom) / 2.0f;
-    unsigned int char_size = (window_height - board_bottom) * 0.4f;
+    // Hoogte die is "gereserveerd" voor de UI onder het bord
+    float ui_bar_height = std::max(0.f, window_height - board_bottom);
 
-    // Update de score tekst
-    std::string score = "Score: " + std::to_string(score_->get_score());
-    scoreTitle_.setString(score);
-    scoreTitle_.setCharacterSize(char_size);
+    // Bereken character size op basis van UI-balk hoogte
+    unsigned int char_size = static_cast<unsigned int>(std::max(12.f, ui_bar_height * 0.45f));
+    unsigned int char_size_max = static_cast<unsigned int>(std::max(24.f, (window_width + window_height) / 40.f));
+    if (char_size > char_size_max) {
+        char_size = char_size_max;
+    }
 
-    // Centreer en positioneer de tekst
-    sf::FloatRect bounds = scoreTitle_.getLocalBounds();
-    // scoreTitle_.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
-    scoreTitle_.setPosition(window_width / 4.f, ui_bar_center_y);
+    // Update de score tekst en grootte
+    scoreTitle_.setCharacterSize(camera_->getBlockSize());
+    scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
+
+    // Horizontaal gecentreerd in het venster; verticaal: midden van UI-balk onder het bord
+    scoreTitle_.setPosition(camera_->getBoardLeftX(), board_bottom + ui_bar_height / 2.f);
 }

@@ -6,7 +6,9 @@
 #include "../../Logic/include/GhostModel.h"
 #include "../include/Camera.h"
 #include "../include/SpriteMap.h"
+
 #include <SFML/Graphics/Sprite.hpp>
+#include <iostream>
 
 representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map,
                                      logic::GhostType type)
@@ -15,6 +17,10 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
     world_direction = model->get_direction();
     world_pos_ = model->get_position();
     // ----------- sprites -----------
+    sf::Sprite FEAR_MODE_1 = sprite_map.getSprite(sf::IntRect(1, 554 ,33, 33));
+    sf::Sprite FEAR_MODE_2 = sprite_map.getSprite(sf::IntRect(1, 604, 33, 33));
+    std::vector<sf::Sprite> NoDir{FEAR_MODE_1, FEAR_MODE_2};
+    animation_sequences[logic::Direction::NoDirection] = NoDir;
 
     if (type == logic::GhostType::Blinky) {
         // ----------- blinky -----------
@@ -120,13 +126,27 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
          world_direction = model->get_direction();
         break;
     }
+    case (logic::Event::FearMode): {
+        fear_mode = true;
+        break;
+    }
+    case (logic::Event::ChaseMode): {
+        fear_mode = false;
+        break;
+    }
     }
 }
 
 void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     auto screen = cam->worldToScreen(world_pos_, {35, 35});
     sf::Vector2f new_coords = screen.first;
-    std::vector<sf::Sprite> sprite_sequence = animation_sequences.at(world_direction);
+    std::vector<sf::Sprite> sprite_sequence;
+    if (fear_mode) {
+        sprite_sequence = animation_sequences[logic::Direction::NoDirection];
+    }
+    else {
+        sprite_sequence = animation_sequences.at(world_direction);
+    }
     sf::Sprite& sprite = sprite_sequence.at(current_sprite_index);
     sf::Vector2f sprite_size = screen.second;
     sprite.setScale(sprite_size);
@@ -138,7 +158,13 @@ void representation::GhostView::update(double dt) {
     animation_timer += dt;
     if (animation_timer > animation_speed) {
         animation_timer = 0.0f;
-        std::vector<sf::Sprite> crnt_sequence = animation_sequences.at(world_direction);
+        std::vector<sf::Sprite> crnt_sequence;
+        if (fear_mode) {
+            crnt_sequence = animation_sequences.at(logic::Direction::NoDirection);
+        }
+        else {
+            crnt_sequence = animation_sequences.at(world_direction);
+        }
         current_sprite_index += 1;
         current_sprite_index %= crnt_sequence.size();
     }

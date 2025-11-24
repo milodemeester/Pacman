@@ -30,6 +30,10 @@ public:
      */
     [[nodiscard]] float getBoardBottomY() const;
 
+    [[nodiscard]] float getBoardLeftX() const;
+
+    [[nodiscard]] float getBlockSize() const;
+
     [[nodiscard]] sf::Vector2f get_world_size() const { return worldSize; }
 
     void set_world_size(const sf::Vector2f& world_size) { worldSize = world_size; }

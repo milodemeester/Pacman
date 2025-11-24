@@ -54,6 +54,9 @@ enum class GhostSpriteState {
     CLYDED_DOWN_2,
     CLYDED_UP_1,
     CLYDED_UP_2,
+    // FEAR
+    FEAR_MODE_1,
+    FEAR_MODE_2
 };
 
 namespace logic {
@@ -72,6 +75,7 @@ class GhostView : public representation::EntityView, public logic::Observer {
     double animation_timer = 0.0;
     const double animation_speed = 125; // 125 ms = 0.125s
     Coordinate world_pos_;
+    bool fear_mode = false;
 
 public:
     explicit GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, logic::GhostType ghost_type);

@@ -26,16 +26,34 @@ void logic::ClydeModel::update(float dt, World& world) {
 }
 
 std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+    // Als we net in frightened zijn gekomen, keer dan direct om en geef die stap terug.
+    if (!chasing_mode && !was_frightened_) {
+        was_frightened_ = true;
+        Direction reversed = get_opposite_direction(current_direction);
+        Coordinate final_pos = calculate_new_position(dt, reversed, current_location);
+        return {reversed, final_pos};
+    }
+
+    // Als we niet meer frightened zijn, reset de flag zodat een toekomstige overgang weer detecteerbaar is.
+    if (chasing_mode) {
+        was_frightened_ = false;
+    }
+
     // 1. Bepaal het doelwit "voor" Pac-Man
     Coordinate pac_pos = world.get_pacman_position();
     Coordinate target_location = {((pac_pos.getX()+1)/2)*world_width_, ((pac_pos.getY()+1)/2)*world_height_};
 
     std::vector<Direction> best_directions;
-    double smallest_manhattan = std::numeric_limits<double>::max();
+    double best_manhattan;
+    if (chasing_mode) {
+        best_manhattan = std::numeric_limits<double>::max();
+    }
+    else {
+        best_manhattan = std::numeric_limits<double>::min();
+    }
 
     // 2. Evalueer alle mogelijke richtingen (behalve omkeren)
     auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
-    //std::vector<Direction> possible_directions = {Direction::East, Direction::North, Direction::South, Direction::West};
 
     for (auto& direction : possible_directions) {
         // Simuleer een stap in deze richting
@@ -46,14 +64,27 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(logic
             next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
             double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
 
-            if (mnhtn_distance < smallest_manhattan) {
-                // Dit is een nieuwe, betere richting.
-                smallest_manhattan = mnhtn_distance;
-                best_directions.clear();
-                best_directions.push_back(direction);
-            } else if (mnhtn_distance == smallest_manhattan) {
-                // Er is een gelijkspel. Voeg deze richting toe aan de opties.
-                best_directions.push_back(direction);
+            if (chasing_mode) {
+                if (mnhtn_distance < best_manhattan) {
+                    // Dit is een nieuwe, betere richting.
+                    best_manhattan = mnhtn_distance;
+                    best_directions.clear();
+                    best_directions.push_back(direction);
+                } else if (mnhtn_distance == best_manhattan) {
+                    // Er is een gelijkspel. Voeg deze richting toe aan de opties.
+                    best_directions.push_back(direction);
+                }
+            }
+            else {
+                if (mnhtn_distance > best_manhattan) {
+                    // Dit is een nieuwe, betere richting.
+                    best_manhattan = mnhtn_distance;
+                    best_directions.clear();
+                    best_directions.push_back(direction);
+                } else if (mnhtn_distance == best_manhattan) {
+                    // Er is een gelijkspel. Voeg deze richting toe aan de opties.
+                    best_directions.push_back(direction);
+                }
             }
         }
     }

@@ -93,6 +93,8 @@ public:
      */
     void move_pacman(logic::Direction dir);
 
+    void begin_fear_mode();
+
 
     // getters
     [[nodiscard]] int get_width() const { return width; }

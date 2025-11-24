@@ -38,6 +38,7 @@ void logic::PacmanModel::update(float dt, World& world) {
         else if (event == Event::FruitEaten) {
             Event e = Event::FruitEaten;
             notify(e);
+            world.begin_fear_mode();
         }
     }
 }

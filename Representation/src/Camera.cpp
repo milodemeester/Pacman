@@ -4,6 +4,7 @@
 
 #include "../include/Camera.h"
 #include <algorithm>
+#include <limits>
 
 void representation::Camera::updateScreenSize(sf::Vector2u windowSize, sf::Vector2f worldSize) {
     // 1. Definieer het speel veld (bovenste 90%)
@@ -20,7 +21,7 @@ void representation::Camera::updateScreenSize(sf::Vector2u windowSize, sf::Vecto
     board_width_in_pixels_ = block_size_ * worldSize.x;
     board_height_in_pixels_ = block_size_ * worldSize.y;
 
-    // 4. Bereken 'padding' binnen het vierkant
+    // 4. Bereken zwarte balk binnen het vierkant
     float extra_x = square_length - board_width_in_pixels_;
     float extra_y = square_length - board_height_in_pixels_;
 
@@ -46,4 +47,14 @@ std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(Coor
     return {sf::Vector2f(screen_x, screen_y), scale};
 }
 
-float representation::Camera::getBoardBottomY() const { return board_bottom_y_; }
+float representation::Camera::getBoardBottomY() const {
+    return board_bottom_y_;
+}
+
+float representation::Camera::getBoardLeftX() const {
+    return left_offset_;
+}
+
+[[nodiscard]] float representation::Camera::getBlockSize() const {
+    return block_size_;
+}

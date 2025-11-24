@@ -15,7 +15,8 @@ enum class Event {
     FruitEaten,
     EntityDestruct,
     Nothing,
-    FearMode
+    FearMode,
+    ChaseMode
     // ...
 };
 } // namespace logic

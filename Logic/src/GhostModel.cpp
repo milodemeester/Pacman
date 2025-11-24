@@ -61,8 +61,14 @@ double logic::GhostModel::get_speed() {
     return speed_;
 }
 
-void logic::GhostModel::set_fear_mode(bool is_fear) {
-    chasing_mode = !is_fear;
-    Event e = Event::FearMode; // TODO sprite toevoegen voor fearmode in view
+void logic::GhostModel::set_fear_mode() {
+    chasing_mode = false;
+    Event e = Event::FearMode;
+    notify(e);
+}
+
+void logic::GhostModel::set_chase_mode() {
+    chasing_mode = true;
+    Event e = Event::ChaseMode;
     notify(e);
 }

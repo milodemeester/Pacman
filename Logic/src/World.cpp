@@ -24,6 +24,7 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory) {
     game_factory = factory;
     initialise_maze();
 }
+
 void logic::World::initialise_maze() {
     int line = 0;
     std::string maze_line;
@@ -202,16 +203,16 @@ void logic::World::move_pacman(logic::Direction direction) {
 void logic::World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();
     if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < 6000) {
-        pinky->set_fear_mode(true);
-        inky->set_fear_mode(true);
-        blinky->set_fear_mode(true);
-        clyde->set_fear_mode(true);
+        pinky->set_fear_mode();
+        inky->set_fear_mode();
+        blinky->set_fear_mode();
+        clyde->set_fear_mode();
     }
     else {
-        pinky->set_fear_mode(false);
-        inky->set_fear_mode(false);
-        blinky->set_fear_mode(false);
-        clyde->set_fear_mode(false);
+        pinky->set_chase_mode();
+        inky->set_chase_mode();
+        blinky->set_chase_mode();
+        clyde->set_chase_mode();
     }
     pacman->update(delta_time, *this);
     pinky->update(delta_time, *this);
@@ -225,4 +226,8 @@ void logic::World::update(float delta_time) {
 }
 [[nodiscard]] Coordinate logic::World::get_pacman_position() const {
     return pacman->get_position();
+}
+
+void logic::World::begin_fear_mode() {
+    fear_mode_begin = std::chrono::system_clock::now();
 }

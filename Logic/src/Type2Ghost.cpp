@@ -59,6 +59,18 @@ Coordinate compute_pacman_forward_pos(logic::World& world) {
 }
 
 std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+    // Als we net in frightened zijn gekomen, keer dan direct om en geef die stap terug.
+    if (!chasing_mode && !was_frightened_) {
+        was_frightened_ = true;
+        Direction reversed = get_opposite_direction(current_direction);
+        Coordinate final_pos = calculate_new_position(dt, reversed, current_location);
+        return {reversed, final_pos};
+    }
+
+    // Als we niet meer frightened zijn, reset de flag zodat een toekomstige overgang weer detecteerbaar is.
+    if (chasing_mode) {
+        was_frightened_ = false;
+    }
     // 1. Bepaal het doelwit "voor" Pac-Man
     Coordinate target_location = compute_pacman_forward_pos(world);
 
@@ -71,13 +83,10 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic
     for (auto& direction : possible_directions) {
         // Simuleer een stap in deze richting
         Coordinate next_pos = calculate_new_position(dt, direction, current_location);
-
-        if (chasing_mode) {
-            // Controleer of de zet geldig is (geen muur)
-            if (!world.check_wall_collision(next_pos, direction, speed_, true)) {
-                next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
-                double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
-
+        if (!world.check_wall_collision(next_pos, direction, speed_, true)) {
+            next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
+            double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
+            if (chasing_mode) {
                 if (mnhtn_distance < best_manhattan) {
                     // Dit is een nieuwe, betere richting.
                     best_manhattan = mnhtn_distance;
@@ -88,14 +97,8 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic
                     best_directions.push_back(direction);
                 }
             }
-        }
-        else {
-            best_manhattan = std::numeric_limits<double>::min();
-            // Controleer of de zet geldig is (geen muur)
-            if (!world.check_wall_collision(next_pos, direction, speed_, true)) {
-                next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
-                double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
-
+            else {
+                best_manhattan = std::numeric_limits<double>::min();
                 if (mnhtn_distance > best_manhattan) {
                     // Dit is een nieuwe, betere richting.
                     best_manhattan = mnhtn_distance;
