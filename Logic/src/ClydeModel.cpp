@@ -109,10 +109,3 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(logic
 void logic::ClydeModel::go_to_center() {
     set_position(starting_position_);
 }
-
-void logic::ClydeModel::reset_() {
-    GhostModel::reset_();
-    wait_time = 10000;
-    auto stopwatch = Stopwatch::getInstance();
-    initialize_time = stopwatch->get_now();
-}

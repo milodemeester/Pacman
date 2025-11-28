@@ -12,7 +12,7 @@ representation::Game::Game()
 void representation::Game::run() {
     std::shared_ptr<logic::Score> s = std::make_shared<logic::Score>();
     score_ = s;
-    state_manager_ = std::make_shared<StateManager>(window_.getSize(), score_);
+    state_manager_ = std::make_shared<StateManager>(window_.getSize(), s);
     std::shared_ptr<logic::Stopwatch> stopwatch = logic::Stopwatch::getInstance();
     window_.setVerticalSyncEnabled(true);
 

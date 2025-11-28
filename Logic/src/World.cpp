@@ -56,6 +56,7 @@ void logic::World::initialise_maze() {
                 }
                 case 'C': { // Coin
                     crnt_entity = game_factory->createCoin();
+                    coin_count++;
                     break;
                 }
                 case 'B': { // Blinky
@@ -80,6 +81,7 @@ void logic::World::initialise_maze() {
                 }
                 case 'F': { // Fruit
                     crnt_entity = game_factory->createFruit();
+                    fruit_count++;
                     break;
                 }
                 case 'A': { // Pacman
@@ -167,6 +169,7 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(coin_model);
+                    coin_count--;
                     return Event::CoinCollected;
                 }
             }
@@ -181,6 +184,7 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
                     remove_entity(fruit_model);
                     auto score = Stopwatch::getInstance();
                     fear_mode_begin = std::chrono::system_clock::now();
+                    fruit_count--;
                     return Event::FruitEaten;
                 }
             }
@@ -235,11 +239,15 @@ void logic::World::update(float delta_time) {
         blinky->set_chase_mode();
         clyde->set_chase_mode();
     }
-    pacman->update(delta_time, *this);
     pinky->update(delta_time, *this);
     inky->update(delta_time, *this);
     blinky->update(delta_time, *this);
     clyde->update(delta_time, *this);
+    pacman->update(delta_time, *this);
+    if (fruit_count == 0 && coin_count == 0) {
+        WorldState world_state = WorldState::Victory;
+        set_world_state(world_state);
+    }
 }
 
 bool logic::World::pacman_dead(std::shared_ptr<logic::GhostModel> model) {
@@ -262,16 +270,22 @@ bool logic::World::pacman_dead(std::shared_ptr<logic::GhostModel> model) {
 [[nodiscard]] int logic::World::get_pacman_lives() const {
     return pacman->get_lives();
 }
+[[nodiscard]] logic::WorldState logic::World::get_world_state() const {
+    return world_state_;
+}
 
 void logic::World::begin_fear_mode() {
     fear_mode_begin = std::chrono::system_clock::now();
 }
 
-void logic::World::reset_() {
-    for (auto& vector : entities) {
-        for (auto& entity : vector) {
-            entity->reset_();
-            int a = 1;
-        }
-    }
+void logic::World::return_center() {
+    pacman->go_to_center();
+    inky->go_to_center();
+    blinky->go_to_center();
+    pinky->go_to_center();
+    clyde->go_to_center();
+}
+
+void logic::World::set_world_state(WorldState& world_state) {
+    world_state_ = world_state;
 }

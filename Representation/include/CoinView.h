@@ -15,7 +15,7 @@ class CoinModel;
 namespace representation {
 class SpriteMap;
 class CoinView : public representation::EntityView, public logic::Observer {
-    bool isEaten = false;
+    bool invisible = false;
     Coordinate world_position;
     sf::Sprite sprite;
 

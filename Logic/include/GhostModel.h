@@ -54,8 +54,6 @@ public:
     void set_chase_mode();
 
     bool is_chasing_mode();
-
-    virtual void go_to_center() = 0;
 };
 }
 

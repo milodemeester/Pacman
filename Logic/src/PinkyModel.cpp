@@ -17,10 +17,3 @@ logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, in
 void logic::PinkyModel::go_to_center() {
     set_position(starting_position_);
 }
-
-void logic::PinkyModel::reset_() {
-    GhostModel::reset_();
-    wait_time = 0;
-    auto stopwatch = Stopwatch::getInstance();
-    initialize_time = stopwatch->get_now();
-}

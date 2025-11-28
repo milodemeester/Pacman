@@ -30,28 +30,29 @@ void logic::PacmanModel::update(float dt, World& world) {
     // Anders stopt Pacman gewoon tegen de muur.
     if (!world.check_wall_collision(next_pos, direction_, speed_, false, dt)) {
         set_position(next_pos);
-        auto event = world.check_entity_collision(next_pos, speed_, dt);
-        if (event == Event::CoinCollected) {
-            Event e = Event::CoinCollected;
-            notify(e);
+    }
+    auto event = world.check_entity_collision(next_pos, speed_, dt);
+    if (event == Event::CoinCollected) {
+        Event e = Event::CoinCollected;
+        notify(e);
+    }
+    else if (event == Event::FruitEaten) {
+        Event e = Event::FruitEaten;
+        notify(e);
+        world.begin_fear_mode();
+    }
+    else if (event == Event::PacmanDied) {
+        if (lives > 0) {
+            --lives;
+            world.return_center();
         }
-        else if (event == Event::FruitEaten) {
-            Event e = Event::FruitEaten;
-            notify(e);
-            world.begin_fear_mode();
+        else {
+            WorldState world_state = WorldState::Defeated;
+            world.set_world_state(world_state);
         }
-        else if (event == Event::PacmanDied) {
-            if (lives > 0) {
-                --lives;
-                world.reset_();
-            }
-            else {
-                // TODO game over
-            }
-        }
-        else if (event == Event::GhostEaten) {
-            notify(Event::GhostEaten);
-        }
+    }
+    else if (event == Event::GhostEaten) {
+        notify(Event::GhostEaten);
     }
 }
 
@@ -61,4 +62,8 @@ double logic::PacmanModel::get_speed() {
 
 int logic::PacmanModel::get_lives() {
     return lives;
+}
+
+void logic::PacmanModel::go_to_center() {
+    set_position(starting_position_);
 }

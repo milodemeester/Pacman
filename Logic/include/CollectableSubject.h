@@ -11,7 +11,7 @@ namespace logic{
 class CollectableSubject : public Subject {
 public:
     // constructor
-    CollectableSubject(Coordinate position) : Subject(position) {}
+    explicit CollectableSubject(Coordinate position) : Subject(position) {}
 
     /**
      * @brief this function notifies observers that it is destructed

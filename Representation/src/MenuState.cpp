@@ -17,7 +17,7 @@
 #include <utility>
 
 representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score)
-    : State(sm), score_(std::move(score)) {
+    : State(sm), score_(std::move(score)){
     if (!font_.loadFromFile("../data/fonts/pacman_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
@@ -96,14 +96,16 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
     highScoreTitle_.setPosition(window_width / 2.f, window_height * (20.f / 64.f));
 
     // Scores
+    auto scores = score_->get_high_scores();
     float current_y_ratio = 28.f / 64.f;
-    for (auto& highScore : highScores_) {
-        highScore.setCharacterSize(char_size * 0.9f);
-        sf::FloatRect score_bounds = highScore.getLocalBounds();
+    for (int i = 0; i < highScores_.size(); i++) {
+        highScores_[i].setString(scores[i]);
+        highScores_[i].setCharacterSize(char_size * 0.9f);
+        sf::FloatRect score_bounds = highScores_[i].getLocalBounds();
         // DE FIX: gebruik 'highScore' in plaats van 'highScoreText_'
-        highScore.setOrigin(score_bounds.left + score_bounds.width / 2.0f,
+        highScores_[i].setOrigin(score_bounds.left + score_bounds.width / 2.0f,
                             score_bounds.top + score_bounds.height / 2.0f);
-        highScore.setPosition(window_width / 2.f, window_height * current_y_ratio);
+        highScores_[i].setPosition(window_width / 2.f, window_height * current_y_ratio);
         current_y_ratio += (4.f / 64.f);
     }
 }
@@ -135,5 +137,12 @@ void representation::MenuState::render(sf::RenderWindow& window) {
     window.draw(highScoreTitle_);
     for (const auto& highScore : highScores_) {
         window.draw(highScore);
+    }
+}
+
+void representation::MenuState::update(double dt) {
+    std::vector<std::string> scores = score_->get_high_scores();
+    for (int i = 0; i < 5; i++) {
+        highScores_[i].setString(scores[i]);
     }
 }

@@ -19,14 +19,17 @@ void representation::FruitView::onNotify(const logic::Subject& entity, logic::Ev
             break;
         }
         case (logic::Event::EntityDestruct) : {
-            isEaten = true;
+            invisible = true;
             break;
+        }
+    case(logic::Event::EntityReset) : {
+            invisible = false;
         }
     }
 }
 
 void representation::FruitView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
-    if (!isEaten) {
+    if (!invisible) {
         auto screen = cam->worldToScreen(world_position, {36, 36});
         sf::Vector2f sprite_size = screen.second;
         sf::Vector2f new_coords = screen.first;

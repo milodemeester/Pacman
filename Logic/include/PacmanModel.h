@@ -32,6 +32,8 @@ public:
     void update(float dt, World& world) override;
 
     int get_lives();
+
+    void go_to_center() override;
 };
 } // namespace logic
 

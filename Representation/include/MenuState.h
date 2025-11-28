@@ -33,6 +33,7 @@ public:
     explicit MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score);
     void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
+    void update(double dt) override;
 };
 } // namespace representation
 

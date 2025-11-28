@@ -17,12 +17,14 @@ void representation::CoinView::onNotify(const logic::Subject& entity, logic::Eve
     if (e == logic::Event::EntityPositionChanged) {
         world_position = entity.get_position();
     } else if (e == logic::Event::EntityDestruct) {
-        isEaten = true;
+        invisible = true;
+    } else if (e == logic::Event::EntityReset) {
+        invisible = false;
     }
 }
 
 void representation::CoinView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
-    if (!isEaten) {
+    if (!invisible) {
         auto screen = cam->worldToScreen(world_position, {32, 32});
         sf::Vector2f sprite_size = screen.second;
         sf::Vector2f new_coords = screen.first;

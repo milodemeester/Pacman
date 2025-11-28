@@ -14,8 +14,9 @@ class PinkyModel : public Type2Ghost {
 public:
     PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
 
-    void reset_() override;
-
+    /**
+     * @brief set the location of the ghost to the starting location
+     */
     void go_to_center() override;
 };
 };

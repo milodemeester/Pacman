@@ -16,7 +16,7 @@ namespace representation {
 class Camera;
 
 class FruitView : public representation::EntityView, public logic::Observer {
-    bool isEaten = false;
+    bool invisible = false;
     sf::Sprite sprite;
     Coordinate world_position;
 public:

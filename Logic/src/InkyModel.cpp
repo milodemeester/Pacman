@@ -15,13 +15,6 @@ logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : Gho
     wait_time = 0;
 }
 
-void logic::InkyModel::reset_() {
-    GhostModel::reset_();
-    wait_time = 0;
-    auto stopwatch = Stopwatch::getInstance();
-    initialize_time = stopwatch->get_now();
-}
-
 void logic::InkyModel::go_to_center() {
     set_position(starting_position_);
 }

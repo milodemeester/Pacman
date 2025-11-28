@@ -42,8 +42,6 @@ public:
      */
     std::pair<Direction,Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world);
 
-    void reset_() override;
-
     void go_to_center() override;
 };
 }

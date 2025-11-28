@@ -53,8 +53,6 @@ public:
      * @param observer a pointer to the observer that needs to be removed
      */
     void removeObserver(Observer* observer);
-
-    virtual void reset_();
 };
 
 class MoveableSubject : public Subject {
@@ -98,6 +96,8 @@ public:
      * @param world the world where the MoveableSubject lives in
      */
     virtual void update(float dt, World& world) = 0;
+
+    virtual void go_to_center() = 0;
 };
 } // namespace logic
 

@@ -11,22 +11,18 @@
 
 namespace logic {
 class CollectableSubject;
-}
-namespace logic {
 class ClydeModel;
-}
-namespace logic {
 class BlinkyModel;
-}
-namespace logic {
 class PinkyModel;
-}
-namespace logic {
 class InkyModel;
-}
-namespace logic {
 class GhostModel;
 class PacmanModel;
+
+enum class WorldState {
+    Running,
+    Victory,
+    Defeated,
+};
 
 class World {
     /**
@@ -61,6 +57,9 @@ class World {
     std::shared_ptr<ClydeModel> clyde;
     Direction wanted_pacman_direction;
     std::chrono::system_clock::time_point fear_mode_begin;
+    int coin_count = 0;
+    int fruit_count = 0;
+    WorldState world_state_ = WorldState::Running;
 public:
     // constructor
     explicit World(const std::shared_ptr<GameFactory>& factory);
@@ -97,7 +96,9 @@ public:
 
     void begin_fear_mode();
 
-    void reset_();
+    void return_center();
+
+    void set_world_state(WorldState& world_state);
 
 
     // getters
@@ -107,6 +108,7 @@ public:
     [[nodiscard]] Direction get_pacman_direction() const;
     [[nodiscard]] Coordinate get_pacman_position() const;
     [[nodiscard]] int get_pacman_lives() const;
+    [[nodiscard]] WorldState get_world_state() const;
 
 };
 } // namespace logic

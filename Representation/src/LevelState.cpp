@@ -15,10 +15,11 @@
 #include <SFML/Window/Event.hpp>
 
 #include <iostream>
+#include <utility>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
                                        std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera)
-    : State(manager), score_(score), camera_(camera), spriteMap_("../data/sprite.png"),
+    : State(manager), score_(std::move(score)), camera_(std::move(camera)), spriteMap_("../data/sprite.png"),
       factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_) {
 
     // Font inladen
@@ -73,6 +74,20 @@ void representation::LevelState::update(double delta_time) {
     world_.update(delta_time);
     for (const auto& view : views_) {
         view->update(delta_time);
+    }
+    logic::WorldState world_state = world_.get_world_state();
+    switch (world_state) {
+    case (logic::WorldState::Running):  {
+        return;
+    }
+    case (logic::WorldState::Defeated): {
+        score_->update_high_scores();
+        score_->reset();
+            manager_.pop_state();
+        }
+    case (logic::WorldState::Victory): {
+
+    }
     }
 }
 

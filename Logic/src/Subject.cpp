@@ -65,7 +65,3 @@ Coordinate logic::MoveableSubject::calculate_new_position(float dt, logic::Direc
     }
     return {new_x, new_y};
 }
-
-void logic::Subject::reset_() {
-    set_position(starting_position_);
-}
