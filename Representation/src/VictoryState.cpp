@@ -3,31 +3,72 @@
 //
 
 #include "../include/VictoryState.h"
+
+#include "../../Utilities/utils.h"
+#include "../include/StateManager.h"
+
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/Event.hpp>
 #include <iostream>
 
+representation::VictoryState::VictoryState(StateManager& sm) : State(sm) {
+     texture_.loadFromFile("../data/textures/victory_state_img.png");
+ }
+
+
 void representation::VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
-    // sf::Keyboard::Key key = event->code;
+    if (event.type == sf::Event::Resized) {
+        sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+        window.setView(sf::View(visibleArea));
+    }
+    else if (event.type == sf::Event::MouseButtonPressed) {
+        sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+        if (utils::contains(Coordinate(btnLeft_, btnTop_), Coordinate(btnRight_, btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
+            manager_.pop_state();
+        }
+    }
 }
 
 void representation::VictoryState::render(sf::RenderWindow& window) {
-    sf::Font font;
-    if (!font.loadFromFile("../data/fonts/pacman_font.TTF")) {
-        std::cerr << "Failed to load font." << std::endl;
-    }
-    sf::Text text;
-    text.setString("VICTORY STATE");
-    float character_size = (window.getSize().x / 32 + window.getSize().y / 32); // TODO: make this dynamic
-    text.setCharacterSize(character_size);
-    text.setFillColor(sf::Color::Yellow);
-    sf::Vector2u window_size = window.getSize();
-    float window_width = window_size.x;
-    float window_height = window_size.y;
-    text.setOrigin(text.getGlobalBounds().getSize() / 2.f +
-                   text.getLocalBounds().getPosition()); // set origin to center of the text
-    text.setPosition(
-        {window_width / 2 - 12, window_height - character_size}); // set position of the text to center of screen
-    window.draw(text);
+    sf::Sprite sprite;
+    sprite.setTexture(texture_);
+    sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
+    auto winSize = window.getSize();
+    auto local = sprite.getLocalBounds();
+
+    float scaleX = winSize.x / local.width;
+    float scaleY = winSize.y / local.height;
+
+    float scale = std::min(scaleX, scaleY);
+
+    sprite.setPosition(winSize.x / 2.f, winSize.y / 2.f);
+    sprite.setScale(scale, scale);
+    window.draw(sprite);
+
+    float imgW = local.width;   // 1024
+    float imgH = local.height;  // 1536
+
+    auto size = window.getSize();
+
+    float scaledW = imgW * scale;
+    float scaledH = imgH * scale;
+
+    float spriteLeft = (size.x - scaledW) / 2.f;
+    float spriteTop  = (size.y - scaledH) / 2.f;
+
+    btnLeft_   = spriteLeft + scaledW * 0.13f;
+    btnTop_    = spriteTop  + scaledH * 0.67f;
+    btnRight_  = spriteLeft + scaledW * 0.87f;
+    btnBottom_ = spriteTop  + scaledH * 0.74f;
+    sf::RectangleShape rect;
+    rect.setPosition(btnLeft_, btnTop_);
+    rect.setSize(sf::Vector2f(btnRight_ - btnLeft_, btnBottom_ - btnTop_));
+    rect.setFillColor(sf::Color::Transparent);        // geen fill
+    rect.setOutlineColor(sf::Color::Yellow);             // rode outline
+    rect.setOutlineThickness(5.f);                    // wat dikker
+
+    window.draw(rect);
 }

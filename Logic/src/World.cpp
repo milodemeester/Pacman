@@ -41,7 +41,7 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory, int level): lev
 void logic::World::initialise_maze() {
     int line = 0;
     std::string maze_line;
-    std::ifstream maze_file("../data/maps/map1.txt");
+    std::ifstream maze_file("../data/maps/map2.txt");
     while (getline(maze_file, maze_line)) {
         if (line == 0) {
             size_t pos = maze_line.find('X');  // zoek de positie van 'X'
@@ -102,7 +102,7 @@ void logic::World::initialise_maze() {
                     break;
                 }
                 case 'Z': { // Niets
-                    crnt_entity = game_factory->createWall(true);
+                    //crnt_entity = game_factory->createWall(true);
                     break;
                 }
                 default:;
