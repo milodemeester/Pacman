@@ -14,7 +14,7 @@ void representation::VictoryState::proces_user_input(const sf::Event& event, sf:
 
 void representation::VictoryState::render(sf::RenderWindow& window) {
     sf::Font font;
-    if (!font.loadFromFile("../data/Font.TTF")) {
+    if (!font.loadFromFile("../data/fonts/pacman_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
     sf::Text text;

@@ -12,21 +12,24 @@
 #include "../include/SfmlFactory.h"
 #include "../include/SpriteMap.h"
 #include "../include/StateManager.h"
+#include "../include/VictoryState.h"
+
 #include <SFML/Window/Event.hpp>
 
 #include <iostream>
 #include <utility>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
-                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera)
+                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera, int level = 1)
     : State(manager), score_(std::move(score)), camera_(std::move(camera)), spriteMap_("../data/sprite.png"),
-      factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_) {
+      factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_, level), manager_(manager) {
 
     // Font inladen
     if (!font_.loadFromFile("../data/fonts/score_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
 
+    windowSize_ = windowSize;
     scoreTitle_.setFont(font_);
     scoreTitle_.setFillColor(sf::Color::Yellow);
     scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
@@ -34,6 +37,11 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
     livesTitle_.setFont(font_);
     livesTitle_.setFillColor(sf::Color::Yellow);
     livesTitle_.setString("#Lives: " + std::to_string(world_.get_pacman_lives()));
+
+    levelTitle_.setFont(font_);
+    levelTitle_.setFillColor(sf::Color::Yellow);
+    livesTitle_.setString("Level: " + std::to_string((world_.get_level())));
+
 
     // Camera initialiseren
     camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
@@ -44,6 +52,7 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
 
 void representation::LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::Resized) {
+        windowSize_ = sf::Vector2u(event.size.width, event.size.height);
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
 
@@ -83,10 +92,14 @@ void representation::LevelState::update(double delta_time) {
     case (logic::WorldState::Defeated): {
         score_->update_high_scores();
         score_->reset();
-            manager_.pop_state();
+        manager_.pop_state();
         }
     case (logic::WorldState::Victory): {
-
+        auto level_state = std::make_unique<LevelState>(manager_, windowSize_, score_, camera_, world_.get_level()+1);
+        manager_.pop_state();
+        manager_.push_state(std::move(level_state));
+        auto victory_state = std::make_unique<VictoryState>(manager_);
+        manager_.push_state(std::move(victory_state));
     }
     }
 }
@@ -114,6 +127,7 @@ void representation::LevelState::render(sf::RenderWindow& window) {
     updateLayout(window.getSize());
     window.draw(scoreTitle_);
     window.draw(livesTitle_);
+    window.draw(levelTitle_);
 }
 
 void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
@@ -133,6 +147,7 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
         char_size = char_size_max;
     }
 
+    // ----- score -----
     // Update de score tekst en grootte
     scoreTitle_.setCharacterSize(camera_->getBlockSize());
     scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
@@ -143,6 +158,7 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
     // Horizontaal gecentreerd in het venster; verticaal: midden van UI-balk onder het bord
     scoreTitle_.setPosition(camera_->getBoardLeftX(), board_bottom + ui_bar_height / 2.f);
 
+    // ----- lives -----
     // Update de lives tekst en grootte
     livesTitle_.setCharacterSize(camera_->getBlockSize());
     livesTitle_.setString("#Lives: " + std::to_string(world_.get_pacman_lives()));
@@ -152,4 +168,15 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
 
     // Horizontaal gecentreerd in het venster; verticaal: midden van UI-balk onder het bord
     livesTitle_.setPosition(camera_->getBoardLeftX() + camera_->getBlockSize()*world_.get_width(), board_bottom + ui_bar_height / 2.f);
+
+    // ----- level -----
+    // Update de lives tekst en grootte
+    levelTitle_.setCharacterSize(camera_->getBlockSize());
+    levelTitle_.setString("Level: " + std::to_string(world_.get_level()));
+
+    bounds = levelTitle_.getLocalBounds();
+    levelTitle_.setOrigin((bounds.left + bounds.width)/ 2.f, bounds.top + bounds.height / 2.f);
+
+    // Horizontaal gecentreerd in het venster; verticaal: midden van UI-balk onder het bord
+    levelTitle_.setPosition((camera_->getBoardLeftX() + (camera_->getBoardLeftX() + camera_->getBlockSize()*world_.get_width()))/2.f, board_bottom + ui_bar_height / 2.f);
 }

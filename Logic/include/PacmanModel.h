@@ -12,7 +12,6 @@ namespace logic {
 class PacmanModel : public MoveableSubject {
 protected:
     double get_speed() override;
-    double speed_ = 0.008; // measured in pixel/ms
     int lives = 3;
 public:
     /**

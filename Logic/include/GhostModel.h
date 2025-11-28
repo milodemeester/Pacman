@@ -17,7 +17,6 @@ enum class GhostType { Inky, Blinky, Pinky, Clyde };
 
 class GhostModel : public MoveableSubject {
 protected:
-    double speed_ = 0.007; // measured in pixel/ms
     double get_speed() override;
 
     /**

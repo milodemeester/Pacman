@@ -20,10 +20,22 @@
 #include <memory>
 #include <vector>
 
+static float basic_pacman_speed = 0.016;
+static float basic_ghost_speed = 0.014;
+
 logic::World::World(const std::shared_ptr<GameFactory>& factory) {
+    // initialise the width and height and create all the entities.
+    level_ = 1;
+    game_factory = factory;
+    initialise_maze();
+    initialise_values();
+}
+
+logic::World::World(const std::shared_ptr<GameFactory>& factory, int level): level_(level) {
     // initialise the width and height and create all the entities.
     game_factory = factory;
     initialise_maze();
+    initialise_values();
 }
 
 void logic::World::initialise_maze() {
@@ -54,7 +66,7 @@ void logic::World::initialise_maze() {
                     crnt_entity = game_factory->createWall(false);
                     break;
                 }
-                case 'C': { // Coin
+                case 'F': { // Coin
                     crnt_entity = game_factory->createCoin();
                     coin_count++;
                     break;
@@ -79,7 +91,7 @@ void logic::World::initialise_maze() {
                     clyde = std::dynamic_pointer_cast<ClydeModel>(crnt_entity);
                     break;
                 }
-                case 'F': { // Fruit
+                case 'C': { // Fruit
                     crnt_entity = game_factory->createFruit();
                     fruit_count++;
                     break;
@@ -105,6 +117,57 @@ void logic::World::initialise_maze() {
         }
     }
     maze_file.close();
+}
+
+void logic::World::initialise_values() {
+    switch (level_) {
+    case 1 : {
+        frightened_mode_duration_ = 6000;
+        ghost_speed_fraction_ = 0.5f;
+        pacman_speed_fraction_ = 0.5f;
+        break;
+    }
+    case 2: {
+        frightened_mode_duration_ = 5000;
+        ghost_speed_fraction_ = 0.6f;
+        pacman_speed_fraction_ = 0.6f;
+        break;
+    }
+        case 3: {
+        frightened_mode_duration_ = 4000;
+        ghost_speed_fraction_ = 0.7f;
+        pacman_speed_fraction_ = 0.7f;
+        break;
+    }
+        case 4: {
+        frightened_mode_duration_ = 3000;
+        ghost_speed_fraction_ = 0.8f;
+        pacman_speed_fraction_ = 0.8f;
+    }
+        case 5: {
+        frightened_mode_duration_ = 2000;
+        ghost_speed_fraction_ = 0.9f;
+        pacman_speed_fraction_ = 0.9f;
+        break;
+    }
+        case 6: {
+        frightened_mode_duration_ = 1000;
+        ghost_speed_fraction_ = 1.0f;
+        pacman_speed_fraction_ = 1.0f;
+        break;
+    }
+        default: {
+        frightened_mode_duration_ = 0;
+        ghost_speed_fraction_ = 1.2f;
+        pacman_speed_fraction_ = 1.1f;
+        break;
+    }
+    }
+    pacman->set_speed(basic_pacman_speed*pacman_speed_fraction_);
+    inky->set_speed(basic_ghost_speed*pacman_speed_fraction_);
+    blinky->set_speed(basic_ghost_speed*pacman_speed_fraction_);
+    pinky->set_speed(basic_ghost_speed*pacman_speed_fraction_);
+    clyde->set_speed(basic_ghost_speed*pacman_speed_fraction_);
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt) {
@@ -227,7 +290,7 @@ void logic::World::move_pacman(logic::Direction direction) {
 
 void logic::World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();
-    if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < 6000) {
+    if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < frightened_mode_duration_) {
         pinky->set_fear_mode();
         inky->set_fear_mode();
         blinky->set_fear_mode();
@@ -272,6 +335,9 @@ bool logic::World::pacman_dead(std::shared_ptr<logic::GhostModel> model) {
 }
 [[nodiscard]] logic::WorldState logic::World::get_world_state() const {
     return world_state_;
+}
+[[nodiscard]] int logic::World::get_level() const {
+    return level_;
 }
 
 void logic::World::begin_fear_mode() {

@@ -60,6 +60,7 @@ protected:
     int world_width_; // width of the world
     int world_height_; // height of the world
     Direction direction_; // the current direction
+    double speed_; // measured in pixel/ms
 
     /**
      * @brief computes the new position based on the delta time
@@ -98,6 +99,8 @@ public:
     virtual void update(float dt, World& world) = 0;
 
     virtual void go_to_center() = 0;
+
+    void set_speed(float speed);
 };
 } // namespace logic
 

@@ -122,7 +122,7 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
         sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
         if (playButton_.background.getGlobalBounds().contains(mouseWorld)) {
             std::shared_ptr<Camera> cam = std::make_shared<Camera>();
-            manager_.push_state(std::make_unique<LevelState>(manager_, window.getSize(), score_, cam));
+            manager_.push_state(std::make_unique<LevelState>(manager_, window.getSize(), score_, cam, 1));
         }
     }
 }

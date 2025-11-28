@@ -44,6 +44,11 @@ class World {
      */
     void initialise_maze();
 
+    /**
+     * @brief initializes all of the level-dependant values of the entities in this world
+     */
+    void initialise_values();
+
     bool pacman_dead(std::shared_ptr<GhostModel> model);
 
     std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities int he world
@@ -60,9 +65,17 @@ class World {
     int coin_count = 0;
     int fruit_count = 0;
     WorldState world_state_ = WorldState::Running;
+    int level_;
+
+    // level-dependant values
+    int frightened_mode_duration_; // duration of ghost frightened mode in miliseconds
+    float pacman_speed_fraction_;
+    float ghost_speed_fraction_;
+
 public:
     // constructor
     explicit World(const std::shared_ptr<GameFactory>& factory);
+    explicit World(const std::shared_ptr<GameFactory>& factory, int level);
 
     /**
      * @brief checks if there is a wall where the entity wants to go
@@ -80,7 +93,7 @@ public:
      * @param entity_speed the speed of the entity
      * @return a boolean value that determines if there is a collission
      */
-    logic::Event check_entity_collision(Coordinate& new_pos, double entity_speed, float dt);
+    Event check_entity_collision(Coordinate& new_pos, double entity_speed, float dt);
 
     /**
      * @brief updates every "important entity in the world"
@@ -109,6 +122,7 @@ public:
     [[nodiscard]] Coordinate get_pacman_position() const;
     [[nodiscard]] int get_pacman_lives() const;
     [[nodiscard]] WorldState get_world_state() const;
+    [[nodiscard]] int get_level() const;
 
 };
 } // namespace logic

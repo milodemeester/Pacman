@@ -28,13 +28,17 @@ class LevelState final : public representation::State {
     logic::World world_;
     std::vector<std::shared_ptr<representation::EntityView>> views_;
 
+    StateManager& manager_;
+    sf::Vector2u windowSize_;
+
     sf::Font font_;
     sf::Text scoreTitle_;
     sf::Text livesTitle_;
+    sf::Text levelTitle_;
 
 public:
     LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score,
-               std::shared_ptr<Camera> camera);
+               std::shared_ptr<Camera> camera, int level);
     void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
     void update(double delta_time) override;
