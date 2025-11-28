@@ -2,50 +2,70 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: ubuntu:22.04 # Use a base Ubuntu image
+      - image: ubuntu:22.04
     steps:
-      - checkout # Checks out your code
+      - checkout
+
+      - restore_cache:
+          keys:
+            - sfml-build-2.6.1-v1
+
       - run:
           name: "Install Dependencies"
           command: |
             apt-get update
-            # Install prerequisites for building, SFML, GTest, xvfb, and adding the CMake repo
             apt-get install -y \
-                build-essential wget gpg libgtest-dev \
+                build-essential wget gpg \
                 libgl1-mesa-dev libxrandr-dev libx11-dev libxcursor-dev \
                 libudev-dev libopenal-dev libflac-dev libvorbis-dev libegl1-mesa-dev \
                 libfreetype6-dev xvfb
 
-            # Add Kitware's APT repository to get a newer version of CMake
+            # CMake setup
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor -o /usr/share/keyrings/kitware-archive-keyring.gpg
             echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
             
-            # Update package list again and install cmake
             apt-get update
             apt-get install -y cmake
 
-            # --- Build and Install SFML 2.6.1 from source ---
-            SFML_VERSION="2.6.1"
-            wget https://github.com/SFML/SFML/archive/refs/tags/${SFML_VERSION}.tar.gz
-            tar -xzf ${SFML_VERSION}.tar.gz
-            cd SFML-${SFML_VERSION}
-            cmake .
-            make -j$(nproc)
-            make install
-            # Refresh the shared library cache
-            ldconfig
-            cd ..
       - run:
-          name: "Build and Run"
+          name: "Build and Install SFML"
+          command: |
+            SFML_VERSION="2.6.1"
+            
+            # Only build if the directory doesn't exist (cache miss)
+            if [ ! -d "SFML-${SFML_VERSION}" ]; then
+                echo "Building SFML from source..."
+                wget https://github.com/SFML/SFML/archive/refs/tags/${SFML_VERSION}.tar.gz
+                tar -xzf ${SFML_VERSION}.tar.gz
+                cd SFML-${SFML_VERSION}
+                cmake .
+                make -j$(nproc)
+                cd ..
+            else
+                echo "Using cached SFML build..."
+            fi
+
+            # Always run install (fast if already compiled)
+            cd SFML-${SFML_VERSION}
+            make install
+            ldconfig
+
+      - save_cache:
+          paths:
+            - SFML-2.6.1
+          key: sfml-build-2.6.1-v1
+
+      - run:
+          name: "Build and Run Project"
           command: |
             mkdir -p build
             cd build
             cmake ..
-            make
-            # Run the executable for 5 seconds. The command will have exit code 124 if it's
-            # terminated by timeout, which is expected. We check for this and exit with 0.
-            # Any other non-zero exit code (e.g., from a crash) will still fail the build.
+            # Optimization: Compile your project in parallel
+            make -j$(nproc)
+            
             xvfb-run timeout 5s ./pacman || if [ $? = 124 ]; then exit 0; else exit $?; fi
+
 workflows:
   build-and-run:
     jobs:
