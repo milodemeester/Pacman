@@ -1,15 +1,38 @@
 version: 2.1
+
 jobs:
-  build:
+  # --- JOB 1: Build Logic Only (Fast, No SFML) ---
+  build_logic_standalone:
     docker:
       - image: ubuntu:22.04
     steps:
       - checkout
+      - run:
+          name: "Install Minimal Build Tools"
+          command: |
+            apt-get update
+            apt-get install -y build-essential cmake
 
+      - run:
+          name: "Build Logic Library"
+          command: |
+            # We build specifically the 'Logic' folder
+            mkdir -p build-logic
+            cd build-logic
+            
+            # -S ../Logic tells CMake to use the Logic/CMakeLists.txt
+            cmake -S ../Logic -B . -DCMAKE_BUILD_TYPE=Debug
+            make
+
+  # --- JOB 2: Build Full Game (Slow, With SFML) ---
+  build_game_sfml:
+    docker:
+      - image: ubuntu:22.04
+    steps:
+      - checkout
       - restore_cache:
           keys:
             - sfml-build-2.6.1-v1
-
       - run:
           name: "Install Dependencies"
           command: |
@@ -20,10 +43,9 @@ jobs:
                 libudev-dev libopenal-dev libflac-dev libvorbis-dev libegl1-mesa-dev \
                 libfreetype6-dev xvfb
 
-            # CMake setup
+            # Install recent CMake
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor -o /usr/share/keyrings/kitware-archive-keyring.gpg
             echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
-            
             apt-get update
             apt-get install -y cmake
 
@@ -31,21 +53,14 @@ jobs:
           name: "Build and Install SFML"
           command: |
             SFML_VERSION="2.6.1"
-            
-            # Only build if the directory doesn't exist (cache miss)
             if [ ! -d "SFML-${SFML_VERSION}" ]; then
-                echo "Building SFML from source..."
                 wget https://github.com/SFML/SFML/archive/refs/tags/${SFML_VERSION}.tar.gz
                 tar -xzf ${SFML_VERSION}.tar.gz
                 cd SFML-${SFML_VERSION}
                 cmake .
                 make -j$(nproc)
                 cd ..
-            else
-                echo "Using cached SFML build..."
             fi
-
-            # Always run install (fast if already compiled)
             cd SFML-${SFML_VERSION}
             make install
             ldconfig
@@ -56,17 +71,18 @@ jobs:
           key: sfml-build-2.6.1-v1
 
       - run:
-          name: "Build and Run Project"
+          name: "Build and Run Game"
           command: |
             mkdir -p build
             cd build
             cmake ..
-            # Optimization: Compile your project in parallel
             make -j$(nproc)
-            
+            # Run with timeout to ensure it starts
             xvfb-run timeout 5s ./pacman || if [ $? = 124 ]; then exit 0; else exit $?; fi
 
 workflows:
-  build-and-run:
+  version: 2
+  build_all:
     jobs:
-      - build
+      - build_logic_standalone
+      - build_game_sfml
