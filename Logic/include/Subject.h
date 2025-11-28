@@ -14,7 +14,7 @@ namespace logic {
 class World;
 class Observer;
 
-class Subject : public std::enable_shared_from_this<Subject> {
+class Subject{
     std::vector<Observer*> observers_; // vector with all of the observers
 protected:
     /**

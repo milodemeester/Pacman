@@ -14,8 +14,7 @@ void representation::Game::run() {
     score_ = s;
     state_manager_ = std::make_shared<StateManager>(window_.getSize(), score_);
     std::shared_ptr<logic::Stopwatch> stopwatch = logic::Stopwatch::getInstance();
-    int fps = 60;
-    window_.setFramerateLimit(fps);
+    window_.setVerticalSyncEnabled(true);
 
     while (window_.isOpen()) {
         sf::Event event{};

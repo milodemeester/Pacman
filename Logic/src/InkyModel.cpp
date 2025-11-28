@@ -85,7 +85,7 @@ std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(logic:
     for (auto& direction_option : possible_directions) {
         // Gebruik een kopie van de positie voor elke simulatie
         Coordinate next_pos = calculate_new_position(dt, direction_option, current_location);
-        if (!world.check_wall_collision(next_pos, direction_option, speed_, true)) {
+        if (!world.check_wall_collision(next_pos, direction_option, speed_, true, dt)) {
             viable_states.emplace_back(direction_option, next_pos);
         }
     }

@@ -105,13 +105,16 @@ void logic::World::initialise_maze() {
     maze_file.close();
 }
 
-bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed) {
+bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt) {
     float entity_half_size_x = (1.f/float(width));
     float entity_half_size_y = (1.f/float(height));
 
-    // Create scaled epsilon values proportional to the entity size on each axis.
-    const float epsilon_x = entity_half_size_x * entity_speed*8.3;
-    const float epsilon_y = entity_half_size_y * entity_speed*8.3;
+    // This value works and was found by trial and error
+    const float collision_sensitivity = 0.5f;
+
+    const float epsilon_x = entity_half_size_x * entity_speed * dt * collision_sensitivity;
+    const float epsilon_y = entity_half_size_y * entity_speed * dt * collision_sensitivity;
+
     // Define the entity's bounding box, shrunk by the scaled epsilon on each axis.
     Coordinate entity1_left_upper_corner = {entity_pos.getX() - entity_half_size_x + epsilon_x,
         entity_pos.getY() - entity_half_size_y + epsilon_y};
@@ -126,7 +129,7 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
 }
 
 
-bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed, bool ghost) {
+bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed, bool ghost, float dt) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
@@ -140,7 +143,7 @@ bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entit
                     wall_model->get_position().getY() + entity_half_size_y};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {}
-                else if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                else if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     return true;
                 }
             }
@@ -149,7 +152,7 @@ bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entit
     return false; // No collision.
 }
 
-logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double entity_speed) {
+logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double entity_speed, float dt) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
@@ -162,7 +165,7 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
                 Coordinate entity2_right_lower_corner = {coin_model->get_position().getX(),
                     coin_model->get_position().getY()};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(coin_model);
                     return Event::CoinCollected;
                 }
@@ -174,7 +177,7 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
                 Coordinate entity2_right_lower_corner = {fruit_model->get_position().getX(),
                     fruit_model->get_position().getY()};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(fruit_model);
                     auto score = Stopwatch::getInstance();
                     fear_mode_begin = std::chrono::system_clock::now();
@@ -188,7 +191,7 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
                 Coordinate entity2_right_lower_corner = {ghost_model->get_position().getX(),
                     ghost_model->get_position().getY()};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (check_collision(entity_pos, entity2_rect, entity_speed)) {
+                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     if (pacman_dead(ghost_model)) {
                         return Event::PacmanDied;
                     }

@@ -83,7 +83,7 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic
     for (auto& direction : possible_directions) {
         // Simuleer een stap in deze richting
         Coordinate next_pos = calculate_new_position(dt, direction, current_location);
-        if (!world.check_wall_collision(next_pos, direction, speed_, true)) {
+        if (!world.check_wall_collision(next_pos, direction, speed_, true, dt)) {
             next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
             double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
             if (chasing_mode) {

@@ -41,7 +41,7 @@ class World {
      * @param entity_speed the speed of the moving entity (used for calculating the offset
      * @return a boolean value that determines if there is a collision between the two entities
      */
-    bool check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed);
+    bool check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt);
 
     /**
      * @brief reads a map and initializes all of the entities in this map
@@ -73,7 +73,7 @@ public:
      * @param ghost set to true if the entity is a ghost (which means the entity can pass through invisible walls)
      * @return a boolean value that determines if there is a collision
      */
-    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost);
+    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost, float dt);
 
     /**
      * @brief checks if there is an entity where the entity wants to go
@@ -81,7 +81,7 @@ public:
      * @param entity_speed the speed of the entity
      * @return a boolean value that determines if there is a collission
      */
-    logic::Event check_entity_collision(Coordinate& new_pos, double entity_speed);
+    logic::Event check_entity_collision(Coordinate& new_pos, double entity_speed, float dt);
 
     /**
      * @brief updates every "important entity in the world"
