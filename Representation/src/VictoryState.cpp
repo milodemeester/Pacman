@@ -26,7 +26,7 @@ void representation::VictoryState::proces_user_input(const sf::Event& event, sf:
     }
     else if (event.type == sf::Event::MouseButtonPressed) {
         sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-        if (utils::contains(Coordinate(btnLeft_, btnTop_), Coordinate(btnRight_, btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
+        if (utils::contains(Coordinate(button_.btnLeft_, button_.btnTop_), Coordinate(button_.btnRight_, button_.btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
             manager_.pop_state();
         }
     }
@@ -59,13 +59,13 @@ void representation::VictoryState::render(sf::RenderWindow& window) {
     float spriteLeft = (size.x - scaledW) / 2.f;
     float spriteTop  = (size.y - scaledH) / 2.f;
 
-    btnLeft_   = spriteLeft + scaledW * 0.13f;
-    btnTop_    = spriteTop  + scaledH * 0.67f;
-    btnRight_  = spriteLeft + scaledW * 0.87f;
-    btnBottom_ = spriteTop  + scaledH * 0.74f;
+    button_.btnLeft_   = spriteLeft + scaledW * 0.13f;
+    button_.btnTop_    = spriteTop  + scaledH * 0.67f;
+    button_.btnRight_  = spriteLeft + scaledW * 0.87f;
+    button_.btnBottom_ = spriteTop  + scaledH * 0.74f;
     sf::RectangleShape rect;
-    rect.setPosition(btnLeft_, btnTop_);
-    rect.setSize(sf::Vector2f(btnRight_ - btnLeft_, btnBottom_ - btnTop_));
+    rect.setPosition(button_.btnLeft_, button_.btnTop_);
+    rect.setSize(sf::Vector2f(button_.btnRight_ - button_.btnLeft_, button_.btnBottom_ - button_.btnTop_));
     rect.setFillColor(sf::Color::Transparent);        // geen fill
     rect.setOutlineColor(sf::Color::Yellow);             // rode outline
     rect.setOutlineThickness(5.f);                    // wat dikker

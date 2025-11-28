@@ -10,10 +10,10 @@
 
 namespace representation {
 struct Button {
-    sf::Text text;
-    sf::RectangleShape background;
-    float bg_width_multiplier = 5.f;   // Multiplier voor achtergrondbreedte
-    float bg_height_multiplier = 1.3f; // Multiplier voor achtergrondhoogte
+    float btnLeft_;
+    float btnTop_;
+    float btnRight_;
+    float btnBottom_;
 };
 
 class Camera;

@@ -12,11 +12,10 @@
 namespace representation {
 class PausedState final : public State {
     void updateLayout(sf::Vector2u windowSize);
-    sf::Font font_;
-    sf::Text menuButtontext_;
-    sf::RectangleShape menuButtonBackground_;
-    sf::Text resumeButtonText_;
-    sf::RectangleShape resumeButtonBackground_;
+    sf::Texture texture_;
+
+    Button button1_;
+    Button button2_;
 
 public:
     PausedState(StateManager& sm, sf::Vector2u windowsize);

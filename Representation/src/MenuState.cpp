@@ -24,20 +24,7 @@ representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, 
     if (!scoreFont_.loadFromFile("../data/fonts/score_font.TTF")) {
         std::cerr << "Failed to load font." << std::endl;
     }
-
-    // --- Menu Banner ---
-    menuBanner_.text.setFont(font_);
-    menuBanner_.text.setFillColor(sf::Color::Black);
-    menuBanner_.text.setString("Menu");
-    menuBanner_.background.setFillColor(sf::Color::Yellow);
-    menuBanner_.bg_height_multiplier = 1.5f;
-
-    // --- Play Button ---
-    playButton_.text.setFont(font_);
-    playButton_.text.setFillColor(sf::Color::Black);
-    playButton_.text.setString("Play");
-    playButton_.background.setFillColor(sf::Color::White);
-    playButton_.bg_height_multiplier = 1.2f;
+    texture_.loadFromFile("../data/textures/menu_state_img.png");
 
     // --- High Scores Title ---
     highScoreTitle_.setFont(scoreFont_);
@@ -59,30 +46,7 @@ representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, 
     updateLayout(windowsize);
 }
 
-void representation::MenuState::centerButton(Button& button, const sf::Vector2u& windowSize, float y_pos_ratio) {
-    float window_width = windowSize.x;
-    float window_height = windowSize.y;
-    unsigned int char_size = (window_width / 32 + window_height / 32);
-
-    // Centreer tekst
-    button.text.setCharacterSize(char_size);
-    sf::FloatRect text_bounds = button.text.getLocalBounds();
-    button.text.setOrigin(text_bounds.left + text_bounds.width / 2.0f, text_bounds.top + text_bounds.height / 2.0f);
-    button.text.setPosition(window_width / 2.0f, window_height * y_pos_ratio);
-
-    // Centreer achtergrond
-    button.background.setSize({char_size * button.bg_width_multiplier, char_size * button.bg_height_multiplier});
-    button.background.setOrigin(button.background.getSize() / 2.f);
-    button.background.setPosition(window_width / 2.0f, window_height * y_pos_ratio);
-}
-
 void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
-    // --- Menu Banner (12.5% from top)---
-    centerButton(menuBanner_, windowSize, 8.f / 64.f);
-
-    // --- Play Button (90% from top) ---
-    centerButton(playButton_, windowSize, 58.f / 64.f);
-
     // --- High Scores ---
     float window_width = windowSize.x;
     float window_height = windowSize.y;
@@ -93,7 +57,7 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
     sf::FloatRect score_title_bounds = highScoreTitle_.getLocalBounds();
     highScoreTitle_.setOrigin(score_title_bounds.left + score_title_bounds.width / 2.0f,
                               score_title_bounds.top + score_title_bounds.height / 2.0f);
-    highScoreTitle_.setPosition(window_width / 2.f, window_height * (20.f / 64.f));
+    highScoreTitle_.setPosition(window_width / 2.f, window_height * (22.f / 64.f));
 
     // Scores
     auto scores = score_->get_high_scores();
@@ -118,9 +82,9 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
         return; // Voorkom doorvallen naar MouseButtonPressed
     }
 
-    if (event.type == sf::Event::MouseButtonPressed) {
+    else if (event.type == sf::Event::MouseButtonPressed) {
         sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-        if (playButton_.background.getGlobalBounds().contains(mouseWorld)) {
+        if (utils::contains(Coordinate(button_.btnLeft_, button_.btnTop_), Coordinate(button_.btnRight_, button_.btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
             std::shared_ptr<Camera> cam = std::make_shared<Camera>();
             manager_.push_state(std::make_unique<LevelState>(manager_, window.getSize(), score_, cam, 1));
         }
@@ -128,11 +92,36 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
 }
 
 void representation::MenuState::render(sf::RenderWindow& window) {
-    window.draw(menuBanner_.background);
-    window.draw(menuBanner_.text);
+    sf::Sprite sprite;
+    sprite.setTexture(texture_);
+    sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
+    auto winSize = window.getSize();
+    auto local = sprite.getLocalBounds();
 
-    window.draw(playButton_.background);
-    window.draw(playButton_.text);
+    float scaleX = winSize.x / local.width;
+    float scaleY = winSize.y / local.height;
+
+    float scale = std::min(scaleX, scaleY);
+
+    sprite.setPosition(winSize.x / 2.f, winSize.y / 2.f);
+    sprite.setScale(scale, scale);
+    window.draw(sprite);
+
+    float imgW = local.width;
+    float imgH = local.height;
+
+    auto size = window.getSize();
+
+    float scaledW = imgW * scale;
+    float scaledH = imgH * scale;
+
+    float spriteLeft = (size.x - scaledW) / 2.f;
+    float spriteTop  = (size.y - scaledH) / 2.f;
+
+    button_.btnLeft_   = spriteLeft + scaledW * 0.25f;
+    button_.btnTop_    = spriteTop  + scaledH * 0.86f;
+    button_.btnRight_  = spriteLeft + scaledW * 0.75f;
+    button_.btnBottom_ = spriteTop  + scaledH * 0.97f;
 
     window.draw(highScoreTitle_);
     for (const auto& highScore : highScores_) {

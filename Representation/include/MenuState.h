@@ -23,11 +23,11 @@ class MenuState final : public State {
     sf::Font font_;
     sf::Font scoreFont_;
 
-    Button menuBanner_;
-    Button playButton_;
-
     sf::Text highScoreTitle_;
     std::vector<sf::Text> highScores_;
+
+    Button button_;
+    sf::Texture texture_;
 
 public:
     explicit MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score);
