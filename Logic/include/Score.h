@@ -30,16 +30,6 @@ public:
     void onNotify(const Subject& entity, Event& event) override;
 
     /**
-     * @return the high_scores
-     */
-    std::vector<std::string> get_high_scores();
-
-    /**
-     * @return the current score
-     */
-    int get_score() const;
-
-    /**
      * @brief function that updates the high score if necassery
      */
     void update_high_scores();
@@ -50,7 +40,14 @@ public:
      */
     void write_to_file(std::vector<std::string>& new_high_scores);
 
+    /**
+     * @brief resets the score
+     */
     void reset();
+
+    // getters
+    std::vector<std::string> get_high_scores();
+    int get_score() const;
 };
 } // namespace logic
 

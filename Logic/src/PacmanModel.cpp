@@ -4,33 +4,33 @@
 
 #include "../include/PacmanModel.h"
 
-namespace logic {
-class World;
-}
 logic::PacmanModel::PacmanModel(Coordinate pos, Direction dir, int ww, int wh) : MoveableSubject(pos, dir, ww, wh) {}
 
 void logic::PacmanModel::update(float dt, World& world) {
     Direction current_direction = get_direction();
     Direction wanted_direction = world.get_wanted_pacman_direction();
-    // Als de speler een nieuwe richting kiest, kijk of die geldig is.
+    // If pacman chooses a new direction, check if it's valid
     if (wanted_direction != current_direction) {
         Coordinate next_pos_if_turned = calculate_new_position(float(dt), wanted_direction, position_);
 
-        // Als de nieuwe richting niet tot een botsing leidt, ga door met die richting.
+        // If the new direction leads to a wall-collision, don't update the position
         if (!world.check_wall_collision(next_pos_if_turned, wanted_direction, speed_, false, dt)) {
             set_position(next_pos_if_turned);
             set_direction(wanted_direction);
-            return; // Klaar voor deze frame
+            return;
         }
     }
 
     Coordinate next_pos = calculate_new_position(float(dt), direction_, position_);
 
-    // Beweeg alleen als dit niet tot een botsing leidt.
-    // Anders stopt Pacman gewoon tegen de muur.
+    // Only move when it doesn't lead to a collission
+    // Else pacman will just stop against a wall
     if (!world.check_wall_collision(next_pos, direction_, speed_, false, dt)) {
         set_position(next_pos);
     }
+
+    // Check for other entities (non wall entities)
+    // TODO: dit moet niet apart, maak de check_wall_collision en check_entity_colission 1 functie en zorg voor een AgainstWall-event
     auto event = world.check_entity_collision(next_pos, speed_, dt);
     if (event == Event::CoinCollected) {
         Event e = Event::CoinCollected;
@@ -43,10 +43,12 @@ void logic::PacmanModel::update(float dt, World& world) {
     }
     else if (event == Event::PacmanDied) {
         if (lives > 0) {
+            // if pacman dies and he still has lives left, return every entity to their starting position
             --lives;
             world.return_center();
         }
         else {
+            // no lives left; game ends
             WorldState world_state = WorldState::Defeated;
             world.set_world_state(world_state);
         }
@@ -64,6 +66,6 @@ int logic::PacmanModel::get_lives() {
     return lives;
 }
 
-void logic::PacmanModel::go_to_center() {
-    set_position(starting_position_);
+void logic::PacmanModel::set_lives(int lives) {
+    this->lives = lives;
 }

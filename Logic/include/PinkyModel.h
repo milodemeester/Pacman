@@ -12,12 +12,8 @@ namespace logic {
 class World;
 class PinkyModel : public Type2Ghost {
 public:
+    // constructor
     PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
-
-    /**
-     * @brief set the location of the ghost to the starting location
-     */
-    void go_to_center() override;
 };
 };
 #endif // PACMAN_PINKYMODEL_H

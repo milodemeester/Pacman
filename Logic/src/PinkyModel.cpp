@@ -13,7 +13,3 @@
 logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height) : Type2Ghost(pos, dir, world_width, world_height) {
     wait_time = 0;
 }
-
-void logic::PinkyModel::go_to_center() {
-    set_position(starting_position_);
-}

@@ -35,25 +35,32 @@ class World {
      * @param entity_pos the position of the moving entity
      * @param entity2_rect the position of the other entity
      * @param entity_speed the speed of the moving entity (used for calculating the offset
+     * @param dt the delta time that passed since the last update
      * @return a boolean value that determines if there is a collision between the two entities
      */
     bool check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt);
 
     /**
+     * @param pacman_lives the amount of lives pacman has left at this current level (default value of 3)
      * @brief reads a map and initializes all of the entities in this map
      */
-    void initialise_maze();
+    void initialise_maze(int pacman_lives = 3);
 
     /**
      * @brief initializes all of the level-dependant values of the entities in this world
      */
     void initialise_values();
 
+    /**
+     * @brief called when a ghost collides with pacman and checks if pacman died or the ghost died
+     * @param model the model pacman collided with
+     * @return true when pacman dies, false when ghost dies
+     */
     bool pacman_dead(std::shared_ptr<GhostModel> model);
 
-    std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities int he world
-    int width; // width of the world
-    int height; // height of the world
+    std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities in the world
+    int world_width; // width of the world
+    int world_height; // height of the world
     std::shared_ptr<GameFactory> game_factory;
     std::shared_ptr<PacmanModel> pacman;
     std::shared_ptr<BlinkyModel> blinky;
@@ -69,13 +76,13 @@ class World {
 
     // level-dependant values
     int frightened_mode_duration_; // duration of ghost frightened mode in miliseconds
-    float pacman_speed_fraction_;
-    float ghost_speed_fraction_;
+    float pacman_speed_fraction_; // the fraction of the total pacman speed
+    float ghost_speed_fraction_; // the fraction of the total ghost speed
 
 public:
     // constructor
     explicit World(const std::shared_ptr<GameFactory>& factory);
-    explicit World(const std::shared_ptr<GameFactory>& factory, int level);
+    explicit World(const std::shared_ptr<GameFactory>& factory, int level, int pacman_lives);
 
     /**
      * @brief checks if there is a wall where the entity wants to go
@@ -83,6 +90,7 @@ public:
      * @param entity_direction the direction where the entity is going
      * @param entity_speed the speed of the entity
      * @param ghost set to true if the entity is a ghost (which means the entity can pass through invisible walls)
+     * @param dt the delta time that passed since the last update
      * @return a boolean value that determines if there is a collision
      */
     bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost, float dt);
@@ -91,6 +99,7 @@ public:
      * @brief checks if there is an entity where the entity wants to go
      * @param new_pos the new position of the entity
      * @param entity_speed the speed of the entity
+     * @param dt the delta time that passed since the last update
      * @return a boolean value that determines if there is a collission
      */
     Event check_entity_collision(Coordinate& new_pos, double entity_speed, float dt);
@@ -105,18 +114,25 @@ public:
      * @brief changes the wanted direction of pacman
      * @param dir new direction of pacman
      */
-    void move_pacman(logic::Direction dir);
+    void move_pacman(Direction dir);
 
+    /**
+     * @brief makes sure the ghosts go into fear mode when pacman eats fruit
+     */
     void begin_fear_mode();
 
+    /**
+     * @brief moves every entity to their respective starting locations
+     */
     void return_center();
 
+    // setters
     void set_world_state(WorldState& world_state);
 
 
     // getters
-    [[nodiscard]] int get_width() const { return width; }
-    [[nodiscard]] int get_height() const { return height; }
+    [[nodiscard]] int get_width() const { return world_width; }
+    [[nodiscard]] int get_height() const { return world_height; }
     [[nodiscard]] Direction get_wanted_pacman_direction() const { return wanted_pacman_direction; }
     [[nodiscard]] Direction get_pacman_direction() const;
     [[nodiscard]] Coordinate get_pacman_position() const;

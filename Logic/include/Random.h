@@ -16,7 +16,6 @@ protected:
 
     // constructor
     Random();
-
 public:
     // delete the copy-constructor
     Random(Random& other) = delete;

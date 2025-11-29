@@ -42,32 +42,16 @@ void representation::PausedState::render(sf::RenderWindow& window) {
     float spriteTop  = (size.y - scaledH) / 2.f;
 
     // ---- button 1 ----
-    button1_.btnLeft_   = spriteLeft + scaledW * 0.15f;
-    button1_.btnTop_    = spriteTop  + scaledH * 0.67f;
-    button1_.btnRight_  = spriteLeft + scaledW * 0.85f;
-    button1_.btnBottom_ = spriteTop  + scaledH * 0.76f;
-    sf::RectangleShape rect1;
-    rect1.setPosition(button1_.btnLeft_, button1_.btnTop_);
-    rect1.setSize(sf::Vector2f(button1_.btnRight_ - button1_.btnLeft_, button1_.btnBottom_ - button1_.btnTop_));
-    rect1.setFillColor(sf::Color::Transparent);        // geen fill
-    rect1.setOutlineColor(sf::Color::Yellow);             // rode outline
-    rect1.setOutlineThickness(5.f);                    // wat dikker
-
-    window.draw(rect1);
+    button1_.btnLeft_   = spriteLeft + scaledW * 0.19f;
+    button1_.btnTop_    = spriteTop  + scaledH * 0.79f;
+    button1_.btnRight_  = spriteLeft + scaledW * 0.81f;
+    button1_.btnBottom_ = spriteTop  + scaledH * 0.87f;
 
     // ---- button 2 ----
-    button2_.btnLeft_   = spriteLeft + scaledW * 0.19f;
-    button2_.btnTop_    = spriteTop  + scaledH * 0.79f;
-    button2_.btnRight_  = spriteLeft + scaledW * 0.81f;
-    button2_.btnBottom_ = spriteTop  + scaledH * 0.87f;
-    sf::RectangleShape rect2;
-    rect2.setPosition(button2_.btnLeft_, button2_.btnTop_);
-    rect2.setSize(sf::Vector2f(button2_.btnRight_ - button2_.btnLeft_, button2_.btnBottom_ - button2_.btnTop_));
-    rect2.setFillColor(sf::Color::Transparent);        // geen fill
-    rect2.setOutlineColor(sf::Color::Green);             // rode outline
-    rect2.setOutlineThickness(5.f);                    // wat dikker
-
-    window.draw(rect2);
+    button2_.btnLeft_   = spriteLeft + scaledW * 0.15f;
+    button2_.btnTop_    = spriteTop  + scaledH * 0.67f;
+    button2_.btnRight_  = spriteLeft + scaledW * 0.85f;
+    button2_.btnBottom_ = spriteTop  + scaledH * 0.76f;
 }
 
 void representation::PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {

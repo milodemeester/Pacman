@@ -9,74 +9,45 @@
 #include "../include/Stopwatch.h"
 
 #include <map>
-#include <algorithm> // Nodig voor std::find
+#include <algorithm>
 
 logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
     wait_time = 0;
 }
 
-void logic::InkyModel::go_to_center() {
-    set_position(starting_position_);
-}
-
 void logic::InkyModel::update(float dt, World& world) {
-    Direction current_direction = direction_;
-    Coordinate current_position = position_; // Gebruik de huidige positie om de volgende te bepalen
+    // Check if inky can move or not
+    GhostModel::update(dt);
 
-    // Bepaal de volgende staat (richting en positie) op basis van de HUIDIGE staat.
-    auto next_state = get_viable_state(current_direction, current_position, dt, world);
-
-    // Werk de positie en richting in één keer bij naar de nieuwe staat.
-    set_position(next_state.second);
-    set_direction(next_state.first);
-}
-
-logic::Direction logic::InkyModel::get_opposite_direction(logic::Direction dir) {
-    switch (dir) {
-    case (logic::Direction::North) : {
-        return logic::Direction::South;
-    }
-        case (logic::Direction::East) : {
-        return logic::Direction::West;
-    }
-        case (logic::Direction::South) : {
-        return logic::Direction::North;
-    }
-        case (logic::Direction::West) : {
-        return logic::Direction::East;
-    }
-    }
-    return logic::Direction::East;
-}
-
-std::vector<logic::Direction> logic::InkyModel::get_other_direction(logic::Direction dir) {
-    switch (dir) {
-    case (logic::Direction::East): {
-        return {logic::Direction::North, logic::Direction::South, logic::Direction::West};
-    }
-    case (logic::Direction::South): {
-        return {logic::Direction::North, logic::Direction::East, logic::Direction::West};
-    }
-    case (logic::Direction::West): {
-        return {logic::Direction::North, logic::Direction::East, logic::Direction::South};
-    }
-    case (logic::Direction::North): {
-        return {logic::Direction::West, logic::Direction::East, logic::Direction::South};
-    }
-    default: {
-        return {};
-    }
+    if (!waiting) {
+        // use the current direction and position to determine the next ones
+        Direction current_direction = direction_;
+        Coordinate current_position = position_;
+        auto next_state = get_viable_state(current_direction, current_position, dt, world);
+        set_position(next_state.second);
+        set_direction(next_state.first);
     }
 }
 
-std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
-    std::vector<logic::Direction> possible_directions = {Direction::North, Direction::South, Direction::East, Direction::West};
-    possible_directions.erase(std::remove(possible_directions.begin(), possible_directions.end(), get_opposite_direction(current_direction)), possible_directions.end());
+std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+    // If clyde just came out frightened mode, turn around
+    if (!chasing_mode && !was_frightened_) {
+        was_frightened_ = true;
+        Direction reversed = get_opposite_direction(current_direction);
+        Coordinate final_pos = calculate_new_position(dt, reversed, current_location);
+        return {reversed, final_pos};
+    }
 
+    // If clyde is not in frightened mode, turn the was_frightened_ bool off
+    if (chasing_mode) {
+        was_frightened_ = false;
+    }
+
+    // Check for every possible direction if it's a viable direction
+    std::vector<Direction> possible_directions = get_other_direction(direction_);
     std::vector<std::pair<Direction,Coordinate>> viable_states;
-
     for (auto& direction_option : possible_directions) {
-        // Gebruik een kopie van de positie voor elke simulatie
+        // Calculate the position if inky takes a step into this direction
         Coordinate next_pos = calculate_new_position(dt, direction_option, current_location);
         if (!world.check_wall_collision(next_pos, direction_option, speed_, true, dt)) {
             viable_states.emplace_back(direction_option, next_pos);
@@ -84,12 +55,13 @@ std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(logic:
     }
 
     if (viable_states.empty()) {
-        // Als er geen opties zijn (doodlopende weg), draai dan om.
+        // Dead end, turn around
         Direction opposite_dir = get_opposite_direction(current_direction);
         Coordinate next_pos = calculate_new_position(dt, opposite_dir, current_location);
         return {opposite_dir, next_pos};
     }
 
+    // Choose random direction out of all the viable diections
     auto random = Random::getInstance();
     int new_state_index = random->getNumber(0, static_cast<int>(viable_states.size()) - 1);
     return viable_states[new_state_index];

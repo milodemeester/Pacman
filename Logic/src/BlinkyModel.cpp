@@ -6,9 +6,5 @@
 #include "../include/Stopwatch.h"
 
 logic::BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
-    wait_time = 5000;
-}
-
-void logic::BlinkyModel::go_to_center() {
-    set_position(starting_position_);
+    wait_time = 5000; // 5 seconden voor blinky
 }

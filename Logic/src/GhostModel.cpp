@@ -50,6 +50,7 @@ logic::GhostModel::GhostModel(Coordinate pos, Direction dir, int world_width, in
 }
 
 void logic::GhostModel::update(float dt) {
+    // check if the ghost can leave the center
     std::shared_ptr<Stopwatch> stopwatch = Stopwatch::getInstance();
     auto time_waited = stopwatch->get_time_between(stopwatch->get_now(), initialize_time);
     if (wait_time < time_waited) {

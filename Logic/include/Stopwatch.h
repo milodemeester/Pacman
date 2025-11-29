@@ -25,25 +25,10 @@ public:
     void operator=(const Stopwatch& other) = delete;
 
     /**
-     * @return the singleton instance
-     */
-    static std::shared_ptr<Stopwatch> getInstance();
-
-    /**
      * @brief computes the time between now and the previous tick
      * @return double delta time
      */
     double get_delta_time();
-
-    /**
-     * @return the time point that the game was started
-     */
-    double get_start_time();
-
-    /**
-     * @return the now-time point
-     */
-    std::chrono::system_clock::time_point get_now();
 
     /**
      * @brief computes the time between two time points
@@ -53,6 +38,12 @@ public:
      */
     double get_time_between(std::chrono::system_clock::time_point time_point1,
                             std::chrono::system_clock::time_point time_point2);
+
+    // getters
+    double get_start_time();
+    std::chrono::system_clock::time_point get_now();
+    static std::shared_ptr<Stopwatch> getInstance();
+
 };
 } // namespace logic
 

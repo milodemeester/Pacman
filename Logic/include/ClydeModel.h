@@ -29,10 +29,6 @@ public:
      */
     std::pair<logic::Direction,Coordinate> get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt,
                                                              logic::World& world);
-    /**
-     * @brief set the location of the ghost to the starting location
-     */
-    void go_to_center() override;
 };
 }
 #endif // PACMAN_CLYDEMODEL_H

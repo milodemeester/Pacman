@@ -8,19 +8,6 @@
 
 namespace logic {
 class InkyModel : public GhostModel {
-    /**
-     * @brief computes all the directions that are not the current direction
-     * @param dir the direction that the ghost is currently travelling in
-     * @return a vector of directions
-     */
-    std::vector<logic::Direction> get_other_direction(logic::Direction dir);
-
-    /**
-     * @brief computes the opposite direction of the direction that the ghost is currently travelling at
-     * @param dir the direction that the ghost is currently travelling in
-     * @return a direction
-     */
-    logic::Direction get_opposite_direction(logic::Direction dir);
 public:
     // constructor
     InkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
@@ -41,8 +28,6 @@ public:
      * @return a pair of the new direction and new coordinate
      */
     std::pair<Direction,Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world);
-
-    void go_to_center() override;
 };
 }
 #endif // PACMAN_INKYMODEL_H

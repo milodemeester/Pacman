@@ -12,11 +12,6 @@ namespace logic {
 class BlinkyModel : public Type2Ghost {
 public:
     BlinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
-
-    /**
-     * @brief set the location of the ghost to the starting location
-     */
-    void go_to_center() override;
 };
 }
 

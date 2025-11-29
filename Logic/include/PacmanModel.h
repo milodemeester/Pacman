@@ -11,8 +11,10 @@
 namespace logic {
 class PacmanModel : public MoveableSubject {
 protected:
+    int lives; // the amount of lives that pacman has left
+
+    // getters
     double get_speed() override;
-    int lives = 3;
 public:
     /**
      * @brief constructor
@@ -30,9 +32,11 @@ public:
      */
     void update(float dt, World& world) override;
 
+    // getters
     int get_lives();
 
-    void go_to_center() override;
+    // setters
+    void set_lives(int lives);
 };
 } // namespace logic
 

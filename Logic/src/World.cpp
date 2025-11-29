@@ -31,85 +31,88 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory) {
     initialise_values();
 }
 
-logic::World::World(const std::shared_ptr<GameFactory>& factory, int level): level_(level) {
+logic::World::World(const std::shared_ptr<GameFactory>& factory, int level, int pacman_lives): level_(level) {
     // initialise the width and height and create all the entities.
     game_factory = factory;
-    initialise_maze();
+    initialise_maze(pacman_lives);
     initialise_values();
 }
 
-void logic::World::initialise_maze() {
+void logic::World::initialise_maze(int pacman_lives) {
     int line = 0;
     std::string maze_line;
-    std::ifstream maze_file("../data/maps/map2.txt");
+    // Read map from this txt file
+    std::ifstream maze_file("../data/maps/map1.txt");
     while (getline(maze_file, maze_line)) {
+        // First line are the dimensions of the map (widthXheight
         if (line == 0) {
-            size_t pos = maze_line.find('X');  // zoek de positie van 'X'
+            size_t pos = maze_line.find('X');
             std::string w = maze_line.substr(0, pos);
-            width = std::stoi(w);
+            world_width = std::stoi(w);
             std::string h = maze_line.substr(pos + 1);
-            height = std::stoi(h);
+            world_height = std::stoi(h);
             line++;
         }
         else {
             std::vector<std::shared_ptr<Subject>> line_vector;
-            line_vector.reserve(width);
-            for (int char_idx = 0; char_idx < maze_line.length() && char_idx < width; ++char_idx) {
-                // X-positie van -1 (links) naar +1 (rechts)
-                float x_pos = 2.0f * (static_cast<float>(char_idx)) / static_cast<float>(width) - 1.0f;
+            line_vector.reserve(world_width);
+            for (int char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
+                // X-position from -1 (left) to +1 (right)
+                float x_pos = 2.0f * (static_cast<float>(char_idx)) / static_cast<float>(world_width) - 1.0f;
 
-                // Y-positie van +1 (boven) naar -1 (onder)
-                float y_pos = 1.0f - 2.0f * (static_cast<float>(line)) / static_cast<float>(height);
+                // Y-position from +1 (up) to -1 (under)
+                float y_pos = 1.0f - 2.0f * (static_cast<float>(line)) / static_cast<float>(world_height);
                 std::shared_ptr<Subject> crnt_entity = nullptr;
                 switch (maze_line[char_idx]) {
                 case 'W': { // Wall
                     crnt_entity = game_factory->createWall(false);
                     break;
                 }
-                case 'F': { // Coin
+                case 'C': { // Coin
                     crnt_entity = game_factory->createCoin();
                     coin_count++;
                     break;
                 }
                 case 'B': { // Blinky
-                    crnt_entity = game_factory->createGhost(GhostType::Blinky, width, height);
+                    crnt_entity = game_factory->createGhost(GhostType::Blinky, world_width, world_height);
                     blinky = std::dynamic_pointer_cast<BlinkyModel>(crnt_entity);
                     break;
                 }
                 case 'P': { // Pinky
-                    crnt_entity = game_factory->createGhost(GhostType::Pinky, width, height);
+                    crnt_entity = game_factory->createGhost(GhostType::Pinky, world_width, world_height);
                     pinky = std::dynamic_pointer_cast<PinkyModel>(crnt_entity);
                     break;
                 }
                 case 'I': { // Inky
-                    crnt_entity = game_factory->createGhost(GhostType::Inky, width, height);
+                    crnt_entity = game_factory->createGhost(GhostType::Inky, world_width, world_height);
                     inky = std::dynamic_pointer_cast<InkyModel>(crnt_entity);
                     break;
                 }
                 case 'O': { // Clyde
-                    crnt_entity = game_factory->createGhost(GhostType::Clyde, width, height);
+                    crnt_entity = game_factory->createGhost(GhostType::Clyde, world_width, world_height);
                     clyde = std::dynamic_pointer_cast<ClydeModel>(crnt_entity);
                     break;
                 }
-                case 'C': { // Fruit
+                case 'F': { // Fruit
                     crnt_entity = game_factory->createFruit();
                     fruit_count++;
                     break;
                 }
                 case 'A': { // Pacman
-                    crnt_entity = game_factory->createPacman(width, height);
+                    crnt_entity = game_factory->createPacman(world_width, world_height);
                     pacman = std::dynamic_pointer_cast<PacmanModel>(crnt_entity);
+                    pacman->set_lives(pacman_lives);
                     break;
                 }
                 case 'Z': { // Niets
-                    //crnt_entity = game_factory->createWall(true);
+                    crnt_entity = game_factory->createWall(true);
                     break;
                 }
                 default:;
                 }
                 if (crnt_entity) {
                     line_vector.push_back(crnt_entity);
-                    crnt_entity->set_position({x_pos, y_pos});
+                    crnt_entity->set_position({x_pos, -y_pos});
                 }
             }
             entities.emplace_back(line_vector);
@@ -171,11 +174,11 @@ void logic::World::initialise_values() {
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt) {
-    float entity_half_size_x = (1.f/float(width));
-    float entity_half_size_y = (1.f/float(height));
+    float entity_half_size_x = (1.f/float(world_width));
+    float entity_half_size_y = (1.f/float(world_height));
 
     // This value works and was found by trial and error
-    const float collision_sensitivity = 0.5f;
+    const float collision_sensitivity = 0.45f;
 
     const float epsilon_x = entity_half_size_x * entity_speed * dt * collision_sensitivity;
     const float epsilon_y = entity_half_size_y * entity_speed * dt * collision_sensitivity;
@@ -200,8 +203,8 @@ bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entit
             std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
             if (wall_model) {
                 // Define the wall's bounding box (remains the same).
-                float entity_half_size_x = (1.f/float(width));
-                float entity_half_size_y = (1.f/float(height));
+                float entity_half_size_x = (1.f/float(world_width));
+                float entity_half_size_y = (1.f/float(world_height));
                 Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
                     wall_model->get_position().getY() - entity_half_size_y};
                 Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
@@ -224,7 +227,6 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
             std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(entity);
             std::shared_ptr<GhostModel> ghost_model = std::dynamic_pointer_cast<GhostModel>(entity);
             if (coin_model) {
-                // Define the wall's bounding box (remains the same).
                 Coordinate entity2_left_upper_corner = {coin_model->get_position().getX(),
                     coin_model->get_position().getY()};
                 Coordinate entity2_right_lower_corner = {coin_model->get_position().getX(),

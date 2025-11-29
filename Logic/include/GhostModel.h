@@ -17,27 +17,28 @@ enum class GhostType { Inky, Blinky, Pinky, Clyde };
 
 class GhostModel : public MoveableSubject {
 protected:
-    double get_speed() override;
-
     /**
      * @brief computes all the directions that are not the current direction
      * @param dir the direction that the ghost is currently travelling in
-     * @return a vector of directions
+     * @return a vector of all the directions that are not equal to the current one
      */
-    static std::vector<logic::Direction> get_other_direction(logic::Direction dir);
+    static std::vector<Direction> get_other_direction(Direction dir);
 
     /**
      * @brief computes the opposite direction of the direction that the ghost is currently travelling at
      * @param dir the direction that the ghost is currently travelling in
-     * @return a direction
+     * @return the direction opposite to the current direction
      */
-    static logic::Direction get_opposite_direction(logic::Direction dir);
+    static Direction get_opposite_direction(Direction dir);
+
+    // getters
+    double get_speed() override;
 
     std::chrono::system_clock::time_point initialize_time; // the time_point where this object was initialized
     double wait_time = 0; // the time the ghost has to wait before it can escape the center
     bool chasing_mode = true; // false = fear mode, true = chasing mode
-    bool was_frightened_ = false; // onthoud vorige frightened state zodat we overgang detecteren
-    bool waiting = true;
+    bool was_frightened_ = false; // determines the previous frightened state so a transition can be detected
+    bool waiting = true; // determines if the ghost is waiting in the center of the game
 public:
     // constructor
     GhostModel(Coordinate pos, Direction dir, int world_width, int world_height);
@@ -48,11 +49,15 @@ public:
      */
     void update(float dt);
 
-    void set_fear_mode();
-
-    void set_chase_mode();
-
+    /**
+     * @brief checks if the ghost is in chasing mode
+     * @return a boolean that determines if the ghost is in chasing mode or fear mode
+     */
     bool is_chasing_mode();
+
+    // setters
+    void set_fear_mode();
+    void set_chase_mode();
 };
 }
 

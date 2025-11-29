@@ -34,16 +34,6 @@ public:
     virtual ~Subject() = default;
 
     /**
-     * @param position new position of the Subject
-     */
-    void set_position(const Coordinate& position);
-
-    /**
-     * @return the current position of the subject
-     */
-    Coordinate get_position() const { return position_; }
-
-    /**
      * @brief adds a new observer to the observer vector
      * @param observer the new observer
      */
@@ -53,6 +43,17 @@ public:
      * @param observer a pointer to the observer that needs to be removed
      */
     void removeObserver(Observer* observer);
+
+    /**
+     * @brief puts the entity at their start_location
+     */
+    virtual void go_to_center();
+
+    // setters
+    void set_position(const Coordinate& position);
+
+    // getters
+    Coordinate get_position() const { return position_; }
 };
 
 class MoveableSubject : public Subject {
@@ -69,7 +70,7 @@ protected:
      * @param position the position that will be used in the calcilation
      * @return the new position
      */
-    Coordinate calculate_new_position(float dt, logic::Direction direction, Coordinate position);
+    Coordinate calculate_new_position(float dt, Direction direction, Coordinate position);
 
     virtual double get_speed() = 0;
 
@@ -81,26 +82,20 @@ public:
         direction_(dir) {}
 
     /**
-     * @brief changes the direction and notifies all the observers
-     * @param direction the new direction of the subject
-     */
-    void set_direction(Direction direction);
-
-    /**
-     * @return the current direction
-     */
-    Direction get_direction() const { return direction_; }
-
-    /**
      * @brief pure virtual update-function that needs to be overwritten
      * @param dt the time between this update and the previous update
      * @param world the world where the MoveableSubject lives in
      */
     virtual void update(float dt, World& world) = 0;
 
-    virtual void go_to_center() = 0;
-
+    // setters
     void set_speed(float speed);
+    void set_direction(Direction direction);
+
+    // getters
+    [[nodiscard]] Direction get_direction() const { return direction_; }
+
+
 };
 } // namespace logic
 

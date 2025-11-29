@@ -18,14 +18,14 @@ logic::Stopwatch::Stopwatch() {
 
 double logic::Stopwatch::get_delta_time() {
     std::chrono::system_clock::time_point now = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> delta = now - t_previous; // verschil in milliseconden
+    std::chrono::duration<double, std::milli> delta = now - t_previous; // difference in milliseconds
     t_previous = now;
     return delta.count();
 }
 
 double logic::Stopwatch::get_start_time() {
     std::chrono::system_clock::time_point now = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> delta = now - t_start; // verschil in milliseconden
+    std::chrono::duration<double, std::milli> delta = now - t_start; // difference in milliseconds
     return delta.count();
 }
 

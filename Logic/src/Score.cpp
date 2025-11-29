@@ -11,6 +11,8 @@
 logic::Score::Score() {
     score_ = 0;
     high_scores_.reserve(5);
+
+    // read top 5 highscores from a file
     std::string line_output;
     std::ifstream file("../data/high_scores.txt");
     int line_number = 0;
@@ -25,6 +27,8 @@ void logic::Score::onNotify(const Subject& entity, Event& e) {
         double standard_increase = 10;
         auto stopwatch = Stopwatch::getInstance();
         auto now = stopwatch->get_now();
+
+        // first coin is score + 10, after this, it is calculated with the time passed
         if (first_coin_collected == false) {
             first_coin_collected = true;
             score_ += standard_increase;
@@ -47,14 +51,17 @@ int logic::Score::get_score() const { return score_; }
 void logic::Score::update_high_scores() {
     bool needs_update = false;
     int update_index = 0;
+    // check if the current score is higher than any of the current high scores
     for (int i = 0; i < high_scores_.size(); i++) {
         int score = std::stoi(high_scores_[i]);
         if (score_ > score) {
+            // Remember the index
             needs_update = true;
             update_index = i;
             break;
         }
     }
+    // if the current score is bigger than one of the high scores, update the high_scores_ vector
     if (needs_update) {
         std::vector<std::string> copy = high_scores_;
         high_scores_[update_index] = std::to_string(score_);

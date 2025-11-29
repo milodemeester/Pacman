@@ -8,6 +8,7 @@
 void logic::Subject::set_position(const Coordinate& position) {
     this->position_ = position;
     if (!is_complete) {
+        // first time calling set_position (first actual position)
         starting_position_ = position;
         is_complete = true;
     }
@@ -35,7 +36,7 @@ void logic::Subject::notify(Event event) {
     }
 }
 
-Coordinate logic::MoveableSubject::calculate_new_position(float dt, logic::Direction direction, Coordinate position) {
+Coordinate logic::MoveableSubject::calculate_new_position(float dt, Direction direction, Coordinate position) {
     double epsx = 1 / double(world_width_);
     double epsy = 1 / double(world_height_);
     double increase = dt * get_speed();
@@ -68,4 +69,8 @@ Coordinate logic::MoveableSubject::calculate_new_position(float dt, logic::Direc
 
 void logic::MoveableSubject::set_speed(float speed) {
     speed_ = speed;
+}
+
+void logic::Subject::go_to_center() {
+    set_position(starting_position_);
 }

@@ -20,9 +20,9 @@
 #include <utility>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
-                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera, int level = 1)
+                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera, int level = 1, int pacman_lives)
     : State(manager), score_(std::move(score)), camera_(std::move(camera)), spriteMap_("../data/sprite.png"),
-      factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_, level), manager_(manager) {
+      factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_, level, pacman_lives), manager_(manager) {
 
     // Font inladen
     if (!font_.loadFromFile("../data/fonts/score_font.TTF")) {
@@ -93,13 +93,15 @@ void representation::LevelState::update(double delta_time) {
         score_->update_high_scores();
         score_->reset();
         manager_.pop_state();
+        return;
         }
     case (logic::WorldState::Victory): {
-        auto level_state = std::make_unique<LevelState>(manager_, windowSize_, score_, camera_, world_.get_level()+1);
+        auto level_state = std::make_unique<LevelState>(manager_, windowSize_, score_, camera_, world_.get_level()+1, world_.get_pacman_lives());
         manager_.pop_state();
         manager_.push_state(std::move(level_state));
         auto victory_state = std::make_unique<VictoryState>(manager_);
         manager_.push_state(std::move(victory_state));
+        return;
     }
     }
 }

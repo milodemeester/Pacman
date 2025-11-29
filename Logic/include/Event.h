@@ -6,6 +6,9 @@
 #define PACMAN_EVENT_H
 
 namespace logic {
+/**
+ * Class that is used to pass events from Subjects to Observers
+ */
 enum class Event {
     EntityPositionChanged,
     EntityDirectionChanged,
@@ -18,7 +21,6 @@ enum class Event {
     FearMode,
     ChaseMode,
     EntityReset
-    // ...
 };
 } // namespace logic
 

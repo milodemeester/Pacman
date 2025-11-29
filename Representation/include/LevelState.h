@@ -38,7 +38,7 @@ class LevelState final : public representation::State {
 
 public:
     LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score,
-               std::shared_ptr<Camera> camera, int level);
+               std::shared_ptr<Camera> camera, int level, int pacman_lives = 3);
     void proces_user_input(const sf::Event& event, sf::RenderWindow& window) override;
     void render(sf::RenderWindow& window) override;
     void update(double delta_time) override;

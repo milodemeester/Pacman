@@ -9,10 +9,14 @@
 logic::Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
 
 void logic::Type2Ghost::update(float dt, World& world) {
+    // Check if the ghost can move or not
     GhostModel::update(dt);
-    if (!waiting) {
-        // Bepaal de volgende staat en werk de position en direction bij.
-        auto state = get_viable_state(direction_, position_, dt, world);
+
+    if (!waiting) { // ghost is not waiting
+        // use the current direction and position to determine the next ones
+        Direction current_direction = direction_;
+        Coordinate current_position = position_;
+        auto state = get_viable_state(current_direction, current_position, dt, world);
         set_direction(state.first);
         set_position(state.second);
     }
@@ -26,7 +30,7 @@ Coordinate compute_pacman_forward_pos(logic::World& world) {
     float target_x = ((pacman_location.getX()+1)/2)*world.get_width();
     float target_y = ((pacman_location.getY()+1)/2)*world.get_height();
 
-    // De "4" is de offset. Deze moet misschien worden aangepast aan de schaal van je wereld.
+    // The seconds type of ghost calculates manhatten distance to 4 blocks in front of pacman
     const float offset = 4.0f;
 
     switch (pacman_direction) {
@@ -58,8 +62,9 @@ Coordinate compute_pacman_forward_pos(logic::World& world) {
     return {target_x, target_y};
 }
 
-std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt, World& world) {
-    // Als we net in frightened zijn gekomen, keer dan direct om en geef die stap terug.
+std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+    // TODO: deze is zeer gelijk aan die van ClydeModel, zorg voor een manier om duplicatie te vermijden
+    // If the ghost just came out frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
         was_frightened_ = true;
         Direction reversed = get_opposite_direction(current_direction);
@@ -67,63 +72,79 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(logic
         return {reversed, final_pos};
     }
 
-    // Als we niet meer frightened zijn, reset de flag zodat een toekomstige overgang weer detecteerbaar is.
+    // If the ghost is not in frightened mode, turn the was_frightened_ bool off
     if (chasing_mode) {
         was_frightened_ = false;
     }
-    // 1. Bepaal het doelwit "voor" Pac-Man
+    // Determine the target in front of pacman
     Coordinate target_location = compute_pacman_forward_pos(world);
 
+    // Using a vector because 2 directions could have the same manhatten distance
     std::vector<Direction> best_directions;
-    double best_manhattan = std::numeric_limits<double>::max();
+    double best_manhattan;
 
-    // 2. Evalueer alle mogelijke richtingen (behalve omkeren)
+    if (chasing_mode) {
+        // minimize the manhatten value
+        best_manhattan = std::numeric_limits<double>::max();
+    }
+    else {
+        // maximize the manhatten value
+        best_manhattan = std::numeric_limits<double>::min();
+    }
+
+    // Check every possible direction except the opposite direction
     auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
 
     for (auto& direction : possible_directions) {
-        // Simuleer een stap in deze richting
+        // Calculate the position if clyde takes a step into this direction
         Coordinate next_pos = calculate_new_position(dt, direction, current_location);
+
+        // Check if there is a wall
         if (!world.check_wall_collision(next_pos, direction, speed_, true, dt)) {
+            // Change coordinate-system and compute manhatten distance
             next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
             double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
+
             if (chasing_mode) {
+                // minimize the manhatten value
                 if (mnhtn_distance < best_manhattan) {
-                    // Dit is een nieuwe, betere richting.
+                    // This direction is better than the other directions up to this point
                     best_manhattan = mnhtn_distance;
                     best_directions.clear();
                     best_directions.push_back(direction);
                 } else if (mnhtn_distance == best_manhattan) {
-                    // Er is een gelijkspel. Voeg deze richting toe aan de opties.
+                    // This direction is equally good as another direction
                     best_directions.push_back(direction);
                 }
             }
             else {
+                // maximize the manhatten value
                 best_manhattan = std::numeric_limits<double>::min();
                 if (mnhtn_distance > best_manhattan) {
-                    // Dit is een nieuwe, betere richting.
+                    // This direction is better than the other directions up to this point
                     best_manhattan = mnhtn_distance;
                     best_directions.clear();
                     best_directions.push_back(direction);
                 } else if (mnhtn_distance == best_manhattan) {
-                    // Er is een gelijkspel. Voeg deze richting toe aan de opties.
+                    // This direction is equally good as another direction
                     best_directions.push_back(direction);
                 }
             }
         }
     }
 
-    // 3. Kies de beste richting
+    // Choose the best direction
     Direction chosen_direction;
     if (best_directions.empty()) {
-        // Gevangen in een doodlopende weg, dus omkeren is de enige optie.
+        // Dead end, turn around
         chosen_direction = get_opposite_direction(current_direction);
     } else {
-        // Kies willekeurig uit de beste opties (als er 1 is, wordt die gekozen)
+        // Choose a random direction
         int random_index = Random::getInstance()->getNumber(0, static_cast<int>(best_directions.size()) - 1);
         chosen_direction = best_directions[random_index];
     }
 
-    // 4. Bereken de uiteindelijke nieuwe positie en retourneer de staat.
+    // Calculate the position that belongs to this direction // TODO: deze final pos werd al eens berekend, zoek een efficientere manier
     Coordinate final_pos = calculate_new_position(dt, chosen_direction, current_location);
     return {chosen_direction, final_pos};
 }
