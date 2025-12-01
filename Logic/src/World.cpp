@@ -174,6 +174,7 @@ void logic::World::initialise_values() {
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt) {
+    // TODO: colissions are still a bit weird, fix it
     float entity_half_size_x = (1.f/float(world_width));
     float entity_half_size_y = (1.f/float(world_height));
 

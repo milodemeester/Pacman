@@ -29,8 +29,9 @@ void logic::InkyModel::update(float dt, World& world) {
     }
 }
 
+
 std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world) {
-    // If clyde just came out frightened mode, turn around
+    // If inky just came out frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
         was_frightened_ = true;
         Direction reversed = get_opposite_direction(current_direction);
@@ -38,14 +39,17 @@ std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(Direct
         return {reversed, final_pos};
     }
 
-    // If clyde is not in frightened mode, turn the was_frightened_ bool off
+    // If inky is not in frightened mode, turn the was_frightened_ bool off
     if (chasing_mode) {
         was_frightened_ = false;
     }
 
     // Check for every possible direction if it's a viable direction
-    std::vector<Direction> possible_directions = get_other_direction(direction_);
+    std::vector<logic::Direction> possible_directions = {Direction::North, Direction::South, Direction::East, Direction::West};
+    possible_directions.erase(std::remove(possible_directions.begin(), possible_directions.end(), get_opposite_direction(current_direction)), possible_directions.end());
+
     std::vector<std::pair<Direction,Coordinate>> viable_states;
+
     for (auto& direction_option : possible_directions) {
         // Calculate the position if inky takes a step into this direction
         Coordinate next_pos = calculate_new_position(dt, direction_option, current_location);

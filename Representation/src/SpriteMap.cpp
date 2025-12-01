@@ -13,7 +13,7 @@ representation::SpriteMap::SpriteMap(const std::string& filename) {
         // In een echte game zou je hier de fout op een robuustere manier afhandelen
         exit(1);
     }
-    if (!wall_texture.loadFromFile("../data/textures/Wall.png")) {
+    if (!wall_texture.loadFromFile("../data/textures/wall.png")) {
         // Geef een foutmelding als het laden mislukt
         std::cerr << "Error: Kan de sprite sheet niet laden: " << filename << std::endl;
         // In een echte game zou je hier de fout op een robuustere manier afhandelen
@@ -31,7 +31,6 @@ sf::Sprite representation::SpriteMap::getSprite(const sf::IntRect& rect) {
 
 sf::Sprite representation::SpriteMap::getWallSprite(const sf::IntRect& rect) {
     sf::Sprite sprite(wall_texture);
-    sprite.setColor(sf::Color::Blue);
     sprite.setTextureRect(rect);
     return sprite;
 }
