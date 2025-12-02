@@ -8,16 +8,16 @@
 
 logic::Direction logic::GhostModel::get_opposite_direction(logic::Direction dir) {
     switch (dir) {
-    case (logic::Direction::North) : {
+    case (logic::Direction::North): {
         return logic::Direction::South;
     }
-    case (logic::Direction::East) : {
+    case (logic::Direction::East): {
         return logic::Direction::West;
     }
-    case (logic::Direction::South) : {
+    case (logic::Direction::South): {
         return logic::Direction::North;
     }
-    case (logic::Direction::West) : {
+    case (logic::Direction::West): {
         return logic::Direction::East;
     }
     }
@@ -44,7 +44,8 @@ std::vector<logic::Direction> logic::GhostModel::get_other_direction(logic::Dire
     }
 }
 
-logic::GhostModel::GhostModel(Coordinate pos, Direction dir, int world_width, int world_height) : MoveableSubject(pos, dir, world_width, world_height) {
+logic::GhostModel::GhostModel(Coordinate pos, Direction dir, int world_width, int world_height)
+    : MoveableSubject(pos, dir, world_width, world_height) {
     std::shared_ptr<Stopwatch> stopwatch = Stopwatch::getInstance();
     initialize_time = stopwatch->get_now();
 }
@@ -58,9 +59,7 @@ void logic::GhostModel::update(float dt) {
     }
 }
 
-double logic::GhostModel::get_speed() {
-    return speed_;
-}
+double logic::GhostModel::get_speed() { return speed_; }
 
 void logic::GhostModel::set_fear_mode() {
     chasing_mode = false;
@@ -74,6 +73,4 @@ void logic::GhostModel::set_chase_mode() {
     notify(e);
 }
 
-bool logic::GhostModel::is_chasing_mode() {
-    return chasing_mode;
-}
+bool logic::GhostModel::is_chasing_mode() { return chasing_mode; }

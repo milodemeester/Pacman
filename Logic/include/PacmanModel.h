@@ -15,6 +15,7 @@ protected:
 
     // getters
     double get_speed() override;
+
 public:
     /**
      * @brief constructor

@@ -26,7 +26,9 @@ public:
      * @param world the world this entity lives in
      * @return a pair of the new direction and new coordinate
      */
-    std::pair<Direction,Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world);
-};}
+    std::pair<Direction, Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location,
+                                                      float dt, World& world);
+};
+} // namespace logic
 
 #endif // PACMAN_TYPE2GHOST_H

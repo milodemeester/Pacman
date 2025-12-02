@@ -4,8 +4,8 @@
 
 #ifndef PACMAN_WALLMODEL_H
 #define PACMAN_WALLMODEL_H
-#include "Subject.h"
 #include "../../Utilities/utils.h"
+#include "Subject.h"
 
 namespace logic {
 class WallModel : public Subject {
@@ -18,7 +18,7 @@ public:
     /**
      * @return bool that determines if the ghost can pass through
      */
-    bool has_ghost_acces() const {return ghost_access_; }
+    bool has_ghost_acces() const { return ghost_access_; }
 };
 } // namespace logic
 #endif // PACMAN_WALLMODEL_H

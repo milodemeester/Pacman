@@ -24,7 +24,9 @@ void logic::ClydeModel::update(float dt, World& world) {
     }
 }
 
-std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+std::pair<logic::Direction, Coordinate> logic::ClydeModel::get_viable_state(Direction& current_direction,
+                                                                            Coordinate& current_location, float dt,
+                                                                            World& world) {
     // If clyde just came out frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
         was_frightened_ = true;
@@ -40,7 +42,8 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(Direc
 
     // Determine the target of pacman
     Coordinate pac_pos = world.get_pacman_position();
-    Coordinate target_location = {((pac_pos.getX()+1)/2)*world_width_, ((pac_pos.getY()+1)/2)*world_height_};
+    Coordinate target_location = {((pac_pos.getX() + 1) / 2) * world_width_,
+                                  ((pac_pos.getY() + 1) / 2) * world_height_};
 
     // Using a vector because 2 directions could have the same manhatten distance
     std::vector<Direction> best_directions;
@@ -49,8 +52,7 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(Direc
     if (chasing_mode) {
         // minimize the manhatten value
         best_manhattan = std::numeric_limits<double>::max();
-    }
-    else {
+    } else {
         // maximize the manhatten value
         best_manhattan = std::numeric_limits<double>::min();
     }
@@ -65,7 +67,7 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(Direc
         // Check if there is a wall
         if (!world.check_wall_collision(next_pos, direction, speed_, true, dt)) {
             // Change coordinate-system and compute manhatten distance
-            next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
+            next_pos = {((next_pos.getX() + 1) / 2) * world_width_, ((next_pos.getY() + 1) / 2) * world_height_};
             double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
 
             if (chasing_mode) {
@@ -79,8 +81,7 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(Direc
                     // This direction is equally good as another direction
                     best_directions.push_back(direction);
                 }
-            }
-            else {
+            } else {
                 // maximize the manhatten value
                 if (mnhtn_distance > best_manhattan) {
                     // This direction is better than the other directions up to this point
@@ -106,7 +107,8 @@ std::pair<logic::Direction,Coordinate> logic::ClydeModel::get_viable_state(Direc
         chosen_direction = best_directions[random_index];
     }
 
-    // Calculate the position that belongs to this direction // TODO: deze final pos werd al eens berekend, zoek een efficientere manier
+    // Calculate the position that belongs to this direction // TODO: deze final pos werd al eens berekend, zoek een
+    // efficientere manier
     Coordinate final_pos = calculate_new_position(dt, chosen_direction, current_location);
     return {chosen_direction, final_pos};
 }

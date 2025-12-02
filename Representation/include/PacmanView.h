@@ -21,18 +21,18 @@ namespace representation {
 class Camera;
 
 class PacmanView : public EntityView, public logic::Observer {
-    std::map<logic::Direction, std::vector<sf::IntRect>> animation_sequences; // map with direction key and corresponding animation sequence
+    std::map<logic::Direction, std::vector<sf::IntRect>>
+        animation_sequences; // map with direction key and corresponding animation sequence
     SpriteMap& sprite_map_;
-    Coordinate world_position; // the world position of pacman
-    logic::Direction world_direction; // the world direction of pacman
-    size_t current_sprite_index = 0; // the index of the current animation sequence
-    float last_sprite_change = 0.0f; // last sprite change timestamp
-    double animation_timer = 0.0; // the time passed after the previous sprite change
+    Coordinate world_position;          // the world position of pacman
+    logic::Direction world_direction;   // the world direction of pacman
+    size_t current_sprite_index = 0;    // the index of the current animation sequence
+    float last_sprite_change = 0.0f;    // last sprite change timestamp
+    double animation_timer = 0.0;       // the time passed after the previous sprite change
     const double animation_speed = 125; // 125 ms = 0.125s
 public:
     // constructor
     explicit PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map);
-
 
     /**
      * @brief function that can notify observers of an event
@@ -54,6 +54,6 @@ public:
      */
     void update(double dt) override;
 };
-}// namespace representation
+} // namespace representation
 
 #endif // PACMAN_PACMANVIEW_H

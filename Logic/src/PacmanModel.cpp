@@ -30,42 +30,33 @@ void logic::PacmanModel::update(float dt, World& world) {
     }
 
     // Check for other entities (non wall entities)
-    // TODO: dit moet niet apart, maak de check_wall_collision en check_entity_colission 1 functie en zorg voor een AgainstWall-event
+    // TODO: dit moet niet apart, maak de check_wall_collision en check_entity_colission 1 functie en zorg voor een
+    // AgainstWall-event
     auto event = world.check_entity_collision(next_pos, speed_, dt);
     if (event == Event::CoinCollected) {
         Event e = Event::CoinCollected;
         notify(e);
-    }
-    else if (event == Event::FruitEaten) {
+    } else if (event == Event::FruitEaten) {
         Event e = Event::FruitEaten;
         notify(e);
         world.begin_fear_mode();
-    }
-    else if (event == Event::PacmanDied) {
+    } else if (event == Event::PacmanDied) {
         if (lives > 0) {
             // if pacman dies and he still has lives left, return every entity to their starting position
             --lives;
             world.return_center();
-        }
-        else {
+        } else {
             // no lives left; game ends
             WorldState world_state = WorldState::Defeated;
             world.set_world_state(world_state);
         }
-    }
-    else if (event == Event::GhostEaten) {
+    } else if (event == Event::GhostEaten) {
         notify(Event::GhostEaten);
     }
 }
 
-double logic::PacmanModel::get_speed() {
-    return speed_;
-}
+double logic::PacmanModel::get_speed() { return speed_; }
 
-int logic::PacmanModel::get_lives() {
-    return lives;
-}
+int logic::PacmanModel::get_lives() { return lives; }
 
-void logic::PacmanModel::set_lives(int lives) {
-    this->lives = lives;
-}
+void logic::PacmanModel::set_lives(int lives) { this->lives = lives; }

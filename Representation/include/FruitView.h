@@ -18,7 +18,7 @@ class Camera;
 
 class FruitView : public EntityView, public logic::Observer {
     bool invisible = false; // is false, the fruit will not be drawn
-    sf::Sprite sprite; // the sprite that is used to represent a fruit
+    sf::Sprite sprite;      // the sprite that is used to represent a fruit
 
 public:
     // constructor

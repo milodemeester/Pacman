@@ -15,5 +15,5 @@ public:
     // constructor
     PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
 };
-};
+}; // namespace logic
 #endif // PACMAN_PINKYMODEL_H

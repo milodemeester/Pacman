@@ -17,7 +17,7 @@
 #include <utility>
 
 representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score)
-    : State(sm), score_(std::move(score)){
+    : State(sm), score_(std::move(score)) {
 
     // font loading
     if (!font_.loadFromFile("../data/fonts/pacman_font.TTF")) {
@@ -75,7 +75,7 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
         highScores_[i].setCharacterSize(char_size * 0.9f);
         sf::FloatRect score_bounds = highScores_[i].getLocalBounds();
         highScores_[i].setOrigin(score_bounds.left + score_bounds.width / 2.0f,
-                            score_bounds.top + score_bounds.height / 2.0f);
+                                 score_bounds.top + score_bounds.height / 2.0f);
         highScores_[i].setPosition(window_width / 2.f, window_height * current_y_ratio);
         current_y_ratio += (4.f / 64.f);
     }
@@ -127,13 +127,13 @@ void representation::MenuState::render(sf::RenderWindow& window) {
     float scaledH = imgH * scale;
 
     float spriteLeft = (size.x - scaledW) / 2.f;
-    float spriteTop  = (size.y - scaledH) / 2.f;
+    float spriteTop = (size.y - scaledH) / 2.f;
 
     // save the boundires of the button (later used to calculate if a click falls into this)
-    button_.btnLeft_   = spriteLeft + scaledW * 0.25f;
-    button_.btnTop_    = spriteTop  + scaledH * 0.86f;
-    button_.btnRight_  = spriteLeft + scaledW * 0.75f;
-    button_.btnBottom_ = spriteTop  + scaledH * 0.97f;
+    button_.btnLeft_ = spriteLeft + scaledW * 0.25f;
+    button_.btnTop_ = spriteTop + scaledH * 0.86f;
+    button_.btnRight_ = spriteLeft + scaledW * 0.75f;
+    button_.btnBottom_ = spriteTop + scaledH * 0.97f;
 
     // draw to window
     window.draw(highScoreTitle_);

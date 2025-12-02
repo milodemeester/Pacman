@@ -5,11 +5,11 @@
 #include "../include/InkyModel.h"
 
 #include "../include/Random.h"
-#include "../include/World.h"
 #include "../include/Stopwatch.h"
+#include "../include/World.h"
 
-#include <map>
 #include <algorithm>
+#include <map>
 
 logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
     wait_time = 0;
@@ -29,8 +29,9 @@ void logic::InkyModel::update(float dt, World& world) {
     }
 }
 
-
-std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direction& current_direction,
+                                                                           Coordinate& current_location, float dt,
+                                                                           World& world) {
     // If inky just came out frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
         was_frightened_ = true;
@@ -45,10 +46,13 @@ std::pair<logic::Direction,Coordinate> logic::InkyModel::get_viable_state(Direct
     }
 
     // Check for every possible direction if it's a viable direction
-    std::vector<logic::Direction> possible_directions = {Direction::North, Direction::South, Direction::East, Direction::West};
-    possible_directions.erase(std::remove(possible_directions.begin(), possible_directions.end(), get_opposite_direction(current_direction)), possible_directions.end());
+    std::vector<logic::Direction> possible_directions = {Direction::North, Direction::South, Direction::East,
+                                                         Direction::West};
+    possible_directions.erase(
+        std::remove(possible_directions.begin(), possible_directions.end(), get_opposite_direction(current_direction)),
+        possible_directions.end());
 
-    std::vector<std::pair<Direction,Coordinate>> viable_states;
+    std::vector<std::pair<Direction, Coordinate>> viable_states;
 
     for (auto& direction_option : possible_directions) {
         // Calculate the position if inky takes a step into this direction

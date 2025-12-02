@@ -3,8 +3,8 @@
 //
 
 #include "../include/Type2Ghost.h"
-#include "../include/World.h"
 #include "../include/Random.h"
+#include "../include/World.h"
 
 logic::Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
 
@@ -22,47 +22,46 @@ void logic::Type2Ghost::update(float dt, World& world) {
     }
 }
 
-
 Coordinate compute_pacman_forward_pos(logic::World& world) {
     Coordinate pacman_location = world.get_pacman_position();
     logic::Direction pacman_direction = world.get_pacman_direction();
 
-    float target_x = ((pacman_location.getX()+1)/2)*world.get_width();
-    float target_y = ((pacman_location.getY()+1)/2)*world.get_height();
+    float target_x = ((pacman_location.getX() + 1) / 2) * world.get_width();
+    float target_y = ((pacman_location.getY() + 1) / 2) * world.get_height();
 
     // The seconds type of ghost calculates manhatten distance to 4 blocks in front of pacman
     const float offset = 4.0f;
 
     switch (pacman_direction) {
-        case logic::Direction::East:
-            target_x += offset;
-            break;
-        case logic::Direction::West:
-            target_x -= offset;
-            break;
-        case logic::Direction::North:
-            target_y -= offset;
-            break;
-        case logic::Direction::South:
-            target_y += offset;
-            break;
+    case logic::Direction::East:
+        target_x += offset;
+        break;
+    case logic::Direction::West:
+        target_x -= offset;
+        break;
+    case logic::Direction::North:
+        target_y -= offset;
+        break;
+    case logic::Direction::South:
+        target_y += offset;
+        break;
     }
     if (target_x < 0) {
         target_x = 0;
-    }
-    else if (target_x > world.get_width()) {
+    } else if (target_x > world.get_width()) {
         target_x = world.get_width();
     }
     if (target_y < 0) {
         target_y = 0;
-    }
-    else if (target_y > world.get_height()) {
+    } else if (target_y > world.get_height()) {
         target_y = world.get_height();
     }
     return {target_x, target_y};
 }
 
-std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(Direction& current_direction, Coordinate& current_location, float dt, World& world) {
+std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Direction& current_direction,
+                                                                            Coordinate& current_location, float dt,
+                                                                            World& world) {
     // TODO: deze is zeer gelijk aan die van ClydeModel, zorg voor een manier om duplicatie te vermijden
     // If the ghost just came out frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
@@ -86,8 +85,7 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(Direc
     if (chasing_mode) {
         // minimize the manhatten value
         best_manhattan = std::numeric_limits<double>::max();
-    }
-    else {
+    } else {
         // maximize the manhatten value
         best_manhattan = std::numeric_limits<double>::min();
     }
@@ -102,7 +100,7 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(Direc
         // Check if there is a wall
         if (!world.check_wall_collision(next_pos, direction, speed_, true, dt)) {
             // Change coordinate-system and compute manhatten distance
-            next_pos = {((next_pos.getX()+1)/2)*world_width_, ((next_pos.getY()+1)/2)*world_height_};
+            next_pos = {((next_pos.getX() + 1) / 2) * world_width_, ((next_pos.getY() + 1) / 2) * world_height_};
             double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
 
             if (chasing_mode) {
@@ -116,8 +114,7 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(Direc
                     // This direction is equally good as another direction
                     best_directions.push_back(direction);
                 }
-            }
-            else {
+            } else {
                 // maximize the manhatten value
                 best_manhattan = std::numeric_limits<double>::min();
                 if (mnhtn_distance > best_manhattan) {
@@ -144,7 +141,8 @@ std::pair<logic::Direction,Coordinate> logic::Type2Ghost::get_viable_state(Direc
         chosen_direction = best_directions[random_index];
     }
 
-    // Calculate the position that belongs to this direction // TODO: deze final pos werd al eens berekend, zoek een efficientere manier
+    // Calculate the position that belongs to this direction // TODO: deze final pos werd al eens berekend, zoek een
+    // efficientere manier
     Coordinate final_pos = calculate_new_position(dt, chosen_direction, current_location);
     return {chosen_direction, final_pos};
 }

@@ -27,8 +27,9 @@ public:
      * @param world the world this entity lives in
      * @return a pair of the new direction and new coordinate
      */
-    std::pair<logic::Direction,Coordinate> get_viable_state(logic::Direction& current_direction, Coordinate& current_location, float dt,
+    std::pair<logic::Direction, Coordinate> get_viable_state(logic::Direction& current_direction,
+                                                             Coordinate& current_location, float dt,
                                                              logic::World& world);
 };
-}
+} // namespace logic
 #endif // PACMAN_CLYDEMODEL_H

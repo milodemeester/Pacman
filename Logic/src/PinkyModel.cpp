@@ -10,6 +10,7 @@
 #include <limits>
 #include <vector>
 
-logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height) : Type2Ghost(pos, dir, world_width, world_height) {
+logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height)
+    : Type2Ghost(pos, dir, world_width, world_height) {
     wait_time = 0;
 }

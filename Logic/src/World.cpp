@@ -12,10 +12,10 @@
 #include "../include/InkyModel.h"
 #include "../include/PacmanModel.h"
 #include "../include/PinkyModel.h"
+#include "../include/Score.h"
 #include "../include/Stopwatch.h"
 #include "../include/Subject.h"
 #include "../include/WallModel.h"
-#include "../include/Score.h"
 #include <fstream>
 #include <memory>
 #include <vector>
@@ -31,7 +31,7 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory) {
     initialise_values();
 }
 
-logic::World::World(const std::shared_ptr<GameFactory>& factory, int level, int pacman_lives): level_(level) {
+logic::World::World(const std::shared_ptr<GameFactory>& factory, int level, int pacman_lives) : level_(level) {
     // initialise the width and height and create all the entities.
     game_factory = factory;
     initialise_maze(pacman_lives);
@@ -52,8 +52,7 @@ void logic::World::initialise_maze(int pacman_lives) {
             std::string h = maze_line.substr(pos + 1);
             world_height = std::stoi(h);
             line++;
-        }
-        else {
+        } else {
             std::vector<std::shared_ptr<Subject>> line_vector;
             line_vector.reserve(world_width);
             for (int char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
@@ -124,7 +123,7 @@ void logic::World::initialise_maze(int pacman_lives) {
 
 void logic::World::initialise_values() {
     switch (level_) {
-    case 1 : {
+    case 1: {
         frightened_mode_duration_ = 6000;
         ghost_speed_fraction_ = 0.5f;
         pacman_speed_fraction_ = 0.5f;
@@ -136,47 +135,47 @@ void logic::World::initialise_values() {
         pacman_speed_fraction_ = 0.6f;
         break;
     }
-        case 3: {
+    case 3: {
         frightened_mode_duration_ = 4000;
         ghost_speed_fraction_ = 0.7f;
         pacman_speed_fraction_ = 0.7f;
         break;
     }
-        case 4: {
+    case 4: {
         frightened_mode_duration_ = 3000;
         ghost_speed_fraction_ = 0.8f;
         pacman_speed_fraction_ = 0.8f;
     }
-        case 5: {
+    case 5: {
         frightened_mode_duration_ = 2000;
         ghost_speed_fraction_ = 0.9f;
         pacman_speed_fraction_ = 0.9f;
         break;
     }
-        case 6: {
+    case 6: {
         frightened_mode_duration_ = 1000;
         ghost_speed_fraction_ = 1.0f;
         pacman_speed_fraction_ = 1.0f;
         break;
     }
-        default: {
+    default: {
         frightened_mode_duration_ = 0;
         ghost_speed_fraction_ = 1.2f;
         pacman_speed_fraction_ = 1.1f;
         break;
     }
     }
-    pacman->set_speed(basic_pacman_speed*pacman_speed_fraction_);
-    inky->set_speed(basic_ghost_speed*pacman_speed_fraction_);
-    blinky->set_speed(basic_ghost_speed*pacman_speed_fraction_);
-    pinky->set_speed(basic_ghost_speed*pacman_speed_fraction_);
-    clyde->set_speed(basic_ghost_speed*pacman_speed_fraction_);
+    pacman->set_speed(basic_pacman_speed * pacman_speed_fraction_);
+    inky->set_speed(basic_ghost_speed * pacman_speed_fraction_);
+    blinky->set_speed(basic_ghost_speed * pacman_speed_fraction_);
+    pinky->set_speed(basic_ghost_speed * pacman_speed_fraction_);
+    clyde->set_speed(basic_ghost_speed * pacman_speed_fraction_);
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt) {
     // TODO: colissions are still a bit weird, fix it
-    float entity_half_size_x = (1.f/float(world_width));
-    float entity_half_size_y = (1.f/float(world_height));
+    float entity_half_size_x = (1.f / float(world_width));
+    float entity_half_size_y = (1.f / float(world_height));
 
     // This value works and was found by trial and error
     const float collision_sensitivity = 0.45f;
@@ -186,9 +185,9 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
 
     // Define the entity's bounding box, shrunk by the scaled epsilon on each axis.
     Coordinate entity1_left_upper_corner = {entity_pos.getX() - entity_half_size_x + epsilon_x,
-        entity_pos.getY() - entity_half_size_y + epsilon_y};
+                                            entity_pos.getY() - entity_half_size_y + epsilon_y};
     Coordinate entity1_right_lower_corner = {entity_pos.getX() + entity_half_size_x - epsilon_x,
-        entity_pos.getY() + entity_half_size_y - epsilon_y};
+                                             entity_pos.getY() + entity_half_size_y - epsilon_y};
     Rectangle entity1_rect = {entity1_left_upper_corner, entity1_right_lower_corner};
 
     if (utils::intersecting(entity1_rect, entity2_rect)) {
@@ -197,22 +196,22 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
     return false;
 }
 
-
-bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed, bool ghost, float dt) {
+bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed,
+                                        bool ghost, float dt) {
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
             if (wall_model) {
                 // Define the wall's bounding box (remains the same).
-                float entity_half_size_x = (1.f/float(world_width));
-                float entity_half_size_y = (1.f/float(world_height));
+                float entity_half_size_x = (1.f / float(world_width));
+                float entity_half_size_y = (1.f / float(world_height));
                 Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
-                    wall_model->get_position().getY() - entity_half_size_y};
+                                                        wall_model->get_position().getY() - entity_half_size_y};
                 Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
-                    wall_model->get_position().getY() + entity_half_size_y};
+                                                         wall_model->get_position().getY() + entity_half_size_y};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {}
-                else if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
+                if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {
+                } else if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     return true;
                 }
             }
@@ -229,22 +228,21 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
             std::shared_ptr<GhostModel> ghost_model = std::dynamic_pointer_cast<GhostModel>(entity);
             if (coin_model) {
                 Coordinate entity2_left_upper_corner = {coin_model->get_position().getX(),
-                    coin_model->get_position().getY()};
+                                                        coin_model->get_position().getY()};
                 Coordinate entity2_right_lower_corner = {coin_model->get_position().getX(),
-                    coin_model->get_position().getY()};
+                                                         coin_model->get_position().getY()};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(coin_model);
                     coin_count--;
                     return Event::CoinCollected;
                 }
-            }
-            else if (fruit_model) {
+            } else if (fruit_model) {
                 // Define the wall's bounding box (remains the same).
                 Coordinate entity2_left_upper_corner = {fruit_model->get_position().getX(),
-                    fruit_model->get_position().getY()};
+                                                        fruit_model->get_position().getY()};
                 Coordinate entity2_right_lower_corner = {fruit_model->get_position().getX(),
-                    fruit_model->get_position().getY()};
+                                                         fruit_model->get_position().getY()};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(fruit_model);
@@ -253,19 +251,17 @@ logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double
                     fruit_count--;
                     return Event::FruitEaten;
                 }
-            }
-            else if (ghost_model) {
+            } else if (ghost_model) {
                 // Define the wall's bounding box (remains the same).
                 Coordinate entity2_left_upper_corner = {ghost_model->get_position().getX(),
-                    ghost_model->get_position().getY()};
+                                                        ghost_model->get_position().getY()};
                 Coordinate entity2_right_lower_corner = {ghost_model->get_position().getX(),
-                    ghost_model->get_position().getY()};
+                                                         ghost_model->get_position().getY()};
                 Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     if (pacman_dead(ghost_model)) {
                         return Event::PacmanDied;
-                    }
-                    else {
+                    } else {
                         return Event::GhostEaten;
                     }
                 }
@@ -286,10 +282,7 @@ void logic::World::remove_entity(std::shared_ptr<CollectableSubject> model) {
     }
 }
 
-void logic::World::move_pacman(logic::Direction direction) {
-    wanted_pacman_direction = direction;
-}
-
+void logic::World::move_pacman(logic::Direction direction) { wanted_pacman_direction = direction; }
 
 void logic::World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();
@@ -298,8 +291,7 @@ void logic::World::update(float delta_time) {
         inky->set_fear_mode();
         blinky->set_fear_mode();
         clyde->set_fear_mode();
-    }
-    else {
+    } else {
         pinky->set_chase_mode();
         inky->set_chase_mode();
         blinky->set_chase_mode();
@@ -321,31 +313,18 @@ bool logic::World::pacman_dead(std::shared_ptr<logic::GhostModel> model) {
     if (fear_mode) {
         model->go_to_center();
         return false;
-    }
-    else {
+    } else {
         return true;
     }
 }
 
-[[nodiscard]] logic::Direction logic::World::get_pacman_direction() const {
-    return pacman->get_direction();
-}
-[[nodiscard]] Coordinate logic::World::get_pacman_position() const {
-    return pacman->get_position();
-}
-[[nodiscard]] int logic::World::get_pacman_lives() const {
-    return pacman->get_lives();
-}
-[[nodiscard]] logic::WorldState logic::World::get_world_state() const {
-    return world_state_;
-}
-[[nodiscard]] int logic::World::get_level() const {
-    return level_;
-}
+[[nodiscard]] logic::Direction logic::World::get_pacman_direction() const { return pacman->get_direction(); }
+[[nodiscard]] Coordinate logic::World::get_pacman_position() const { return pacman->get_position(); }
+[[nodiscard]] int logic::World::get_pacman_lives() const { return pacman->get_lives(); }
+[[nodiscard]] logic::WorldState logic::World::get_world_state() const { return world_state_; }
+[[nodiscard]] int logic::World::get_level() const { return level_; }
 
-void logic::World::begin_fear_mode() {
-    fear_mode_begin = std::chrono::system_clock::now();
-}
+void logic::World::begin_fear_mode() { fear_mode_begin = std::chrono::system_clock::now(); }
 
 void logic::World::return_center() {
     pacman->go_to_center();
@@ -355,6 +334,4 @@ void logic::World::return_center() {
     clyde->go_to_center();
 }
 
-void logic::World::set_world_state(WorldState& world_state) {
-    world_state_ = world_state;
-}
+void logic::World::set_world_state(WorldState& world_state) { world_state_ = world_state; }

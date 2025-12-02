@@ -16,7 +16,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
     world_direction = model->get_direction();
     world_pos_ = model->get_position();
     // ----------- sprites -----------
-    sf::Sprite FEAR_MODE_1 = sprite_map.getSprite(sf::IntRect(1, 554 ,33, 33));
+    sf::Sprite FEAR_MODE_1 = sprite_map.getSprite(sf::IntRect(1, 554, 33, 33));
     sf::Sprite FEAR_MODE_2 = sprite_map.getSprite(sf::IntRect(1, 604, 33, 33));
     std::vector<sf::Sprite> NoDir{FEAR_MODE_1, FEAR_MODE_2};
     animation_sequences[logic::Direction::NoDirection] = NoDir;
@@ -122,7 +122,7 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
         if (!model) { // entity has to be a MoveableSubject
             return;
         }
-         world_direction = model->get_direction();
+        world_direction = model->get_direction();
         break;
     }
     case (logic::Event::FearMode): {
@@ -142,8 +142,7 @@ void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<C
     std::vector<sf::Sprite> sprite_sequence;
     if (fear_mode) {
         sprite_sequence = animation_sequences[logic::Direction::NoDirection]; // fear-mode sprites
-    }
-    else {
+    } else {
         sprite_sequence = animation_sequences.at(world_direction); // normal suquence
     }
     sf::Sprite& sprite = sprite_sequence.at(current_sprite_index);
@@ -162,8 +161,7 @@ void representation::GhostView::update(double dt) {
         std::vector<sf::Sprite> crnt_sequence;
         if (fear_mode) {
             crnt_sequence = animation_sequences.at(logic::Direction::NoDirection); // fear mode sprite
-        }
-        else {
+        } else {
             crnt_sequence = animation_sequences.at(world_direction); // normal mode sprite
         }
         // next sprite

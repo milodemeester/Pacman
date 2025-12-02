@@ -15,6 +15,7 @@ namespace representation {
 class SpriteMap {
     sf::Texture m_texture;
     sf::Texture wall_texture;
+
 public:
     // constructor die de sprite inleest
     explicit SpriteMap(const std::string& filename);

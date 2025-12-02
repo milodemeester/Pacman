@@ -59,8 +59,8 @@ class World {
     bool pacman_dead(std::shared_ptr<GhostModel> model);
 
     std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities in the world
-    int world_width; // width of the world
-    int world_height; // height of the world
+    int world_width;                                             // width of the world
+    int world_height;                                            // height of the world
     std::shared_ptr<GameFactory> game_factory;
     std::shared_ptr<PacmanModel> pacman;
     std::shared_ptr<BlinkyModel> blinky;
@@ -76,8 +76,8 @@ class World {
 
     // level-dependant values
     int frightened_mode_duration_; // duration of ghost frightened mode in miliseconds
-    float pacman_speed_fraction_; // the fraction of the total pacman speed
-    float ghost_speed_fraction_; // the fraction of the total ghost speed
+    float pacman_speed_fraction_;  // the fraction of the total pacman speed
+    float ghost_speed_fraction_;   // the fraction of the total ghost speed
 
 public:
     // constructor
@@ -93,7 +93,8 @@ public:
      * @param dt the delta time that passed since the last update
      * @return a boolean value that determines if there is a collision
      */
-    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost, float dt);
+    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost,
+                              float dt);
 
     /**
      * @brief checks if there is an entity where the entity wants to go
@@ -129,7 +130,6 @@ public:
     // setters
     void set_world_state(WorldState& world_state);
 
-
     // getters
     [[nodiscard]] int get_width() const { return world_width; }
     [[nodiscard]] int get_height() const { return world_height; }
@@ -139,7 +139,6 @@ public:
     [[nodiscard]] int get_pacman_lives() const;
     [[nodiscard]] WorldState get_world_state() const;
     [[nodiscard]] int get_level() const;
-
 };
 } // namespace logic
 

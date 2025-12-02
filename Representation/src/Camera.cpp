@@ -29,7 +29,8 @@ void representation::Camera::updateScreenSize(sf::Vector2u windowSize, sf::Vecto
     left_offset_ = x_balk / 2.0f + extra_x / 2.0f;
     top_offset_ = y_balk / 2.0f + extra_y / 2.0f;
 
-    // Calculate the Y-position of the bottom of the game area (later used to compute the position of the lives, level and score text)
+    // Calculate the Y-position of the bottom of the game area (later used to compute the position of the lives, level
+    // and score text)
     board_bottom_y_ = top_offset_ + board_height_in_pixels_;
 }
 
@@ -47,14 +48,8 @@ std::pair<sf::Vector2f, sf::Vector2f> representation::Camera::worldToScreen(Coor
     return {sf::Vector2f(screen_x, screen_y), scale};
 }
 
-float representation::Camera::getBoardBottomY() const {
-    return board_bottom_y_;
-}
+float representation::Camera::getBoardBottomY() const { return board_bottom_y_; }
 
-float representation::Camera::getBoardLeftX() const {
-    return left_offset_;
-}
+float representation::Camera::getBoardLeftX() const { return left_offset_; }
 
-[[nodiscard]] float representation::Camera::getBlockSize() const {
-    return block_size_;
-}
+[[nodiscard]] float representation::Camera::getBlockSize() const { return block_size_; }

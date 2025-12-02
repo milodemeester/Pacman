@@ -43,27 +43,26 @@ void representation::PausedState::render(sf::RenderWindow& window) {
     float scaledH = imgH * scale;
 
     float spriteLeft = (size.x - scaledW) / 2.f;
-    float spriteTop  = (size.y - scaledH) / 2.f;
+    float spriteTop = (size.y - scaledH) / 2.f;
 
     // ---- button 1 ----
-    button1_.btnLeft_   = spriteLeft + scaledW * 0.19f;
-    button1_.btnTop_    = spriteTop  + scaledH * 0.79f;
-    button1_.btnRight_  = spriteLeft + scaledW * 0.81f;
-    button1_.btnBottom_ = spriteTop  + scaledH * 0.87f;
+    button1_.btnLeft_ = spriteLeft + scaledW * 0.19f;
+    button1_.btnTop_ = spriteTop + scaledH * 0.79f;
+    button1_.btnRight_ = spriteLeft + scaledW * 0.81f;
+    button1_.btnBottom_ = spriteTop + scaledH * 0.87f;
 
     // ---- button 2 ----
-    button2_.btnLeft_   = spriteLeft + scaledW * 0.15f;
-    button2_.btnTop_    = spriteTop  + scaledH * 0.67f;
-    button2_.btnRight_  = spriteLeft + scaledW * 0.85f;
-    button2_.btnBottom_ = spriteTop  + scaledH * 0.76f;
+    button2_.btnLeft_ = spriteLeft + scaledW * 0.15f;
+    button2_.btnTop_ = spriteTop + scaledH * 0.67f;
+    button2_.btnRight_ = spriteLeft + scaledW * 0.85f;
+    button2_.btnBottom_ = spriteTop + scaledH * 0.76f;
 }
 
 void representation::PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::Resized) {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
-    }
-    else if (event.type == sf::Event::MouseButtonPressed) {
+    } else if (event.type == sf::Event::MouseButtonPressed) {
         sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
         // check if the click is inside the button boundries
         Coordinate ulc1{button1_.btnLeft_, button1_.btnTop_};
@@ -74,8 +73,7 @@ void representation::PausedState::proces_user_input(const sf::Event& event, sf::
         if (utils::contains(ulc1, lrc1, click)) {
             // resume button, pop this pausedstate to go back to the game
             manager_.pop_state();
-        }
-        else if (utils::contains(ulc2, lrc2, click)) {
+        } else if (utils::contains(ulc2, lrc2, click)) {
             // back to menu button, pop this pausedstate and the levelstate to go back to the main menu
             manager_.double_pop_state();
         }

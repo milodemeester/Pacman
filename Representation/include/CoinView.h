@@ -17,7 +17,7 @@ namespace representation {
 class SpriteMap;
 class CoinView : public EntityView, public logic::Observer {
     bool invisible = false; // is false, the coin will not be drawn
-    sf::Sprite sprite; // the sprite that is used to represent a coin
+    sf::Sprite sprite;      // the sprite that is used to represent a coin
 
 public:
     // constructor

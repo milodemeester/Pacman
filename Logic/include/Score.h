@@ -11,10 +11,10 @@
 
 namespace logic {
 class Score : public Observer {
-    bool first_coin_collected = false; // when the first coin is collected, this becomes true
+    bool first_coin_collected = false;                        // when the first coin is collected, this becomes true
     std::chrono::system_clock::time_point previous_coin_time; // the time the previous coin was collected
-    std::vector<std::string> high_scores_; // all of the high scores stored in a vector with size 5
-    int score_; // the current score of thid game
+    std::vector<std::string> high_scores_;                    // all of the high scores stored in a vector with size 5
+    int score_;                                               // the current score of thid game
 
 public:
     /**

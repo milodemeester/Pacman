@@ -11,6 +11,7 @@ namespace representation {
 class VictoryState final : public State {
     sf::Texture texture_;
     Button button_;
+
 public:
     // constructor
     explicit VictoryState(StateManager& sm);

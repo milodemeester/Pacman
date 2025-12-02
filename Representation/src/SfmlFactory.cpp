@@ -6,19 +6,19 @@
 #include "../include/SfmlFactory.h"
 
 #include "../../Logic/include/BlinkyModel.h"
+#include "../../Logic/include/ClydeModel.h"
 #include "../../Logic/include/CoinModel.h"
 #include "../../Logic/include/FruitModel.h"
 #include "../../Logic/include/InkyModel.h"
 #include "../../Logic/include/PacmanModel.h"
 #include "../../Logic/include/PinkyModel.h"
-#include "../../Logic/include/ClydeModel.h"
 #include "../../Logic/include/WallModel.h"
 
 #include "../include/CoinView.h"
 #include "../include/FruitView.h"
+#include "../include/GhostView.h"
 #include "../include/PacmanView.h"
 #include "../include/WallView.h"
-#include "../include/GhostView.h"
 
 representation::SfmlFactory::SfmlFactory(std::shared_ptr<Camera> c, sf::Vector2u w, SpriteMap& spriteMap,
                                          std::shared_ptr<logic::Score> score)

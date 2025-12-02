@@ -13,6 +13,6 @@ class BlinkyModel : public Type2Ghost {
 public:
     BlinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
 };
-}
+} // namespace logic
 
 #endif // PACMAN_BLINKYMODEL_H

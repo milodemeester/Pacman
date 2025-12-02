@@ -32,14 +32,12 @@ void logic::Score::onNotify(const Subject& entity, Event& e) {
         if (first_coin_collected == false) {
             first_coin_collected = true;
             score_ += standard_increase;
-        }
-        else {
+        } else {
             double time_between = stopwatch->get_time_between(now, previous_coin_time);
             score_ += std::lround(standard_increase * (1 / (time_between / 1000)));
         }
         previous_coin_time = now;
-    }
-    else if (e == Event::FruitEaten) {
+    } else if (e == Event::FruitEaten) {
         score_ += 50;
     }
 }
@@ -65,8 +63,8 @@ void logic::Score::update_high_scores() {
     if (needs_update) {
         std::vector<std::string> copy = high_scores_;
         high_scores_[update_index] = std::to_string(score_);
-        for (int i = update_index+1; i < 5; i++) {
-            high_scores_[i] = copy[i-1];
+        for (int i = update_index + 1; i < 5; i++) {
+            high_scores_[i] = copy[i - 1];
         }
         write_to_file(high_scores_);
     }
@@ -81,6 +79,4 @@ void logic::Score::write_to_file(std::vector<std::string>& new_high_scores) {
     }
 }
 
-void logic::Score::reset() {
-    score_ = 0;
-}
+void logic::Score::reset() { score_ = 0; }

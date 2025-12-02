@@ -11,11 +11,12 @@
 namespace logic {
 class Random {
 protected:
-    std::mt19937 mt; // Mersenne Twister
+    std::mt19937 mt;                               // Mersenne Twister
     inline static std::shared_ptr<Random> random_; // the singleton instance of the random class
 
     // constructor
     Random();
+
 public:
     // delete the copy-constructor
     Random(Random& other) = delete;

@@ -9,7 +9,8 @@
 
 namespace logic {
 class Stopwatch {
-    std::chrono::system_clock::time_point t_start; // the time_point the stopwatch was created (and thus the beginning of the game)
+    std::chrono::system_clock::time_point
+        t_start; // the time_point the stopwatch was created (and thus the beginning of the game)
     std::chrono::system_clock::time_point t_previous; // the time_point of the previous "tick"
 protected:
     inline static std::shared_ptr<Stopwatch> stopwatch_; // singleton instance
@@ -43,7 +44,6 @@ public:
     double get_start_time();
     std::chrono::system_clock::time_point get_now();
     static std::shared_ptr<Stopwatch> getInstance();
-
 };
 } // namespace logic
 

@@ -20,9 +20,11 @@
 #include <utility>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
-                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera, int level = 1, int pacman_lives)
+                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera,
+                                       int level = 1, int pacman_lives)
     : State(manager), score_(std::move(score)), camera_(std::move(camera)), spriteMap_("../data/sprite.png"),
-      factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)), world_(factory_, level, pacman_lives), manager_(manager) {
+      factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)),
+      world_(factory_, level, pacman_lives), manager_(manager) {
 
     // Load font
     if (!font_.loadFromFile("../data/fonts/score_font.TTF")) {
@@ -43,7 +45,6 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
     levelTitle_.setFont(font_);
     levelTitle_.setFillColor(sf::Color::Yellow);
     livesTitle_.setString("Level: " + std::to_string((world_.get_level())));
-
 
     // initialize camera
     camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
@@ -90,7 +91,7 @@ void representation::LevelState::update(double delta_time) {
     // check if this level has ended
     logic::WorldState world_state = world_.get_world_state();
     switch (world_state) {
-    case (logic::WorldState::Running):  {
+    case (logic::WorldState::Running): {
         return;
     }
     case (logic::WorldState::Defeated): {
@@ -99,10 +100,11 @@ void representation::LevelState::update(double delta_time) {
         score_->reset();
         manager_.pop_state();
         return;
-        }
+    }
     case (logic::WorldState::Victory): {
         // victory, pop this level, push new level and victory state
-        auto level_state = std::make_unique<LevelState>(manager_, windowSize_, score_, camera_, world_.get_level()+1, world_.get_pacman_lives());
+        auto level_state = std::make_unique<LevelState>(manager_, windowSize_, score_, camera_, world_.get_level() + 1,
+                                                        world_.get_pacman_lives());
         manager_.pop_state();
         manager_.push_state(std::move(level_state));
         auto victory_state = std::make_unique<VictoryState>(manager_);
@@ -176,7 +178,8 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
     livesTitle_.setOrigin(bounds.left + bounds.width, bounds.top + bounds.height / 2.f);
 
     // on the right side of the game board
-    livesTitle_.setPosition(camera_->getBoardLeftX() + camera_->getBlockSize()*world_.get_width(), board_bottom + ui_bar_height / 2.f);
+    livesTitle_.setPosition(camera_->getBoardLeftX() + camera_->getBlockSize() * world_.get_width(),
+                            board_bottom + ui_bar_height / 2.f);
 
     // ----- level -----
     // Update lives text en size
@@ -184,8 +187,10 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
     levelTitle_.setString("Level: " + std::to_string(world_.get_level()));
 
     bounds = levelTitle_.getLocalBounds();
-    levelTitle_.setOrigin((bounds.left + bounds.width)/ 2.f, bounds.top + bounds.height / 2.f);
+    levelTitle_.setOrigin((bounds.left + bounds.width) / 2.f, bounds.top + bounds.height / 2.f);
 
     // in the middle of the game board
-    levelTitle_.setPosition((camera_->getBoardLeftX() + (camera_->getBoardLeftX() + camera_->getBlockSize()*world_.get_width()))/2.f, board_bottom + ui_bar_height / 2.f);
+    levelTitle_.setPosition(
+        (camera_->getBoardLeftX() + (camera_->getBoardLeftX() + camera_->getBlockSize() * world_.get_width())) / 2.f,
+        board_bottom + ui_bar_height / 2.f);
 }

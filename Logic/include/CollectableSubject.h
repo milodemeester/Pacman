@@ -6,7 +6,7 @@
 #define PACMAN_COLLECTABLESUBJECT_H
 #include "Subject.h"
 
-namespace logic{
+namespace logic {
 
 class CollectableSubject : public Subject {
 public:

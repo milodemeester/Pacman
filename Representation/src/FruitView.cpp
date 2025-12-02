@@ -6,7 +6,6 @@
 #include "../../Logic/include/FruitModel.h"
 #include "../include/Camera.h"
 
-
 representation::FruitView::FruitView(std::shared_ptr<logic::FruitModel>& model, representation::SpriteMap& sprite_map)
     : sprite(sprite_map.getSprite(sf::IntRect(601, 153, 36, 36))) {
     world_location_ = model->get_position();
@@ -14,17 +13,17 @@ representation::FruitView::FruitView(std::shared_ptr<logic::FruitModel>& model, 
 }
 void representation::FruitView::onNotify(const logic::Subject& entity, logic::Event& e) {
     switch (e) {
-        case (logic::Event::EntityPositionChanged) : {
-            world_location_ = entity.get_position();
-            break;
-        }
-        case (logic::Event::EntityDestruct) : {
-            invisible = true;
-            break;
-        }
-    case(logic::Event::EntityReset) : {
-            invisible = false;
-        }
+    case (logic::Event::EntityPositionChanged): {
+        world_location_ = entity.get_position();
+        break;
+    }
+    case (logic::Event::EntityDestruct): {
+        invisible = true;
+        break;
+    }
+    case (logic::Event::EntityReset): {
+        invisible = false;
+    }
     }
 }
 

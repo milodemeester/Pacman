@@ -15,16 +15,14 @@
 #include <iostream>
 
 representation::VictoryState::VictoryState(StateManager& sm) : State(sm) {
-     texture_.loadFromFile("../data/textures/victory_state_img.png");
- }
-
+    texture_.loadFromFile("../data/textures/victory_state_img.png");
+}
 
 void representation::VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::Resized) {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
-    }
-    else if (event.type == sf::Event::MouseButtonPressed) {
+    } else if (event.type == sf::Event::MouseButtonPressed) {
         sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
         // check if the click is inside the button boundries
         Coordinate ulc = {button_.btnLeft_, button_.btnTop_};
@@ -62,20 +60,20 @@ void representation::VictoryState::render(sf::RenderWindow& window) {
     float scaledH = imgH * scale;
 
     float spriteLeft = (size.x - scaledW) / 2.f;
-    float spriteTop  = (size.y - scaledH) / 2.f;
+    float spriteTop = (size.y - scaledH) / 2.f;
 
     // button boundries (used to calculate if a mouse click falls inside these boundries
-    button_.btnLeft_   = spriteLeft + scaledW * 0.13f;
-    button_.btnTop_    = spriteTop  + scaledH * 0.67f;
-    button_.btnRight_  = spriteLeft + scaledW * 0.87f;
-    button_.btnBottom_ = spriteTop  + scaledH * 0.74f;
+    button_.btnLeft_ = spriteLeft + scaledW * 0.13f;
+    button_.btnTop_ = spriteTop + scaledH * 0.67f;
+    button_.btnRight_ = spriteLeft + scaledW * 0.87f;
+    button_.btnBottom_ = spriteTop + scaledH * 0.74f;
 
     sf::RectangleShape rect;
     rect.setPosition(button_.btnLeft_, button_.btnTop_);
     rect.setSize(sf::Vector2f(button_.btnRight_ - button_.btnLeft_, button_.btnBottom_ - button_.btnTop_));
-    rect.setFillColor(sf::Color::Transparent);        // geen fill
-    rect.setOutlineColor(sf::Color::Yellow);             // rode outline
-    rect.setOutlineThickness(5.f);                    // wat dikker
+    rect.setFillColor(sf::Color::Transparent); // geen fill
+    rect.setOutlineColor(sf::Color::Yellow);   // rode outline
+    rect.setOutlineThickness(5.f);             // wat dikker
 
     window.draw(rect);
 }

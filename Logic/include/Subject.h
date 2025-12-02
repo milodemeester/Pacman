@@ -14,7 +14,7 @@ namespace logic {
 class World;
 class Observer;
 
-class Subject{
+class Subject {
     std::vector<Observer*> observers_; // vector with all of the observers
 protected:
     /**
@@ -23,9 +23,9 @@ protected:
      */
     void notify(Event event);
 
-    Coordinate position_; // the current position of the subject
+    Coordinate position_;          // the current position of the subject
     Coordinate starting_position_; // the position where the entity spawned in
-    bool is_complete = false; // waits until location is set
+    bool is_complete = false;      // waits until location is set
 public:
     // constructor
     explicit Subject(Coordinate pos) : position_(pos) {}
@@ -58,10 +58,10 @@ public:
 
 class MoveableSubject : public Subject {
 protected:
-    int world_width_; // width of the world
-    int world_height_; // height of the world
+    int world_width_;     // width of the world
+    int world_height_;    // height of the world
     Direction direction_; // the current direction
-    double speed_; // measured in pixel/ms
+    double speed_;        // measured in pixel/ms
 
     /**
      * @brief computes the new position based on the delta time
@@ -76,10 +76,8 @@ protected:
 
 public:
     // constructor
-    MoveableSubject(Coordinate pos, Direction dir, int world_width, int world_height) : world_width_(world_width),
-        world_height_(world_height),
-        Subject(pos),
-        direction_(dir) {}
+    MoveableSubject(Coordinate pos, Direction dir, int world_width, int world_height)
+        : world_width_(world_width), world_height_(world_height), Subject(pos), direction_(dir) {}
 
     /**
      * @brief pure virtual update-function that needs to be overwritten
@@ -94,8 +92,6 @@ public:
 
     // getters
     [[nodiscard]] Direction get_direction() const { return direction_; }
-
-
 };
 } // namespace logic
 
