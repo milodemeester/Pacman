@@ -14,7 +14,7 @@ representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& mode
                                    bool invisible)
     : invisible_(invisible) {
     sf::Sprite sprite = sprite_map.getWallSprite({0, 0, 35, 35});
-    m_sprites.insert(std::pair(WallSpriteState::Wall, sprite));
+    m_sprites_.insert(std::pair(WallSpriteState::Wall, sprite));
     model->addObserver(this);
     set_location(model->get_position());
 }
@@ -23,7 +23,7 @@ void representation::WallView::onNotify(const logic::Subject& entity, logic::Eve
     auto* const_model = dynamic_cast<const logic::WallModel*>(&entity);
     auto* model = const_cast<logic::WallModel*>(const_model);
     if (!model) {
-        return; // Event is niet afkomstig van een WallModel, dus negeren.
+        return;
     }
 
     switch (event) {
@@ -35,8 +35,8 @@ void representation::WallView::onNotify(const logic::Subject& entity, logic::Eve
 }
 
 void representation::WallView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
-    if (!invisible_) {
-        sf::Sprite& sprite = m_sprites.at(WallSpriteState::Wall);
+    if (!invisible_) { // if the wall can be displayed
+        sf::Sprite& sprite = m_sprites_.at(WallSpriteState::Wall);
         auto screen = cam->worldToScreen(get_location(), {32, 32});
         sf::Vector2f new_coords = screen.first;
         sf::Vector2f sprite_size = screen.second;

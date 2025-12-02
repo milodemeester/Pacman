@@ -9,24 +9,19 @@
 #include <string>
 
 namespace representation {
-// IDEE VAN CHATGPT
+/**
+ * IDEE VAN CHATGPT
+ */
 class SpriteMap {
-public:
-    /*
-     *Constructor: laadt de sprite sheet vanaf een bestandspad
-     */
-    explicit SpriteMap(const std::string& filename);
-
-    /*
-     * Haalt een sprite op basis van een gedefinieerde rechthoek
-     */
-    sf::Sprite getSprite(const sf::IntRect& rect);
-
-    sf::Sprite getWallSprite(const sf::IntRect& rect);
-
-private:
     sf::Texture m_texture;
     sf::Texture wall_texture;
+public:
+    // constructor die de sprite inleest
+    explicit SpriteMap(const std::string& filename);
+
+    // getters
+    sf::Sprite getSprite(const sf::IntRect& rect);
+    sf::Sprite getWallSprite(const sf::IntRect& rect);
 };
 
 } // namespace representation

@@ -11,8 +11,7 @@
 #include <iostream>
 
 representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map,
-                                     logic::GhostType type)
-    : type_(type) {
+                                     logic::GhostType type) {
     model->addObserver(this);
     world_direction = model->get_direction();
     world_pos_ = model->get_position();
@@ -112,17 +111,17 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
 }
 
 void representation::GhostView::onNotify(const logic::Subject& entity, logic::Event& event) {
-    auto* model = dynamic_cast<const logic::MoveableSubject*>(&entity);
-    if (!model) {
-        return; // Event is niet afkomstig van een PacmanModel, dus negeren.
-    }
 
     switch (event) {
     case (logic::Event::EntityPositionChanged): {
-        world_pos_ = model->get_position();
+        world_pos_ = entity.get_position();
         break;
     }
     case (logic::Event::EntityDirectionChanged): {
+        auto* model = dynamic_cast<const logic::MoveableSubject*>(&entity);
+        if (!model) { // entity has to be a MoveableSubject
+            return;
+        }
          world_direction = model->get_direction();
         break;
     }
@@ -142,10 +141,10 @@ void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<C
     sf::Vector2f new_coords = screen.first;
     std::vector<sf::Sprite> sprite_sequence;
     if (fear_mode) {
-        sprite_sequence = animation_sequences[logic::Direction::NoDirection];
+        sprite_sequence = animation_sequences[logic::Direction::NoDirection]; // fear-mode sprites
     }
     else {
-        sprite_sequence = animation_sequences.at(world_direction);
+        sprite_sequence = animation_sequences.at(world_direction); // normal suquence
     }
     sf::Sprite& sprite = sprite_sequence.at(current_sprite_index);
     sf::Vector2f sprite_size = screen.second;
@@ -155,16 +154,19 @@ void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<C
 }
 
 void representation::GhostView::update(double dt) {
+    // animation of the ghost (does not draw anything)
     animation_timer += dt;
-    if (animation_timer > animation_speed) {
+    if (animation_timer > animation_speed) { // sprite needs to be changed
+        // reset timer
         animation_timer = 0.0f;
         std::vector<sf::Sprite> crnt_sequence;
         if (fear_mode) {
-            crnt_sequence = animation_sequences.at(logic::Direction::NoDirection);
+            crnt_sequence = animation_sequences.at(logic::Direction::NoDirection); // fear mode sprite
         }
         else {
-            crnt_sequence = animation_sequences.at(world_direction);
+            crnt_sequence = animation_sequences.at(world_direction); // normal mode sprite
         }
+        // next sprite
         current_sprite_index += 1;
         current_sprite_index %= crnt_sequence.size();
     }

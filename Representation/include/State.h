@@ -4,9 +4,7 @@
 
 #ifndef PACMAN_STATE_H
 #define PACMAN_STATE_H
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Text.hpp>
 
 namespace representation {
 struct Button {

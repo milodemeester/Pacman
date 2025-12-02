@@ -12,20 +12,35 @@
 namespace logic {
 class CoinModel;
 }
+
 namespace representation {
 class SpriteMap;
-class CoinView : public representation::EntityView, public logic::Observer {
-    bool invisible = false;
-    Coordinate world_position;
-    sf::Sprite sprite;
+class CoinView : public EntityView, public logic::Observer {
+    bool invisible = false; // is false, the coin will not be drawn
+    sf::Sprite sprite; // the sprite that is used to represent a coin
 
 public:
+    // constructor
     explicit CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map);
 
+    /**
+     * @brief function that can notify observers of an event
+     * @param entity this entity
+     * @param e the event that occured
+     */
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
+    /**
+     * @brief used to draw this entity on a window
+     * @param window the window that will be drawn to
+     * @param cam the camera that is used to convert to pixel-coordinates
+     */
     void draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) override;
 
+    /**
+     * @brief does nothing
+     * @param dt delta-time between updates
+     */
     void update(double dt) override {}
 };
 } // namespace representation

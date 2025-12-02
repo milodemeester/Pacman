@@ -11,10 +11,14 @@
 #include <iostream>
 
 representation::PausedState::PausedState(StateManager& sm, sf::Vector2u windowsize) : State(sm) {
-    texture_.loadFromFile("../data/textures/paused_state_img.png");
+    if (!texture_.loadFromFile("../data/textures/paused_state_img.png")) {
+        std::cerr << "Error loading texture in pausedstate" << std::endl;
+        exit(1);
+    }
 }
 
 void representation::PausedState::render(sf::RenderWindow& window) {
+    // load the image and set right position and scale
     sf::Sprite sprite;
     sprite.setTexture(texture_);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
@@ -60,11 +64,19 @@ void representation::PausedState::proces_user_input(const sf::Event& event, sf::
         window.setView(sf::View(visibleArea));
     }
     else if (event.type == sf::Event::MouseButtonPressed) {
-        sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-        if (utils::contains(Coordinate(button1_.btnLeft_, button1_.btnTop_), Coordinate(button1_.btnRight_, button1_.btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
+        sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
+        // check if the click is inside the button boundries
+        Coordinate ulc1{button1_.btnLeft_, button1_.btnTop_};
+        Coordinate ulc2{button2_.btnLeft_, button2_.btnTop_};
+        Coordinate lrc1{button1_.btnRight_, button1_.btnBottom_};
+        Coordinate lrc2{button2_.btnRight_, button2_.btnBottom_};
+        Coordinate click{mouseCoords.x, mouseCoords.y};
+        if (utils::contains(ulc1, lrc1, click)) {
+            // resume button, pop this pausedstate to go back to the game
             manager_.pop_state();
         }
-        else if (utils::contains(Coordinate(button2_.btnLeft_, button2_.btnTop_), Coordinate(button2_.btnRight_, button2_.btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
+        else if (utils::contains(ulc2, lrc2, click)) {
+            // back to menu button, pop this pausedstate and the levelstate to go back to the main menu
             manager_.double_pop_state();
         }
     }

@@ -7,16 +7,17 @@
 #include "../../Logic/include/Direction.h"
 #include "../../Logic/include/Observer.h"
 #include "EntityView.h"
+#include <SFML/Graphics/Sprite.hpp>
 #include <map>
 #include <memory>
 
 namespace logic {
 enum class GhostType;
 }
-namespace sf {
-class Sprite;
-}
-// Enum voor alle mogelijke animatie-frames/states van Ghost
+
+/**
+ * @brief every possible animation-state of a ghost
+ */
 enum class GhostSpriteState {
     // BLINKY
     BLINKY_RIGHT_1,
@@ -66,24 +67,38 @@ class GhostModel;
 
 namespace representation {
 class SpriteMap;
-class GhostView : public representation::EntityView, public logic::Observer {
-    logic::GhostType type_;
-    std::map<logic::Direction, std::vector<sf::Sprite>> animation_sequences;
-    size_t current_sprite_index = 0;
-    logic::Direction world_direction;
+class GhostView : public EntityView, public logic::Observer {
+    std::map<logic::Direction, std::vector<sf::Sprite>> animation_sequences; // map with direction key and corresponding animation sequence
+    size_t current_sprite_index = 0; // the index of the current animation sequence
+    logic::Direction world_direction; // the current direction of the ghost
     float last_sprite_change = 0.0f; // last sprite change timestamp
-    double animation_timer = 0.0;
-    const double animation_speed = 125; // 125 ms = 0.125s
-    Coordinate world_pos_;
-    bool fear_mode = false;
+    double animation_timer = 0.0; // the time passed after the previous sprite change
+    const double animation_speed = 100; // 100 ms = 0.100s
+    Coordinate world_pos_; // the world position of the ghost
+    bool fear_mode = false; // if true, ghost is in fear mode and has to change its sprite accordingly
 
 public:
+    // constructor
     explicit GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, logic::GhostType ghost_type);
 
+    /**
+     * @brief function that can notify observers of an event
+     * @param entity this entity
+     * @param e the event that occured
+     */
     void onNotify(const logic::Subject& entity, logic::Event& e) override;
 
+    /**
+     * @brief used to draw this ghost on a window
+     * @param window the window that will be drawn to
+     * @param cam the camera that is used to convert to pixel-coordinates
+     */
     void draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) override;
 
+    /**
+     * @brief does nothing
+     * @param dt delta-time between updates
+     */
     void update(double dt) override;
 };
 } // namespace representation

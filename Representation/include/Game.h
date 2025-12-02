@@ -14,10 +14,11 @@ class Game {
     std::shared_ptr<StateManager> state_manager_;
 
 public:
+    // constructor
     Game();
 
-    /*
-     * main game loop
+    /**
+     * @brief runs the main game loop
      */
     void run();
 };

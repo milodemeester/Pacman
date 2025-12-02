@@ -4,7 +4,6 @@
 
 #ifndef PACMAN_GAMEFACTORY_H
 #define PACMAN_GAMEFACTORY_H
-#include "../../Utilities/utils.h"
 #include "GhostModel.h"
 #include <memory>
 

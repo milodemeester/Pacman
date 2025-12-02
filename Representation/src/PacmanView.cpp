@@ -8,14 +8,13 @@
 #include "../include/SpriteMap.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 
-// Constructor: Sla een referentie naar de SpriteMap op en initialiseer de animaties met IntRects.
 representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map)
     : sprite_map_(sprite_map) {
     model->addObserver(this);
     world_direction = model->get_direction();
     world_position = model->get_position();
 
-    // Sla alleen de texture-rechthoeken (IntRects) op, GEEN sf::Sprite objecten.
+    // save the textures into the animation_sequence
     sf::IntRect pacman_closed_rect(853, 5, 33, 33);
     sf::IntRect open_right1_rect(853, 55, 33, 33);
     sf::IntRect open_right2_rect(853, 105, 33, 33);
@@ -35,7 +34,7 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>
 void representation::PacmanView::onNotify(const logic::Subject& entity, logic::Event& event) {
     auto* model = dynamic_cast<const logic::PacmanModel*>(&entity);
     if (!model) {
-        return; // Event is niet afkomstig van een PacmanModel, dus negeren.
+        return;
     }
 
     switch (event) {
@@ -51,8 +50,10 @@ void representation::PacmanView::onNotify(const logic::Subject& entity, logic::E
 }
 
 void representation::PacmanView::update(double dt) {
+    // handle animation
     animation_timer += dt;
     if (animation_timer > animation_speed) {
+        // reset animation timer and move index
         animation_timer = 0.0f;
         const auto& crnt_sequence = animation_sequences.at(world_direction);
         if (!crnt_sequence.empty()) {
@@ -62,41 +63,21 @@ void representation::PacmanView::update(double dt) {
 }
 
 void representation::PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
-    bool d = false;
-    if (world_direction == logic::Direction::East) {
-        d = true;
-    }
-    if (world_direction == logic::Direction::North) {
-        d = true;
-    }
-    if (world_direction == logic::Direction::South) {
-        d = true;
-    }
-    if (world_direction == logic::Direction::West) {
-        d = true;
-    }
-    if (d == false) {
-        return;
-    }
-
-    // 1. Haal de vector van rechthoeken op voor de huidige richting.
+    // Get the sprite IntRect
     const auto& sprite_rects = animation_sequences.at(world_direction);
     if (sprite_rects.empty() || current_sprite_index >= sprite_rects.size()) {
-        return; // Veiligheidscheck: doe niets als de animatiedata ongeldig is.
+        return; // do nothing if the animation is not valid
     }
-
-    // 2. Haal de specifieke rechthoek op voor de huidige animatieframe.
     const sf::IntRect& current_rect = sprite_rects.at(current_sprite_index);
 
-    // 3. Maak een nieuwe sprite op de stack. Dit is veilig en efficiënt.
+    // Make a new sprite using this rect
     sf::Sprite sprite = sprite_map_.getSprite(current_rect);
 
-    // 4. Bereken positie en schaal op het scherm.
+    // use the camera to calculate the coordinates
     auto screen = cam->worldToScreen(world_position, {32, 32});
     sf::Vector2f new_coords = screen.first;
     sf::Vector2f sprite_size = screen.second;
 
-    // 5. Pas de sprite aan en teken hem.
     sprite.setScale(sprite_size);
     sprite.setPosition(new_coords);
     window.draw(sprite);

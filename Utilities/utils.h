@@ -34,13 +34,29 @@ private:
 
 class utils {
 public:
-    /*
-     * checks if a mouseclick is inside a box
+    /**
+     * @brief checks if a Coordinate falls inside a rectangle
+     * @param upper_left_corner upper left corner of the rectangle
+     * @param lower_right_corner lower right corner of the rectangle
+     * @param coordinate coordinate that is checked
+     * @return bool if it falls in the rectangle or not
      */
-    static bool contains(Coordinate upper_left_corner, Coordinate lower_right_corner, Coordinate click);
+    static bool contains(Coordinate& upper_left_corner, Coordinate& lower_right_corner, Coordinate& coordinate);
 
-    static bool intersecting(Rectangle rectangle1, Rectangle rectangle2);
+    /**
+     * @brief checks if two rectangles are intersecting
+     * @param rectangle1 first rectangle
+     * @param rectangle2 second rectangle
+     * @return true if the rectangles are intersecting
+     */
+    static bool intersecting(Rectangle& rectangle1, Rectangle& rectangle2);
 
+    /**
+     * @brief compute the manhatten distance between two coordinates
+     * @param pos1 the first coordinate
+     * @param pos2 the second coordinate
+     * @return a double that represents the manhatten distance
+     */
     static double compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2);
 };
 

@@ -9,13 +9,13 @@
 
 representation::CoinView::CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map)
     : sprite(sprite_map.getSprite(sf::IntRect(404, 402, 35, 35))) {
-    world_position = model->get_position();
+    world_location_ = model->get_position();
     model->addObserver(this);
 }
 
 void representation::CoinView::onNotify(const logic::Subject& entity, logic::Event& e) {
     if (e == logic::Event::EntityPositionChanged) {
-        world_position = entity.get_position();
+        world_location_ = entity.get_position();
     } else if (e == logic::Event::EntityDestruct) {
         invisible = true;
     } else if (e == logic::Event::EntityReset) {
@@ -25,7 +25,7 @@ void representation::CoinView::onNotify(const logic::Subject& entity, logic::Eve
 
 void representation::CoinView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     if (!invisible) {
-        auto screen = cam->worldToScreen(world_position, {32, 32});
+        auto screen = cam->worldToScreen(world_location_, {32, 32});
         sf::Vector2f sprite_size = screen.second;
         sf::Vector2f new_coords = screen.first;
         sprite.setScale(sprite_size);

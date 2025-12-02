@@ -25,14 +25,19 @@ void representation::VictoryState::proces_user_input(const sf::Event& event, sf:
         window.setView(sf::View(visibleArea));
     }
     else if (event.type == sf::Event::MouseButtonPressed) {
-        sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-        if (utils::contains(Coordinate(button_.btnLeft_, button_.btnTop_), Coordinate(button_.btnRight_, button_.btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
+        sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
+        // check if the click is inside the button boundries
+        Coordinate ulc = {button_.btnLeft_, button_.btnTop_};
+        Coordinate lrc = {button_.btnRight_, button_.btnBottom_};
+        Coordinate click = {mouseCoords.x, mouseCoords.y};
+        if (utils::contains(ulc, lrc, click)) {
             manager_.pop_state();
         }
     }
 }
 
 void representation::VictoryState::render(sf::RenderWindow& window) {
+    // Load and draw the image
     sf::Sprite sprite;
     sprite.setTexture(texture_);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
@@ -48,8 +53,8 @@ void representation::VictoryState::render(sf::RenderWindow& window) {
     sprite.setScale(scale, scale);
     window.draw(sprite);
 
-    float imgW = local.width;   // 1024
-    float imgH = local.height;  // 1536
+    float imgW = local.width;
+    float imgH = local.height;
 
     auto size = window.getSize();
 
@@ -59,10 +64,12 @@ void representation::VictoryState::render(sf::RenderWindow& window) {
     float spriteLeft = (size.x - scaledW) / 2.f;
     float spriteTop  = (size.y - scaledH) / 2.f;
 
+    // button boundries (used to calculate if a mouse click falls inside these boundries
     button_.btnLeft_   = spriteLeft + scaledW * 0.13f;
     button_.btnTop_    = spriteTop  + scaledH * 0.67f;
     button_.btnRight_  = spriteLeft + scaledW * 0.87f;
     button_.btnBottom_ = spriteTop  + scaledH * 0.74f;
+
     sf::RectangleShape rect;
     rect.setPosition(button_.btnLeft_, button_.btnTop_);
     rect.setSize(sf::Vector2f(button_.btnRight_ - button_.btnLeft_, button_.btnBottom_ - button_.btnTop_));

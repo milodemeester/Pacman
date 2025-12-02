@@ -36,7 +36,9 @@ bool representation::StateManager::double_pop_state() {
     return true;
 }
 
-void representation::StateManager::push_state(std::unique_ptr<State> state) { state_stack.push(std::move(state)); }
+void representation::StateManager::push_state(std::unique_ptr<State> state) {
+    state_stack.push(std::move(state));
+}
 
 void representation::StateManager::render(sf::RenderWindow& window) {
     if (state_stack.empty())

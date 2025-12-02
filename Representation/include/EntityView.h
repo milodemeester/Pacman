@@ -12,17 +12,31 @@
 namespace representation {
 class Camera;
 class EntityView {
-    Coordinate world_location_;
+protected:
+    Coordinate world_location_; // the world location of the entity
 
 public:
-    [[nodiscard]] Coordinate get_location() const { return world_location_; }
-    void set_location(const Coordinate& location) { this->world_location_ = location; }
-
+    // destructor
     virtual ~EntityView() = default;
 
+    /**
+     * @brief used to draw this entity on a window
+     * @param window the window that will be drawn to
+     * @param cam the camera that is used to convert to pixel-coordinates
+     */
     virtual void draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) = 0;
 
+    /**
+     * @brief update something
+     * @param dt delta time between updates
+     */
     virtual void update(double dt) = 0;
+
+    // getters
+    [[nodiscard]] Coordinate get_location() const { return world_location_; }
+
+    // setters
+    void set_location(const Coordinate& location) { this->world_location_ = location; }
 };
 } // namespace representation
 

@@ -10,12 +10,14 @@ representation::Game::Game()
     : score_(nullptr), window_(sf::VideoMode({1600, 800}), "Pacman", sf::Style::Default), state_manager_(nullptr) {}
 
 void representation::Game::run() {
+    // initialisation
     std::shared_ptr<logic::Score> s = std::make_shared<logic::Score>();
     score_ = s;
     state_manager_ = std::make_shared<StateManager>(window_.getSize(), s);
     std::shared_ptr<logic::Stopwatch> stopwatch = logic::Stopwatch::getInstance();
     window_.setVerticalSyncEnabled(true);
 
+    // main game loop
     while (window_.isOpen()) {
         sf::Event event{};
         while (window_.pollEvent(event)) {

@@ -18,13 +18,20 @@
 
 representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score)
     : State(sm), score_(std::move(score)){
+
+    // font loading
     if (!font_.loadFromFile("../data/fonts/pacman_font.TTF")) {
-        std::cerr << "Failed to load font." << std::endl;
+        std::cerr << "Failed to load font in menustate." << std::endl;
+        exit(1);
     }
     if (!scoreFont_.loadFromFile("../data/fonts/score_font.TTF")) {
-        std::cerr << "Failed to load font." << std::endl;
+        std::cerr << "Failed to load font in manustate." << std::endl;
+        exit(1);
     }
-    texture_.loadFromFile("../data/textures/menu_state_img.png");
+    if (!texture_.loadFromFile("../data/textures/menu_state_img.png")) {
+        std::cerr << "Failed to load texture in menustate." << std::endl;
+        exit(1);
+    }
 
     // --- High Scores Title ---
     highScoreTitle_.setFont(scoreFont_);
@@ -62,11 +69,11 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
     // Scores
     auto scores = score_->get_high_scores();
     float current_y_ratio = 28.f / 64.f;
+    // update all the highScore-texts
     for (int i = 0; i < highScores_.size(); i++) {
         highScores_[i].setString(scores[i]);
         highScores_[i].setCharacterSize(char_size * 0.9f);
         sf::FloatRect score_bounds = highScores_[i].getLocalBounds();
-        // DE FIX: gebruik 'highScore' in plaats van 'highScoreText_'
         highScores_[i].setOrigin(score_bounds.left + score_bounds.width / 2.0f,
                             score_bounds.top + score_bounds.height / 2.0f);
         highScores_[i].setPosition(window_width / 2.f, window_height * current_y_ratio);
@@ -79,12 +86,15 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
         updateLayout({event.size.width, event.size.height});
-        return; // Voorkom doorvallen naar MouseButtonPressed
     }
 
     else if (event.type == sf::Event::MouseButtonPressed) {
-        sf::Vector2f mouseWorld = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-        if (utils::contains(Coordinate(button_.btnLeft_, button_.btnTop_), Coordinate(button_.btnRight_, button_.btnBottom_), Coordinate(mouseWorld.x, mouseWorld.y))) {
+        sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
+        // check if the click is inside the button boundries
+        Coordinate ulc = {button_.btnLeft_, button_.btnTop_};
+        Coordinate lrc = {button_.btnRight_, button_.btnBottom_};
+        Coordinate click = {mouseCoords.x, mouseCoords.y};
+        if (utils::contains(ulc, lrc, click)) {
             std::shared_ptr<Camera> cam = std::make_shared<Camera>();
             manager_.push_state(std::make_unique<LevelState>(manager_, window.getSize(), score_, cam, 1));
         }
@@ -92,6 +102,7 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
 }
 
 void representation::MenuState::render(sf::RenderWindow& window) {
+    // Load the image and resize it to fit the window
     sf::Sprite sprite;
     sprite.setTexture(texture_);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);
@@ -118,11 +129,13 @@ void representation::MenuState::render(sf::RenderWindow& window) {
     float spriteLeft = (size.x - scaledW) / 2.f;
     float spriteTop  = (size.y - scaledH) / 2.f;
 
+    // save the boundires of the button (later used to calculate if a click falls into this)
     button_.btnLeft_   = spriteLeft + scaledW * 0.25f;
     button_.btnTop_    = spriteTop  + scaledH * 0.86f;
     button_.btnRight_  = spriteLeft + scaledW * 0.75f;
     button_.btnBottom_ = spriteTop  + scaledH * 0.97f;
 
+    // draw to window
     window.draw(highScoreTitle_);
     for (const auto& highScore : highScores_) {
         window.draw(highScore);
