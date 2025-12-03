@@ -5,6 +5,7 @@
 #include "../include/Type2Ghost.h"
 #include "../include/Random.h"
 #include "../include/World.h"
+#include <map>
 
 logic::Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
 
@@ -93,9 +94,14 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
     // Check every possible direction except the opposite direction
     auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
 
+    std::map<Direction, Coordinate> dir_cor_combis;
+
     for (auto& direction : possible_directions) {
         // Calculate the position if clyde takes a step into this direction
         Coordinate next_pos = calculate_new_position(dt, direction, current_location);
+
+        // Save this position for later
+        dir_cor_combis[direction] = next_pos;
 
         // Check if there is a wall
         if (!world.check_wall_collision(next_pos, direction, speed_, true, dt)) {
@@ -141,8 +147,5 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
         chosen_direction = best_directions[random_index];
     }
 
-    // Calculate the position that belongs to this direction // TODO: deze final pos werd al eens berekend, zoek een
-    // efficientere manier
-    Coordinate final_pos = calculate_new_position(dt, chosen_direction, current_location);
-    return {chosen_direction, final_pos};
+    return {chosen_direction, dir_cor_combis[chosen_direction]};
 }
