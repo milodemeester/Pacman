@@ -122,7 +122,6 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
                 }
             } else {
                 // maximize the manhatten value
-                best_manhattan = std::numeric_limits<double>::min();
                 if (mnhtn_distance > best_manhattan) {
                     // This direction is better than the other directions up to this point
                     best_manhattan = mnhtn_distance;
@@ -147,5 +146,7 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
         chosen_direction = best_directions[random_index];
     }
 
-    return {chosen_direction, dir_cor_combis[chosen_direction]};
+    auto location = calculate_new_position(dt, chosen_direction, current_location);
+
+    return {chosen_direction, location};
 }

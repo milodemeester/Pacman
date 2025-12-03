@@ -17,7 +17,6 @@ void logic::PacmanModel::update(float dt, World& world) {
         if (!world.check_wall_collision(next_pos_if_turned, wanted_direction, speed_, false, dt)) {
             set_position(next_pos_if_turned);
             set_direction(wanted_direction);
-            return;
         }
     }
 

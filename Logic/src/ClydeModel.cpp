@@ -113,6 +113,7 @@ std::pair<logic::Direction, Coordinate> logic::ClydeModel::get_viable_state(Dire
         int random_index = Random::getInstance()->getNumber(0, int(best_directions.size() - 1));
         chosen_direction = best_directions[random_index];
     }
+    auto pos = calculate_new_position(dt, chosen_direction, current_location);
 
-    return {chosen_direction, dir_cor_combis[chosen_direction]};
+    return {chosen_direction, pos};
 }

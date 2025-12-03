@@ -67,6 +67,10 @@ Coordinate logic::MoveableSubject::calculate_new_position(float dt, Direction di
     return {new_x, new_y};
 }
 
-void logic::MoveableSubject::set_speed(float speed) { speed_ = speed; }
+void logic::MoveableSubject::set_speed(float speed) {
+    speed_ = speed;
+}
 
-void logic::Subject::go_to_center() { set_position(starting_position_); }
+void logic::Subject::go_to_center() {
+    set_position(starting_position_);
+}

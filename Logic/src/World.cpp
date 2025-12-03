@@ -20,8 +20,8 @@
 #include <memory>
 #include <vector>
 
-static float basic_pacman_speed = 0.016;
-static float basic_ghost_speed = 0.014;
+static float basic_pacman_speed = 0.012;
+static float basic_ghost_speed = 0.01;
 
 logic::World::World(const std::shared_ptr<GameFactory>& factory) {
     // initialise the width and height and create all the entities.
@@ -145,6 +145,7 @@ void logic::World::initialise_values() {
         frightened_mode_duration_ = 3000;
         ghost_speed_fraction_ = 0.8f;
         pacman_speed_fraction_ = 0.8f;
+        break;
     }
     case 5: {
         frightened_mode_duration_ = 2000;
@@ -166,10 +167,10 @@ void logic::World::initialise_values() {
     }
     }
     pacman->set_speed(basic_pacman_speed * pacman_speed_fraction_);
-    inky->set_speed(basic_ghost_speed * pacman_speed_fraction_);
-    blinky->set_speed(basic_ghost_speed * pacman_speed_fraction_);
-    pinky->set_speed(basic_ghost_speed * pacman_speed_fraction_);
-    clyde->set_speed(basic_ghost_speed * pacman_speed_fraction_);
+    inky->set_speed(basic_ghost_speed * ghost_speed_fraction_);
+    blinky->set_speed(basic_ghost_speed * ghost_speed_fraction_);
+    pinky->set_speed(basic_ghost_speed * ghost_speed_fraction_);
+    clyde->set_speed(basic_ghost_speed * ghost_speed_fraction_);
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt) {

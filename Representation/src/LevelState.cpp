@@ -137,6 +137,8 @@ void representation::LevelState::render(sf::RenderWindow& window) {
     }
 
     // text
+    scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
+    livesTitle_.setString("#Lives: " + std::to_string(world_.get_pacman_lives()));
     window.draw(scoreTitle_);
     window.draw(livesTitle_);
     window.draw(levelTitle_);
