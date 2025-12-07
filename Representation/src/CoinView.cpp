@@ -10,7 +10,8 @@
 representation::CoinView::CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map)
     : sprite(sprite_map.getSprite(sf::IntRect(404, 402, 35, 35))) {
     world_location_ = model->get_position();
-    model->addObserver(this);
+    auto shared = std::make_shared<CoinView>(*this);
+    model->addObserver(shared);
 }
 
 void representation::CoinView::onNotify(const logic::Subject& entity, logic::Event& e) {

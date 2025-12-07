@@ -6,12 +6,14 @@
 #define PACMAN_OBSERVER_H
 #include "Event.h"
 
+#include <memory>
+
 namespace logic {
 class Subject;
 }
 
 namespace logic {
-class Observer {
+class Observer : public std::enable_shared_from_this<Observer> {
 public:
     // destructor
     virtual ~Observer() = default;

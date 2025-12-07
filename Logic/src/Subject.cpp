@@ -5,15 +5,21 @@
 #include "../include/Subject.h"
 #include "../include/Observer.h"
 
+#include <algorithm>
+#include <mutex>
+
 void logic::Subject::set_position(const Coordinate& position) {
-    this->position_ = position;
+    // If the object wasn't initialised yet, register starting pos and mark as complete
     if (!is_complete) {
-        // first time calling set_position (first actual position)
         starting_position_ = position;
         is_complete = true;
     }
-    Event event = Event::EntityPositionChanged;
-    notify(event);
+
+    // Store position
+    position_ = position;
+
+    // notify observers
+    notify(Event::EntityPositionChanged);
 }
 
 void logic::MoveableSubject::set_direction(Direction direction) {
@@ -22,17 +28,34 @@ void logic::MoveableSubject::set_direction(Direction direction) {
     notify(event);
 }
 
-void logic::Subject::removeObserver(Observer* o) {
-    for (int i = 0; i < observers_.size(); i++) {
-        if (observers_[i] == o) {
-            observers_.erase(observers_.begin() + i);
-        }
-    }
+void logic::Subject::removeObserver(std::shared_ptr<Observer> observer_to_remove) {
+    observers_.erase(std::remove_if(observers_.begin(), observers_.end(),
+        [&](const std::weak_ptr<Observer>& weak_obs) {
+            // Verwijder als de weak_ptr verlopen is of als het de observer is die we willen verwijderen
+            if (weak_obs.expired()) {
+                return true;
+            }
+            std::shared_ptr<Observer> shared_obs = weak_obs.lock();
+            return shared_obs == observer_to_remove;
+        }),
+    observers_.end());
 }
-
 void logic::Subject::notify(Event event) {
-    for (auto observer : observers_) {
-        observer->onNotify(*this, event);
+    if (!is_complete) {
+        return;
+    }
+
+    // Delete all the expired observers
+    observers_.erase(std::remove_if(observers_.begin(), observers_.end(),
+        [](const std::weak_ptr<Observer>& o) {
+            return o.expired();
+        }),
+    observers_.end());
+
+    for (auto& weak_obs : observers_) {
+        if (auto shared_obs = weak_obs.lock()) { // Check if the observer still exists
+            shared_obs->onNotify(*this,event);
+        }
     }
 }
 

@@ -15,7 +15,8 @@ representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& mode
     : invisible_(invisible) {
     sf::Sprite sprite = sprite_map.getWallSprite({0, 0, 35, 35});
     m_sprites_.insert(std::pair(WallSpriteState::Wall, sprite));
-    model->addObserver(this);
+    auto shared = std::make_shared<WallView>(*this);
+    model->addObserver(shared);
     set_location(model->get_position());
 }
 

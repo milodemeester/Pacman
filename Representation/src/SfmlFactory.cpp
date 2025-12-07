@@ -34,7 +34,7 @@ std::vector<std::shared_ptr<representation::EntityView>> representation::SfmlFac
 std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman(int ww, int wh) {
     auto pacman_model = std::make_shared<logic::PacmanModel>(Coordinate(0, 0), logic::Direction::East, ww, wh);
     auto pacman_view = std::make_shared<PacmanView>(pacman_model, sprite_map_);
-    pacman_model->addObserver(score_.get());
+    pacman_model->addObserver(score_);
     createdViews_.push_back(pacman_view);
     return pacman_model;
 }

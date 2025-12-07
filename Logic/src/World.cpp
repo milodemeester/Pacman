@@ -336,3 +336,11 @@ void logic::World::return_center() {
 }
 
 void logic::World::set_world_state(WorldState& world_state) { world_state_ = world_state; }
+
+std::vector<std::shared_ptr<logic::Subject>> logic::World::get_all_subjects() const {
+    std::vector<std::shared_ptr<Subject>> all_subjects;
+    for (const auto& row : entities) {
+        all_subjects.insert(all_subjects.end(), row.begin(), row.end());
+    }
+    return all_subjects;
+}

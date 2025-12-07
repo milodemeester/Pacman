@@ -139,6 +139,7 @@ public:
     [[nodiscard]] int get_pacman_lives() const;
     [[nodiscard]] WorldState get_world_state() const;
     [[nodiscard]] int get_level() const;
+    [[nodiscard]] std::vector<std::shared_ptr<Subject>> get_all_subjects() const;
 };
 } // namespace logic
 

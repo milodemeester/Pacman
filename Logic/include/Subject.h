@@ -15,7 +15,6 @@ class World;
 class Observer;
 
 class Subject {
-    std::vector<Observer*> observers_; // vector with all of the observers
 protected:
     /**
      * @brief notifies all the observers of a certain event
@@ -23,6 +22,7 @@ protected:
      */
     void notify(Event event);
 
+    std::vector<std::weak_ptr<Observer>> observers_; // vector with all of the observers
     Coordinate position_;          // the current position of the subject
     Coordinate starting_position_; // the position where the entity spawned in
     bool is_complete = false;      // waits until location is set
@@ -37,12 +37,12 @@ public:
      * @brief adds a new observer to the observer vector
      * @param observer the new observer
      */
-    void addObserver(Observer* observer) { observers_.push_back(observer); }
+    void addObserver(const std::shared_ptr<Observer> observer) { observers_.push_back(observer); }
 
     /**
      * @param observer a pointer to the observer that needs to be removed
      */
-    void removeObserver(Observer* observer);
+    void removeObserver(std::shared_ptr<Observer> observer);
 
     /**
      * @brief puts the entity at their start_location

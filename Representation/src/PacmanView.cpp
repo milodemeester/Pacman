@@ -10,7 +10,8 @@
 
 representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map)
     : sprite_map_(sprite_map) {
-    model->addObserver(this);
+    auto shared = std::make_shared<PacmanView>(*this);
+    model->addObserver(shared);
     world_direction = model->get_direction();
     world_position = model->get_position();
 
