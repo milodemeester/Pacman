@@ -7,6 +7,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # --- Pacman logic library ---
 add_library(pacman_logic STATIC
         src/CoinModel.cpp include/CoinModel.h
+        src/CollisionMap.cpp include/CollisionMap.h
         src/Direction.cpp include/Direction.h
         src/Event.cpp include/Event.h
         src/FruitModel.cpp include/FruitModel.h

@@ -4,6 +4,7 @@
 
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
+#include "CollisionMap.h"
 #include "GameFactory.h"
 #include "Subject.h"
 #include <fstream>
@@ -59,6 +60,8 @@ class World {
     bool pacman_dead(const std::shared_ptr<GhostModel>& model);
 
     std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities in the world
+    std::shared_ptr<CollisionMap> collision_map_;                // pre-computed wall collision map
+    std::vector<std::shared_ptr<CollectableSubject>> collectibles_; // coins and fruits for faster iteration
     int world_width;                                             // width of the world
     int world_height;                                            // height of the world
     std::shared_ptr<GameFactory> game_factory;
@@ -78,6 +81,9 @@ class World {
     int frightened_mode_duration_; // duration of ghost frightened mode in miliseconds
     float pacman_speed_fraction_;  // the fraction of the total pacman speed
     float ghost_speed_fraction_;   // the fraction of the total ghost speed
+    
+    // Collision detection constants (fixed, not dependent on dt)
+    static constexpr float COLLISION_MARGIN = 0.08f; // Fixed margin in world units
 
 public:
     // constructor

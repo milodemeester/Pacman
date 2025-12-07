@@ -6,6 +6,7 @@
 #include "../include/BlinkyModel.h"
 #include "../include/ClydeModel.h"
 #include "../include/CoinModel.h"
+#include "../include/CollisionMap.h"
 #include "../include/FruitModel.h"
 #include "../include/GameFactory.h"
 #include "../include/GhostModel.h"
@@ -55,6 +56,10 @@ void logic::World::initialise_maze(int pacman_lives) {
                 world_width = std::stoi(w);
                 std::string h = maze_line.substr(pos + 1);
                 world_height = std::stoi(h);
+                
+                // Initialize the collision map for optimized wall detection
+                collision_map_ = std::make_shared<CollisionMap>(world_width, world_height);
+                
                 line++;
             } else {
                 std::vector<std::shared_ptr<Subject>> line_vector;
@@ -69,10 +74,17 @@ void logic::World::initialise_maze(int pacman_lives) {
                     switch (maze_line[char_idx]) {
                     case 'W': { // Wall
                         crnt_entity = game_factory->createWall(false);
+                        // Mark this position as solid in the collision map
+                        collision_map_->markSolid(char_idx, line - 1);
                         break;
                     }
                     case 'C': { // Coin
                         crnt_entity = game_factory->createCoin();
+                        // Add to collectibles list for faster iteration
+                        auto coin = std::dynamic_pointer_cast<CollectableSubject>(crnt_entity);
+                        if (coin) {
+                            collectibles_.push_back(coin);
+                        }
                         coin_count++;
                         break;
                     }
@@ -98,6 +110,11 @@ void logic::World::initialise_maze(int pacman_lives) {
                     }
                     case 'F': { // Fruit
                         crnt_entity = game_factory->createFruit();
+                        // Add to collectibles list for faster iteration
+                        auto fruit = std::dynamic_pointer_cast<CollectableSubject>(crnt_entity);
+                        if (fruit) {
+                            collectibles_.push_back(fruit);
+                        }
                         fruit_count++;
                         break;
                     }
@@ -182,21 +199,20 @@ void logic::World::initialise_values() {
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, float entity_speed, float dt) const {
-    // TODO: colissions are still a bit weird, fix it
+    // Use fixed collision margin instead of delta-time dependent epsilon
+    // This prevents jitter and provides consistent collision feel
     float entity_half_size_x = (1.f / float(world_width));
     float entity_half_size_y = (1.f / float(world_height));
 
-    // This value works and was found by trial and error
-    const float collision_sensitivity = 0.45f;
+    // Fixed margin for collision detection (not dependent on frame rate)
+    const float margin_x = entity_half_size_x * COLLISION_MARGIN;
+    const float margin_y = entity_half_size_y * COLLISION_MARGIN;
 
-    const float epsilon_x = entity_half_size_x * entity_speed * dt * collision_sensitivity;
-    const float epsilon_y = entity_half_size_y * entity_speed * dt * collision_sensitivity;
-
-    // Define the entity's bounding box, shrunk by the scaled epsilon on each axis.
-    Coordinate entity1_left_upper_corner = {entity_pos.getX() - entity_half_size_x + epsilon_x,
-                                            entity_pos.getY() - entity_half_size_y + epsilon_y};
-    Coordinate entity1_right_lower_corner = {entity_pos.getX() + entity_half_size_x - epsilon_x,
-                                             entity_pos.getY() + entity_half_size_y - epsilon_y};
+    // Define the entity's bounding box, shrunk by the fixed margin
+    Coordinate entity1_left_upper_corner = {entity_pos.getX() - entity_half_size_x + margin_x,
+                                            entity_pos.getY() - entity_half_size_y + margin_y};
+    Coordinate entity1_right_lower_corner = {entity_pos.getX() + entity_half_size_x - margin_x,
+                                             entity_pos.getY() + entity_half_size_y - margin_y};
     Rectangle entity1_rect = {entity1_left_upper_corner, entity1_right_lower_corner};
 
     if (utils::intersecting(entity1_rect, entity2_rect)) {
@@ -208,60 +224,81 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
 std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction,
                                                                float entity_speed, bool ghost, float dt) {
     std::vector<logic::Event> events;
-    for (auto& entity_vector : entities) {
-        for (auto& entity : entity_vector) {
-            Rectangle entity2_rect;
-            if (!entity) {
-            } else {
-                Coordinate entity2_left_upper_corner = {entity->get_position().getX(), entity->get_position().getY()};
-                Coordinate entity2_right_lower_corner = {entity->get_position().getX(), entity->get_position().getY()};
-                entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-            }
-            std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
-            std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(entity);
-            std::shared_ptr<GhostModel> ghost_model = std::dynamic_pointer_cast<GhostModel>(entity);
-            std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
-
-            if (wall_model) {
-                // Define the wall's bounding box
-                float entity_half_size_x = (1.f / float(world_width));
-                float entity_half_size_y = (1.f / float(world_height));
-                Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
-                                                        wall_model->get_position().getY() - entity_half_size_y};
-                Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
-                                                         wall_model->get_position().getY() + entity_half_size_y};
-                entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {
-                } else if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    events.push_back(Event::WallCollide);
-                }
-            }
+    
+    // Optimized wall collision check using pre-computed collision map (O(1) instead of O(n))
+    float entity_half_size_x = (1.f / float(world_width));
+    float entity_half_size_y = (1.f / float(world_height));
+    const float margin_x = entity_half_size_x * COLLISION_MARGIN;
+    const float margin_y = entity_half_size_y * COLLISION_MARGIN;
+    
+    Coordinate entity_left_upper_corner = {entity_pos.getX() - entity_half_size_x + margin_x,
+                                          entity_pos.getY() - entity_half_size_y + margin_y};
+    Coordinate entity_right_lower_corner = {entity_pos.getX() + entity_half_size_x - margin_x,
+                                           entity_pos.getY() + entity_half_size_y - margin_y};
+    Rectangle entity_rect = {entity_left_upper_corner, entity_right_lower_corner};
+    
+    // Fast wall collision check using collision map
+    if (collision_map_->isWallCollision(entity_rect, world_width, world_height)) {
+        // Special case for ghosts with access to certain walls
+        if (!ghost || entity_direction != Direction::North) {
+            events.push_back(Event::WallCollide);
+            return events; // Early exit to avoid unnecessary checks
+        }
+    }
+    
+    // Check collision with collectibles (coins and fruits) - optimized iteration
+    // Instead of iterating through all entities, only check the collectibles list
+    auto it = collectibles_.begin();
+    while (it != collectibles_.end()) {
+        auto& collectible = *it;
+        if (!collectible) {
+            ++it;
+            continue;
+        }
+        
+        // Create point rectangle for collectible (they are small)
+        Coordinate collectible_pos = collectible->get_position();
+        Rectangle collectible_rect = {collectible_pos, collectible_pos};
+        
+        if (check_collision(entity_pos, collectible_rect, entity_speed, dt)) {
+            // Determine if it's a coin or fruit
+            std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(collectible);
+            std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(collectible);
+            
             if (coin_model) {
-                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    remove_entity(coin_model);
-                    coin_count--;
-                    events.push_back(Event::CoinCollected);
-                }
+                coin_count--;
+                events.push_back(Event::CoinCollected);
+                collectible->destruct();
+                it = collectibles_.erase(it); // Remove from list and get next iterator
+                continue;
+            } else if (fruit_model) {
+                fruit_count--;
+                events.push_back(Event::FruitEaten);
+                collectible->destruct();
+                it = collectibles_.erase(it); // Remove from list and get next iterator
+                continue;
             }
-            if (fruit_model) {
-                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    remove_entity(fruit_model);
-                    auto score = Stopwatch::getInstance();
-                    fear_mode_begin = std::chrono::system_clock::now();
-                    fruit_count--;
-                    events.push_back(Event::FruitEaten);
-                }
-            } else if (ghost_model) {
-                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    if (pacman_dead(ghost_model)) {
-                        events.push_back(Event::PacmanDied);
-                    } else {
-                        events.push_back(Event::GhostEaten);
-                    }
-                }
+        }
+        ++it;
+    }
+    
+    // Check collision with ghosts
+    std::vector<std::shared_ptr<GhostModel>> ghosts = {blinky, pinky, inky, clyde};
+    for (auto& ghost_model : ghosts) {
+        if (!ghost_model) continue;
+        
+        Coordinate ghost_pos = ghost_model->get_position();
+        Rectangle ghost_rect = {ghost_pos, ghost_pos};
+        
+        if (check_collision(entity_pos, ghost_rect, entity_speed, dt)) {
+            if (pacman_dead(ghost_model)) {
+                events.push_back(Event::PacmanDied);
+            } else {
+                events.push_back(Event::GhostEaten);
             }
         }
     }
+    
     return events;
 }
 
