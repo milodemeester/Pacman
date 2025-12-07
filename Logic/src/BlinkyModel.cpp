@@ -3,8 +3,13 @@
 //
 
 #include "../include/BlinkyModel.h"
-#include "../include/Stopwatch.h"
 
 logic::BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
     wait_time = 5000; // 5 seconden voor blinky
+}
+
+void logic::BlinkyModel::update(float dt, World& world) {
+    // clyde is the third ghost, chases 4 locations in front of pacman
+    Coordinate target = compute_pacman_forward_pos(world, 4.0);
+    update_(dt, world, target);
 }

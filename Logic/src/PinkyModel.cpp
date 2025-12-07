@@ -3,14 +3,15 @@
 //
 
 #include "../include/PinkyModel.h"
-#include "../include/Random.h" // Nodig voor willekeur
-#include "../include/Stopwatch.h"
 #include "../include/World.h"
-#include <algorithm>
-#include <limits>
-#include <vector>
 
 logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height)
     : Type2Ghost(pos, dir, world_width, world_height) {
     wait_time = 0;
+}
+
+void logic::PinkyModel::update(float dt, World& world) {
+    // clyde is the third ghost, chases 2 locations in front of pacman
+    Coordinate target = compute_pacman_forward_pos(world, 2.0);
+    update_(dt, world, target);
 }

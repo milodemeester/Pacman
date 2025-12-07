@@ -7,6 +7,15 @@
 #include "GhostModel.h"
 namespace logic {
 class Type2Ghost : public GhostModel {
+protected:
+    /**
+     * @brief computes the position in front of pacman
+     * @param world
+     * @param offset the amount of positions in front of pacman
+     * @return
+     */
+    Coordinate compute_pacman_forward_pos(World& world, float offset);
+
 public:
     // constructor
     Type2Ghost(Coordinate pos, Direction dir, int world_width, int world_height);
@@ -14,9 +23,10 @@ public:
     /**
      * @brief updates the location (and possibly the direction) of the ghost
      * @param dt the delta time between this update and the previous one
+     * @param target_location the target location that will be used to calculate the manhatten distance
      * @param world the world this entity lives in
      */
-    void update(float dt, World& world) override;
+    void update_(float dt, World& world, Coordinate target_location);
 
     /**
      * @brief Calculates the next Coordinate and Direction based on the direction options
@@ -24,10 +34,11 @@ public:
      * @param current_location the location that the ghost is currently at
      * @param dt the delta time between this update and the previous one
      * @param world the world this entity lives in
+     * @param target_location the target location that will be used to calculate the manhatten distance
      * @return a pair of the new direction and new coordinate
      */
     std::pair<Direction, Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location,
-                                                      float dt, World& world);
+                                                      float dt, World& world, Coordinate target_location);
 };
 } // namespace logic
 
