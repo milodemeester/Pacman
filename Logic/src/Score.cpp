@@ -5,6 +5,7 @@
 #include "../include/Score.h"
 #include "../include/Stopwatch.h"
 #include <fstream>
+#include <iostream>
 #include <math.h>
 #include <string>
 
@@ -15,10 +16,16 @@ logic::Score::Score() {
     // read top 5 highscores from a file
     std::string line_output;
     std::ifstream file("../data/high_scores.txt");
-    int line_number = 0;
-    while (getline(file, line_output) && line_number < 5) {
-        high_scores_.push_back(line_output);
-        line_number++;
+    if (file) {
+        int line_number = 0;
+        while (getline(file, line_output) && line_number < 5) {
+            high_scores_.push_back(line_output);
+            line_number++;
+        }
+    }
+    else {
+        std::cerr << "Could not open high score file" << std::endl;
+        exit(1);
     }
 }
 

@@ -17,6 +17,7 @@
 #include "../include/Subject.h"
 #include "../include/WallModel.h"
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -43,80 +44,86 @@ void logic::World::initialise_maze(int pacman_lives) {
     std::string maze_line;
     // Read map from this txt file
     std::ifstream maze_file("../data/maps/map1.txt");
-    while (getline(maze_file, maze_line)) {
-        // First line are the dimensions of the map (widthXheight
-        if (line == 0) {
-            size_t pos = maze_line.find('X');
-            std::string w = maze_line.substr(0, pos);
-            world_width = std::stoi(w);
-            std::string h = maze_line.substr(pos + 1);
-            world_height = std::stoi(h);
-            line++;
-        } else {
-            std::vector<std::shared_ptr<Subject>> line_vector;
-            line_vector.reserve(world_width);
-            for (int char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
-                // X-position from -1 (left) to +1 (right)
-                float x_pos = 2.0f * (static_cast<float>(char_idx)) / static_cast<float>(world_width) - 1.0f;
+    if (maze_file) {
+        while (getline(maze_file, maze_line)) {
+            // First line are the dimensions of the map (widthXheight
+            if (line == 0) {
+                size_t pos = maze_line.find('X');
+                std::string w = maze_line.substr(0, pos);
+                world_width = std::stoi(w);
+                std::string h = maze_line.substr(pos + 1);
+                world_height = std::stoi(h);
+                line++;
+            } else {
+                std::vector<std::shared_ptr<Subject>> line_vector;
+                line_vector.reserve(world_width);
+                for (int char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
+                    // X-position from -1 (left) to +1 (right)
+                    float x_pos = 2.0f * (static_cast<float>(char_idx)) / static_cast<float>(world_width) - 1.0f;
 
-                // Y-position from +1 (up) to -1 (under)
-                float y_pos = 1.0f - 2.0f * (static_cast<float>(line)) / static_cast<float>(world_height);
-                std::shared_ptr<Subject> crnt_entity = nullptr;
-                switch (maze_line[char_idx]) {
-                case 'W': { // Wall
-                    crnt_entity = game_factory->createWall(false);
-                    break;
+                    // Y-position from +1 (up) to -1 (under)
+                    float y_pos = 1.0f - 2.0f * (static_cast<float>(line)) / static_cast<float>(world_height);
+                    std::shared_ptr<Subject> crnt_entity = nullptr;
+                    switch (maze_line[char_idx]) {
+                    case 'W': { // Wall
+                        crnt_entity = game_factory->createWall(false);
+                        break;
+                    }
+                    case 'C': { // Coin
+                        crnt_entity = game_factory->createCoin();
+                        coin_count++;
+                        break;
+                    }
+                    case 'B': { // Blinky
+                        crnt_entity = game_factory->createGhost(GhostType::Blinky, world_width, world_height);
+                        blinky = std::dynamic_pointer_cast<BlinkyModel>(crnt_entity);
+                        break;
+                    }
+                    case 'P': { // Pinky
+                        crnt_entity = game_factory->createGhost(GhostType::Pinky, world_width, world_height);
+                        pinky = std::dynamic_pointer_cast<PinkyModel>(crnt_entity);
+                        break;
+                    }
+                    case 'I': { // Inky
+                        crnt_entity = game_factory->createGhost(GhostType::Inky, world_width, world_height);
+                        inky = std::dynamic_pointer_cast<InkyModel>(crnt_entity);
+                        break;
+                    }
+                    case 'O': { // Clyde
+                        crnt_entity = game_factory->createGhost(GhostType::Clyde, world_width, world_height);
+                        clyde = std::dynamic_pointer_cast<ClydeModel>(crnt_entity);
+                        break;
+                    }
+                    case 'F': { // Fruit
+                        crnt_entity = game_factory->createFruit();
+                        fruit_count++;
+                        break;
+                    }
+                    case 'A': { // Pacman
+                        crnt_entity = game_factory->createPacman(world_width, world_height);
+                        pacman = std::dynamic_pointer_cast<PacmanModel>(crnt_entity);
+                        pacman->set_lives(pacman_lives);
+                        break;
+                    }
+                    case 'Z': { // Niets
+                        crnt_entity = game_factory->createWall(true);
+                        break;
+                    }
+                    default:;
+                    }
+                    if (crnt_entity) {
+                        line_vector.push_back(crnt_entity);
+                        crnt_entity->set_position({x_pos, -y_pos});
+                    }
                 }
-                case 'C': { // Coin
-                    crnt_entity = game_factory->createCoin();
-                    coin_count++;
-                    break;
-                }
-                case 'B': { // Blinky
-                    crnt_entity = game_factory->createGhost(GhostType::Blinky, world_width, world_height);
-                    blinky = std::dynamic_pointer_cast<BlinkyModel>(crnt_entity);
-                    break;
-                }
-                case 'P': { // Pinky
-                    crnt_entity = game_factory->createGhost(GhostType::Pinky, world_width, world_height);
-                    pinky = std::dynamic_pointer_cast<PinkyModel>(crnt_entity);
-                    break;
-                }
-                case 'I': { // Inky
-                    crnt_entity = game_factory->createGhost(GhostType::Inky, world_width, world_height);
-                    inky = std::dynamic_pointer_cast<InkyModel>(crnt_entity);
-                    break;
-                }
-                case 'O': { // Clyde
-                    crnt_entity = game_factory->createGhost(GhostType::Clyde, world_width, world_height);
-                    clyde = std::dynamic_pointer_cast<ClydeModel>(crnt_entity);
-                    break;
-                }
-                case 'F': { // Fruit
-                    crnt_entity = game_factory->createFruit();
-                    fruit_count++;
-                    break;
-                }
-                case 'A': { // Pacman
-                    crnt_entity = game_factory->createPacman(world_width, world_height);
-                    pacman = std::dynamic_pointer_cast<PacmanModel>(crnt_entity);
-                    pacman->set_lives(pacman_lives);
-                    break;
-                }
-                case 'Z': { // Niets
-                    crnt_entity = game_factory->createWall(true);
-                    break;
-                }
-                default:;
-                }
-                if (crnt_entity) {
-                    line_vector.push_back(crnt_entity);
-                    crnt_entity->set_position({x_pos, -y_pos});
-                }
+                entities.emplace_back(line_vector);
+                line++;
             }
-            entities.emplace_back(line_vector);
-            line++;
         }
+    }
+    else {
+        std::cerr << "Could not open maze file" << std::endl;
+        exit(1);
     }
     maze_file.close();
 }
