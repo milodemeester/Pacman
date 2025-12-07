@@ -35,6 +35,7 @@ std::shared_ptr<logic::PacmanModel> representation::SfmlFactory::createPacman(in
     auto pacman_model = std::make_shared<logic::PacmanModel>(Coordinate(0, 0), logic::Direction::East, ww, wh);
     auto pacman_view = std::make_shared<PacmanView>(pacman_model, sprite_map_);
     pacman_model->addObserver(score_);
+    pacman_model->addObserver(pacman_view);
     createdViews_.push_back(pacman_view);
     return pacman_model;
 }
@@ -59,25 +60,29 @@ std::shared_ptr<logic::GhostModel> representation::SfmlFactory::createGhost(logi
         break;
     }
     }
-    auto ghost_view = std::make_unique<GhostView>(ghost_model, sprite_map_, type);
-    createdViews_.push_back(std::move(ghost_view));
+    auto ghost_view = std::make_shared<GhostView>(ghost_model, sprite_map_, type);
+    ghost_model->addObserver(ghost_view);
+    createdViews_.push_back(ghost_view);
     return ghost_model;
 }
 std::shared_ptr<logic::CoinModel> representation::SfmlFactory::createCoin() {
     auto coin_model = std::make_shared<logic::CoinModel>();
-    auto coin_view = std::make_unique<CoinView>(coin_model, sprite_map_);
-    createdViews_.push_back(std::move(coin_view));
+    auto coin_view = std::make_shared<CoinView>(coin_model, sprite_map_);
+    coin_model->addObserver(coin_view);
+    createdViews_.push_back(coin_view);
     return coin_model;
 }
 std::shared_ptr<logic::FruitModel> representation::SfmlFactory::createFruit() {
     auto fruit_model = std::make_shared<logic::FruitModel>();
-    auto fruit_view = std::make_unique<FruitView>(fruit_model, sprite_map_);
-    createdViews_.push_back(std::move(fruit_view));
+    auto fruit_view = std::make_shared<FruitView>(fruit_model, sprite_map_);
+    fruit_model->addObserver(fruit_view);
+    createdViews_.push_back(fruit_view);
     return fruit_model;
 }
 std::shared_ptr<logic::WallModel> representation::SfmlFactory::createWall(bool invisible) {
     auto wall_model = std::make_shared<logic::WallModel>(invisible);
-    auto wall_view = std::make_unique<WallView>(wall_model, sprite_map_, invisible);
-    createdViews_.push_back(std::move(wall_view));
+    auto wall_view = std::make_shared<WallView>(wall_model, sprite_map_, invisible);
+    wall_model->addObserver(wall_view);
+    createdViews_.push_back(wall_view);
     return wall_model;
 }

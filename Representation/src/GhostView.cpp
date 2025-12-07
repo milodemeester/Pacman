@@ -12,8 +12,6 @@
 
 representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map,
                                      logic::GhostType type) {
-    auto shared = std::make_shared<GhostView>(*this);
-    model->addObserver(shared);
     world_direction = model->get_direction();
     world_pos_ = model->get_position();
     // ----------- sprites -----------
