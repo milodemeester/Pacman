@@ -14,10 +14,9 @@ void logic::PacmanModel::update(float dt, World& world) {
         Coordinate next_pos_if_turned = calculate_new_position(float(dt), wanted_direction, position_);
 
         // If the new direction leads to a wall-collision, don't update the position
-        if (!world.check_wall_collision(next_pos_if_turned, wanted_direction, speed_, false, dt)) {
-            set_position(next_pos_if_turned);
+        auto events = world.check_entity_collision(next_pos_if_turned, wanted_direction, speed_, false, dt);
+        if (!utils::has_event(events, Event::WallCollide)) {
             set_direction(wanted_direction);
-            return;
         }
     }
 
@@ -25,22 +24,20 @@ void logic::PacmanModel::update(float dt, World& world) {
 
     // Only move when it doesn't lead to a collission
     // Else pacman will just stop against a wall
-    if (!world.check_wall_collision(next_pos, direction_, speed_, false, dt)) {
+    auto events = world.check_entity_collision(next_pos, direction_, speed_, false, dt);
+    if (!utils::has_event(events, Event::WallCollide)) {
         set_position(next_pos);
     }
-
-    // Check for other entities (non wall entities)
-    // TODO: dit moet niet apart, maak de check_wall_collision en check_entity_colission 1 functie en zorg voor een
-    // AgainstWall-event
-    auto event = world.check_entity_collision(next_pos, speed_, dt);
-    if (event == Event::CoinCollected) {
+    if (utils::has_event(events, Event::CoinCollected)) {
         Event e = Event::CoinCollected;
         notify(e);
-    } else if (event == Event::FruitEaten) {
+    }
+    if (utils::has_event(events, Event::FruitEaten)) {
         Event e = Event::FruitEaten;
         notify(e);
         world.begin_fear_mode();
-    } else if (event == Event::PacmanDied) {
+    }
+    if (utils::has_event(events, Event::PacmanDied)) {
         if (lives > 0) {
             // if pacman dies and he still has lives left, return every entity to their starting position
             --lives;
@@ -50,7 +47,8 @@ void logic::PacmanModel::update(float dt, World& world) {
             WorldState world_state = WorldState::Defeated;
             world.set_world_state(world_state);
         }
-    } else if (event == Event::GhostEaten) {
+    }
+    if (utils::has_event(events, Event::GhostEaten)) {
         notify(Event::GhostEaten);
     }
 }

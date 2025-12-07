@@ -3,7 +3,11 @@
 //
 
 #include "utils.h"
+
+#include "Event.h"
+
 #include <cmath>
+#include <vector>
 
 bool utils::contains(Coordinate& upper_left_corner, Coordinate& lower_right_corner, Coordinate& click) {
     double left = upper_left_corner.getX();
@@ -44,4 +48,13 @@ bool utils::intersecting(Rectangle& rectangle1, Rectangle& rectangle2) {
 double utils::compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2) {
     double distance = std::abs(pos1.getX() - pos2.getX()) + std::abs(pos1.getY() - pos2.getY());
     return distance;
+}
+
+bool utils::has_event(std::vector<logic::Event> events, logic::Event event) {
+    for (auto& e : events) {
+        if (e == event) {
+            return true;
+        }
+    }
+    return false;
 }

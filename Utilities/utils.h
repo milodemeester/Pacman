@@ -4,7 +4,11 @@
 
 #ifndef PACMAN_UTILS_H
 #define PACMAN_UTILS_H
+#include <vector>
 
+namespace logic {
+enum class Event;
+}
 struct Coordinate {
     double getX() { return x; }
     double getY() { return y; }
@@ -21,6 +25,7 @@ private:
 };
 
 struct Rectangle {
+    Rectangle() = default;
     Rectangle(Coordinate top_left, Coordinate bottom_right) : top_left(top_left), bottom_right(bottom_right) {}
     [[nodiscard]] Coordinate get_top_left() const { return top_left; }
     void set_top_left(const Coordinate& top_left) { this->top_left = top_left; }
@@ -58,6 +63,8 @@ public:
      * @return a double that represents the manhatten distance
      */
     static double compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2);
+
+    static bool has_event(std::vector<logic::Event> events, logic::Event event);
 };
 
 #endif // PACMAN_UTILS_H

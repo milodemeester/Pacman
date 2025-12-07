@@ -204,79 +204,66 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
     return false;
 }
 
-bool logic::World::check_wall_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed,
-                                        bool ghost, float dt) {
+std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed,
+                                                    bool ghost, float dt) {
+    std::vector<logic::Event> events;
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
+            Rectangle entity2_rect;
+            if (!entity) {}
+            else {
+                Coordinate entity2_left_upper_corner = {entity->get_position().getX(),
+                                            entity->get_position().getY()};
+                Coordinate entity2_right_lower_corner = {entity->get_position().getX(),
+                                                         entity->get_position().getY()};
+                entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+            }
+            std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
+            std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(entity);
+            std::shared_ptr<GhostModel> ghost_model = std::dynamic_pointer_cast<GhostModel>(entity);
             std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
+
             if (wall_model) {
-                // Define the wall's bounding box (remains the same).
+                // Define the wall's bounding box
                 float entity_half_size_x = (1.f / float(world_width));
                 float entity_half_size_y = (1.f / float(world_height));
                 Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
                                                         wall_model->get_position().getY() - entity_half_size_y};
                 Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
                                                          wall_model->get_position().getY() + entity_half_size_y};
-                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+                entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {
                 } else if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    return true;
+                    events.push_back(Event::WallCollide);
                 }
             }
-        }
-    }
-    return false; // No collision.
-}
-
-logic::Event logic::World::check_entity_collision(Coordinate& entity_pos, double entity_speed, float dt) {
-    for (auto& entity_vector : entities) {
-        for (auto& entity : entity_vector) {
-            std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
-            std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(entity);
-            std::shared_ptr<GhostModel> ghost_model = std::dynamic_pointer_cast<GhostModel>(entity);
             if (coin_model) {
-                Coordinate entity2_left_upper_corner = {coin_model->get_position().getX(),
-                                                        coin_model->get_position().getY()};
-                Coordinate entity2_right_lower_corner = {coin_model->get_position().getX(),
-                                                         coin_model->get_position().getY()};
-                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(coin_model);
                     coin_count--;
-                    return Event::CoinCollected;
+                    events.push_back(Event::CoinCollected);
                 }
-            } else if (fruit_model) {
-                // Define the wall's bounding box (remains the same).
-                Coordinate entity2_left_upper_corner = {fruit_model->get_position().getX(),
-                                                        fruit_model->get_position().getY()};
-                Coordinate entity2_right_lower_corner = {fruit_model->get_position().getX(),
-                                                         fruit_model->get_position().getY()};
-                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+            }
+            if (fruit_model) {
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(fruit_model);
                     auto score = Stopwatch::getInstance();
                     fear_mode_begin = std::chrono::system_clock::now();
                     fruit_count--;
-                    return Event::FruitEaten;
+                    events.push_back(Event::FruitEaten);
                 }
             } else if (ghost_model) {
-                // Define the wall's bounding box (remains the same).
-                Coordinate entity2_left_upper_corner = {ghost_model->get_position().getX(),
-                                                        ghost_model->get_position().getY()};
-                Coordinate entity2_right_lower_corner = {ghost_model->get_position().getX(),
-                                                         ghost_model->get_position().getY()};
-                Rectangle entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     if (pacman_dead(ghost_model)) {
-                        return Event::PacmanDied;
+                        events.push_back(Event::PacmanDied);
                     } else {
-                        return Event::GhostEaten;
+                        events.push_back(Event::GhostEaten);
                     }
                 }
             }
         }
     }
-    return Event::Nothing; // No collision.
+    return events;
 }
 
 void logic::World::remove_entity(std::shared_ptr<CollectableSubject> model) {

@@ -85,25 +85,14 @@ public:
     explicit World(const std::shared_ptr<GameFactory>& factory, int level, int pacman_lives);
 
     /**
-     * @brief checks if there is a wall where the entity wants to go
-     * @param new_pos the new position of the entity
-     * @param entity_direction the direction where the entity is going
-     * @param entity_speed the speed of the entity
-     * @param ghost set to true if the entity is a ghost (which means the entity can pass through invisible walls)
-     * @param dt the delta time that passed since the last update
-     * @return a boolean value that determines if there is a collision
-     */
-    bool check_wall_collision(Coordinate& new_pos, Direction& entity_direction, double entity_speed, bool ghost,
-                              float dt);
-
-    /**
      * @brief checks if there is an entity where the entity wants to go
      * @param new_pos the new position of the entity
      * @param entity_speed the speed of the entity
+     * @param ghost
      * @param dt the delta time that passed since the last update
      * @return a boolean value that determines if there is a collission
      */
-    Event check_entity_collision(Coordinate& new_pos, double entity_speed, float dt);
+    std::vector<Event> check_entity_collision(Coordinate& new_pos, Direction& ent_dir, double entity_speed, bool ghost, float dt);
 
     /**
      * @brief updates every "important entity in the world"

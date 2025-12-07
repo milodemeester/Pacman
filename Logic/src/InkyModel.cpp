@@ -57,7 +57,8 @@ std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direc
     for (auto& direction_option : possible_directions) {
         // Calculate the position if inky takes a step into this direction
         Coordinate next_pos = calculate_new_position(dt, direction_option, current_location);
-        if (!world.check_wall_collision(next_pos, direction_option, speed_, true, dt)) {
+        auto events = world.check_entity_collision(next_pos, direction_option, speed_, true, dt);
+        if (!utils::has_event(events, Event::WallCollide)) {
             viable_states.emplace_back(direction_option, next_pos);
         }
     }

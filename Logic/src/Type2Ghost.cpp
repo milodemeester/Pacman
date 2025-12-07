@@ -87,7 +87,8 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
         dir_cor_combis[direction] = next_pos;
 
         // Check if there is a wall
-        if (!world.check_wall_collision(next_pos, direction, speed_, true, dt)) {
+        auto events = world.check_entity_collision(next_pos, direction, speed_, true, dt);
+        if (!utils::has_event(events, Event::WallCollide)) {
             double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
 
             if (chasing_mode) {
