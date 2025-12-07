@@ -236,14 +236,14 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
                     events.push_back(Event::WallCollide);
                 }
             }
-            if (coin_model) {
+            if (coin_model && !ghost) {
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(coin_model);
                     coin_count--;
                     events.push_back(Event::CoinCollected);
                 }
             }
-            if (fruit_model) {
+            if (fruit_model && !ghost) {
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     remove_entity(fruit_model);
                     auto score = Stopwatch::getInstance();
@@ -251,7 +251,7 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
                     fruit_count--;
                     events.push_back(Event::FruitEaten);
                 }
-            } else if (ghost_model) {
+            } else if (ghost_model && !ghost) {
                 if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                     if (pacman_dead(ghost_model)) {
                         events.push_back(Event::PacmanDied);
