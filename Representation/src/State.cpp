@@ -3,4 +3,4 @@
 //
 #include "../include/State.h"
 
-void representation::State::update(double delta_time) {}
+void representation::State::update(float delta_time) {}

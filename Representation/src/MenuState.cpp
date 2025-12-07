@@ -142,7 +142,7 @@ void representation::MenuState::render(sf::RenderWindow& window) {
     }
 }
 
-void representation::MenuState::update(double dt) {
+void representation::MenuState::update(float dt) {
     std::vector<std::string> scores = score_->get_high_scores();
     for (int i = 0; i < 5; i++) {
         highScores_[i].setString(scores[i]);

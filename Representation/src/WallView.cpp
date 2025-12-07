@@ -19,15 +19,9 @@ representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& mode
 }
 
 void representation::WallView::onNotify(const logic::Subject& entity, logic::Event& event) {
-    auto* const_model = dynamic_cast<const logic::WallModel*>(&entity);
-    auto* model = const_cast<logic::WallModel*>(const_model);
-    if (!model) {
-        return;
-    }
-
     switch (event) {
     case (logic::Event::EntityPositionChanged): {
-        set_location(model->get_position());
+        set_location(entity.get_position());
         break;
     }
     }

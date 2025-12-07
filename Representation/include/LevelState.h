@@ -61,7 +61,7 @@ public:
      * @brief update every entity and check if there is a victory or defeat
      * @param delta_time time between this and the previous update
      */
-    void update(double delta_time) override;
+    void update(float delta_time) override;
 };
 } // namespace representation
 

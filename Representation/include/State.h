@@ -34,7 +34,7 @@ public:
      */
     virtual void render(sf::RenderWindow& window) = 0;
 
-    virtual void update(double delta_time);
+    virtual void update(float delta_time);
 };
 } // namespace representation
 

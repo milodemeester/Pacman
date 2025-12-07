@@ -57,7 +57,7 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
     if (event.type == sf::Event::Resized) {
         // update view
         windowSize_ = sf::Vector2u(event.size.width, event.size.height);
-        sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+        sf::FloatRect visibleArea(0, 0, float(event.size.width), float(event.size.height));
         window.setView(sf::View(visibleArea));
 
         // update the camera with the new size
@@ -83,7 +83,7 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
     }
 }
 
-void representation::LevelState::update(double delta_time) {
+void representation::LevelState::update(float delta_time) {
     world_.update(delta_time);
     for (const auto& view : views_) {
         view->update(delta_time);
@@ -145,8 +145,8 @@ void representation::LevelState::render(sf::RenderWindow& window) {
 }
 
 void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
-    float window_width = static_cast<float>(windowSize.x);
-    float window_height = static_cast<float>(windowSize.y);
+    auto window_width = float(windowSize.x);
+    auto window_height = float(windowSize.y);
 
     float board_bottom = camera_->getBoardBottomY();
 
@@ -154,15 +154,15 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
     float ui_bar_height = std::max(0.f, window_height - board_bottom);
 
     // calculate char size based on the height of the reserved space
-    unsigned int char_size = static_cast<unsigned int>(std::max(12.f, ui_bar_height * 0.45f));
-    unsigned int char_size_max = static_cast<unsigned int>(std::max(24.f, (window_width + window_height) / 40.f));
+    unsigned int char_size = (unsigned int)(std::max(12.f, ui_bar_height * 0.45f));
+    unsigned int char_size_max = (unsigned int)(std::max(24.f, (window_width + window_height) / 40.f));
     if (char_size > char_size_max) {
         char_size = char_size_max;
     }
 
     // ----- score -----
     // Update score text en size
-    scoreTitle_.setCharacterSize(camera_->getBlockSize());
+    scoreTitle_.setCharacterSize((unsigned int)(camera_->getBlockSize()));
     scoreTitle_.setString("Score: " + std::to_string(score_->get_score()));
 
     sf::FloatRect bounds = scoreTitle_.getLocalBounds();
@@ -173,19 +173,19 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
 
     // ----- lives -----
     // Update lives text en size
-    livesTitle_.setCharacterSize(camera_->getBlockSize());
+    livesTitle_.setCharacterSize((unsigned int)(camera_->getBlockSize()));
     livesTitle_.setString("#Lives: " + std::to_string(world_.get_pacman_lives()));
 
     bounds = livesTitle_.getLocalBounds();
     livesTitle_.setOrigin(bounds.left + bounds.width, bounds.top + bounds.height / 2.f);
 
     // on the right side of the game board
-    livesTitle_.setPosition(camera_->getBoardLeftX() + camera_->getBlockSize() * world_.get_width(),
+    livesTitle_.setPosition(camera_->getBoardLeftX() + camera_->getBlockSize() * float(world_.get_width()),
                             board_bottom + ui_bar_height / 2.f);
 
     // ----- level -----
     // Update lives text en size
-    levelTitle_.setCharacterSize(camera_->getBlockSize());
+    levelTitle_.setCharacterSize((unsigned int)(camera_->getBlockSize()));
     levelTitle_.setString("Level: " + std::to_string(world_.get_level()));
 
     bounds = levelTitle_.getLocalBounds();
@@ -193,6 +193,7 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
 
     // in the middle of the game board
     levelTitle_.setPosition(
-        (camera_->getBoardLeftX() + (camera_->getBoardLeftX() + camera_->getBlockSize() * world_.get_width())) / 2.f,
+        (camera_->getBoardLeftX() + (camera_->getBoardLeftX() + camera_->getBlockSize() * float(world_.get_width()))) /
+            2.f,
         board_bottom + ui_bar_height / 2.f);
 }

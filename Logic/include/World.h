@@ -28,7 +28,7 @@ class World {
     /**
      * @param model the coin model that needs to be removed from the world
      */
-    void remove_entity(std::shared_ptr<CollectableSubject> model);
+    void remove_entity(const std::shared_ptr<CollectableSubject>& model);
 
     /**
      * @brief checks if there is a collision between two entities
@@ -38,7 +38,7 @@ class World {
      * @param dt the delta time that passed since the last update
      * @return a boolean value that determines if there is a collision between the two entities
      */
-    bool check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt);
+    bool check_collision(Coordinate& entity_pos, Rectangle entity2_rect, float entity_speed, float dt) const;
 
     /**
      * @param pacman_lives the amount of lives pacman has left at this current level (default value of 3)
@@ -56,7 +56,7 @@ class World {
      * @param model the model pacman collided with
      * @return true when pacman dies, false when ghost dies
      */
-    bool pacman_dead(std::shared_ptr<GhostModel> model);
+    bool pacman_dead(const std::shared_ptr<GhostModel>& model);
 
     std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities in the world
     int world_width;                                             // width of the world
@@ -92,7 +92,8 @@ public:
      * @param dt the delta time that passed since the last update
      * @return a boolean value that determines if there is a collission
      */
-    std::vector<Event> check_entity_collision(Coordinate& new_pos, Direction& ent_dir, double entity_speed, bool ghost, float dt);
+    std::vector<Event> check_entity_collision(Coordinate& new_pos, Direction& ent_dir, float entity_speed, bool ghost,
+                                              float dt);
 
     /**
      * @brief updates every "important entity in the world"

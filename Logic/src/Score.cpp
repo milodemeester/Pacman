@@ -22,8 +22,7 @@ logic::Score::Score() {
             high_scores_.push_back(line_output);
             line_number++;
         }
-    }
-    else {
+    } else {
         std::cerr << "Could not open high score file" << std::endl;
         exit(1);
     }

@@ -23,9 +23,9 @@ protected:
     void notify(Event event);
 
     std::vector<std::weak_ptr<Observer>> observers_; // vector with all of the observers
-    Coordinate position_;          // the current position of the subject
-    Coordinate starting_position_; // the position where the entity spawned in
-    bool is_complete = false;      // waits until location is set
+    Coordinate position_;                            // the current position of the subject
+    Coordinate starting_position_;                   // the position where the entity spawned in
+    bool is_complete = false;                        // waits until location is set
 public:
     // constructor
     explicit Subject(Coordinate pos) : position_(pos) {}

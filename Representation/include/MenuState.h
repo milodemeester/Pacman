@@ -52,7 +52,7 @@ public:
      * @brief update every entity and check if there is a victory or defeat
      * @param dt time between this and the previous update
      */
-    void update(double dt) override;
+    void update(float dt) override;
 };
 } // namespace representation
 

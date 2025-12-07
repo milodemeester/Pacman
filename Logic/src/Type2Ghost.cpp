@@ -32,16 +32,16 @@ Coordinate logic::Type2Ghost::compute_pacman_forward_pos(World& world, float off
 
     switch (pacman_direction) {
     case Direction::East:
-        target_x += offset/world.get_width();
+        target_x += offset / world.get_width();
         break;
     case Direction::West:
-        target_x -= offset/world.get_width();
+        target_x -= offset / world.get_width();
         break;
     case Direction::North:
-        target_y -= offset/world.get_height();
+        target_y -= offset / world.get_height();
         break;
     case Direction::South:
-        target_y += offset/world.get_height();
+        target_y += offset / world.get_height();
         break;
     }
     return {target_x, target_y};
@@ -121,8 +121,7 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
     Direction chosen_direction;
     if (best_directions.empty()) { // no viable directions, turn around
         chosen_direction = get_opposite_direction(current_direction);
-    }
-    else {
+    } else {
         // Choose a random direction
         int random_index = Random::getInstance()->getNumber(0, static_cast<int>(best_directions.size()) - 1);
         chosen_direction = best_directions[random_index];

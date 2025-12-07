@@ -16,6 +16,8 @@
 #include "../include/Stopwatch.h"
 #include "../include/Subject.h"
 #include "../include/WallModel.h"
+
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -59,10 +61,10 @@ void logic::World::initialise_maze(int pacman_lives) {
                 line_vector.reserve(world_width);
                 for (int char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
                     // X-position from -1 (left) to +1 (right)
-                    float x_pos = 2.0f * (static_cast<float>(char_idx)) / static_cast<float>(world_width) - 1.0f;
+                    float x_pos = 2.0f * (float(char_idx) / float(world_width)) - 1.0f;
 
                     // Y-position from +1 (up) to -1 (under)
-                    float y_pos = 1.0f - 2.0f * (static_cast<float>(line)) / static_cast<float>(world_height);
+                    float y_pos = 1.0f - 2.0f * (float(line) / float(world_height));
                     std::shared_ptr<Subject> crnt_entity = nullptr;
                     switch (maze_line[char_idx]) {
                     case 'W': { // Wall
@@ -120,8 +122,7 @@ void logic::World::initialise_maze(int pacman_lives) {
                 line++;
             }
         }
-    }
-    else {
+    } else {
         std::cerr << "Could not open maze file" << std::endl;
         exit(1);
     }
@@ -180,7 +181,7 @@ void logic::World::initialise_values() {
     clyde->set_speed(basic_ghost_speed * ghost_speed_fraction_);
 }
 
-bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, double entity_speed, float dt) {
+bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, float entity_speed, float dt) const {
     // TODO: colissions are still a bit weird, fix it
     float entity_half_size_x = (1.f / float(world_width));
     float entity_half_size_y = (1.f / float(world_height));
@@ -204,18 +205,16 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
     return false;
 }
 
-std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction, double entity_speed,
-                                                    bool ghost, float dt) {
+std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction,
+                                                               float entity_speed, bool ghost, float dt) {
     std::vector<logic::Event> events;
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             Rectangle entity2_rect;
-            if (!entity) {}
-            else {
-                Coordinate entity2_left_upper_corner = {entity->get_position().getX(),
-                                            entity->get_position().getY()};
-                Coordinate entity2_right_lower_corner = {entity->get_position().getX(),
-                                                         entity->get_position().getY()};
+            if (!entity) {
+            } else {
+                Coordinate entity2_left_upper_corner = {entity->get_position().getX(), entity->get_position().getY()};
+                Coordinate entity2_right_lower_corner = {entity->get_position().getX(), entity->get_position().getY()};
                 entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
             }
             std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
@@ -266,7 +265,7 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
     return events;
 }
 
-void logic::World::remove_entity(std::shared_ptr<CollectableSubject> model) {
+void logic::World::remove_entity(const std::shared_ptr<CollectableSubject>& model) {
     for (auto& vec : entities) {
         for (int i = 0; i < vec.size(); i++) {
             if (std::dynamic_pointer_cast<Subject>(model) == vec[i]) {
@@ -303,7 +302,7 @@ void logic::World::update(float delta_time) {
     }
 }
 
-bool logic::World::pacman_dead(std::shared_ptr<logic::GhostModel> model) {
+bool logic::World::pacman_dead(const std::shared_ptr<GhostModel>& model) {
     bool fear_mode = !model->is_chasing_mode();
     if (fear_mode) {
         model->go_to_center();
