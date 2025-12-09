@@ -73,7 +73,7 @@ void representation::PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<
     sf::Sprite sprite = sprite_map_.getSprite(current_rect);
 
     // use the camera to calculate the coordinates
-    auto screen = cam->worldToScreen(world_position, {32, 32});
+    auto screen = cam->worldToScreen(world_position, {33, 33});
     sf::Vector2f new_coords = screen.first;
     sf::Vector2f sprite_size = screen.second;
 

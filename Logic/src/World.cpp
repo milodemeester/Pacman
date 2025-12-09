@@ -23,7 +23,7 @@
 #include <memory>
 #include <vector>
 
-static float basic_pacman_speed = 0.012;
+static float basic_pacman_speed = 0.014;
 static float basic_ghost_speed = 0.01;
 
 logic::World::World(const std::shared_ptr<GameFactory>& factory) {
@@ -187,7 +187,7 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
     float entity_half_size_y = (1.f / float(world_height));
 
     // This value works and was found by trial and error
-    const float collision_sensitivity = 0.45f;
+    const float collision_sensitivity = 0.4f;
 
     const float epsilon_x = entity_half_size_x * entity_speed * dt * collision_sensitivity;
     const float epsilon_y = entity_half_size_y * entity_speed * dt * collision_sensitivity;

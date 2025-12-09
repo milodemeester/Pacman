@@ -16,6 +16,8 @@ protected:
     // getters
     double get_speed() override;
 
+    Coordinate snap_location();
+
 public:
     /**
      * @brief constructor

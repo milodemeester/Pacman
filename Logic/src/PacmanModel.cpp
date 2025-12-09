@@ -3,8 +3,23 @@
 //
 
 #include "../include/PacmanModel.h"
+#include <cmath>
 
 logic::PacmanModel::PacmanModel(Coordinate pos, Direction dir, int ww, int wh) : MoveableSubject(pos, dir, ww, wh) {}
+
+Coordinate logic::PacmanModel::snap_location() {
+    Coordinate snapped_location;
+    /*double block_width = 1/float(world_width_);
+    double block_height = 1/float(world_height_);
+    double modulo_x = position_.getX() % block_width;
+    double modulo_y = position_.getY() % block_height;
+    if ()
+    if (x % 20 != 0){snap!}*/
+    double world_location_x = std::round(position_.getX() * world_width_);
+    double world_location_y = std::round(position_.getY() * world_height_);
+    snapped_location.set_coordinates(world_location_x/world_width_, world_location_y/world_height_);
+    return snapped_location;
+}
 
 void logic::PacmanModel::update(float dt, World& world) {
     Direction current_direction = get_direction();
@@ -25,7 +40,12 @@ void logic::PacmanModel::update(float dt, World& world) {
     // Only move when it doesn't lead to a collission
     // Else pacman will just stop against a wall
     auto events = world.check_entity_collision(next_pos, direction_, speed_, false, dt);
-    if (!utils::has_event(events, Event::WallCollide)) {
+    if (utils::has_event(events, Event::WallCollide)) {
+        // snap location to middle of the position
+        Coordinate new_coordinate = snap_location();
+        set_position(new_coordinate);
+    }
+    else {
         set_position(next_pos);
     }
     if (utils::has_event(events, Event::CoinCollected)) {
