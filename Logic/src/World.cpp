@@ -281,14 +281,22 @@ void logic::World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();
     if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < frightened_mode_duration_) {
         pinky->set_fear_mode();
+        pinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
         inky->set_fear_mode();
+        inky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
         blinky->set_fear_mode();
+        blinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
         clyde->set_fear_mode();
+        clyde->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
     } else {
         pinky->set_chase_mode();
+        pinky->set_speed(basic_ghost_speed*ghost_speed_fraction_);
         inky->set_chase_mode();
+        inky->set_speed(basic_ghost_speed*ghost_speed_fraction_);
         blinky->set_chase_mode();
+        blinky->set_speed(basic_ghost_speed*ghost_speed_fraction_);
         clyde->set_chase_mode();
+        clyde->set_speed(basic_ghost_speed*ghost_speed_fraction_);
     }
     pinky->update(delta_time, *this);
     inky->update(delta_time, *this);
