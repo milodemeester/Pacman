@@ -37,6 +37,7 @@ std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direc
         was_frightened_ = true;
         Direction reversed = get_opposite_direction(current_direction);
         Coordinate final_pos = calculate_new_position(dt, reversed, current_location);
+        final_pos = snap_location(final_pos, reversed, false);
         return {reversed, final_pos};
     }
 
@@ -59,7 +60,8 @@ std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direc
         Coordinate next_pos = calculate_new_position(dt, direction_option, current_location);
         auto events = world.check_entity_collision(next_pos, direction_option, speed_, true, dt);
         if (!utils::has_event(events, Event::WallCollide)) {
-            viable_states.emplace_back(direction_option, next_pos);
+            Coordinate new_coordinate = snap_location(next_pos, direction_option,  false);
+            viable_states.emplace_back(direction_option, new_coordinate);
         }
     }
 
@@ -67,11 +69,13 @@ std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direc
         // Dead end, turn around
         Direction opposite_dir = get_opposite_direction(current_direction);
         Coordinate next_pos = calculate_new_position(dt, opposite_dir, current_location);
-        return {opposite_dir, next_pos};
+        // Geef de 'opposite_dir' mee aan snap_location
+        Coordinate new_coordinate = snap_location(next_pos, opposite_dir, false);
+        return {opposite_dir, new_coordinate};
     }
 
     // Choose random direction out of all the viable diections
     auto random = Random::getInstance();
-    int new_state_index = random->getNumber(0, static_cast<int>(viable_states.size()) - 1);
+    int new_state_index = random->getNumber(0, viable_states.size() - 1);
     return viable_states[new_state_index];
 }

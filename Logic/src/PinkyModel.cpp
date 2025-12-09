@@ -11,7 +11,24 @@ logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, in
 }
 
 void logic::PinkyModel::update(float dt, World& world) {
-    // clyde is the third ghost, chases 2 locations in front of pacman
-    Coordinate target = compute_pacman_forward_pos(world, 2.0);
+    GhostModel::update(dt);
+
+    if (waiting) {
+        return;
+    }
+    Coordinate target;
+    if (in_box) { // still in box
+        double x = position_.getX();
+        double y = 0 + 2*(1/world_height_); // 2 "blocks" above the box
+        target = {x, y};
+        if (utils::compute_manhattan_distance({target}, position_) < 0.05) {
+            // out of box
+            in_box = false;
+            target = compute_pacman_forward_pos(world, 2.0);
+        }
+    }
+    else { // out of box, chase 2 blocks in front of pacman
+        target = compute_pacman_forward_pos(world, 2.0);
+    }
     update_(dt, world, target);
 }

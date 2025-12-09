@@ -55,6 +55,7 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
         was_frightened_ = true;
         Direction reversed = get_opposite_direction(current_direction);
         Coordinate final_pos = calculate_new_position(dt, reversed, current_location);
+        final_pos = snap_location(final_pos, reversed, false);
         return {reversed, final_pos};
     }
 
@@ -75,13 +76,14 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
     }
 
     // Check every possible direction except the opposite direction
-    auto possible_directions = {Direction::East, Direction::North, Direction::South, Direction::West};
+    auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
 
     std::map<Direction, Coordinate> dir_cor_combis;
 
     for (auto direction : possible_directions) {
         // Calculate the position if clyde takes a step into this direction
         Coordinate next_pos = calculate_new_position(dt, direction, current_location);
+        snap_location(next_pos, direction, false);
 
         // Save this position for later
         dir_cor_combis[direction] = next_pos;
@@ -126,7 +128,11 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
         int random_index = Random::getInstance()->getNumber(0, static_cast<int>(best_directions.size()) - 1);
         chosen_direction = best_directions[random_index];
     }
-    auto location = calculate_new_position(dt, chosen_direction, current_location);
 
-    return {chosen_direction, location};
+    return {chosen_direction, dir_cor_combis[chosen_direction]};
+}
+
+void logic::Type2Ghost::go_to_center() {
+    Subject::go_to_center();
+    in_box = true;
 }

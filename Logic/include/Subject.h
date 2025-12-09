@@ -74,6 +74,8 @@ protected:
 
     virtual double get_speed() = 0;
 
+    Coordinate snap_location(Coordinate pos, Direction dir, bool both);
+
 public:
     // constructor
     MoveableSubject(Coordinate pos, Direction dir, int world_width, int world_height)

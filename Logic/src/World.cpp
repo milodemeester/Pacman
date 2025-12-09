@@ -182,12 +182,11 @@ void logic::World::initialise_values() {
 }
 
 bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, float entity_speed, float dt) const {
-    // TODO: colissions are still a bit weird, fix it
     float entity_half_size_x = (1.f / float(world_width));
     float entity_half_size_y = (1.f / float(world_height));
 
     // This value works and was found by trial and error
-    const float collision_sensitivity = 0.4f;
+    const float collision_sensitivity = 0.5f;
 
     const float epsilon_x = entity_half_size_x * entity_speed * dt * collision_sensitivity;
     const float epsilon_y = entity_half_size_y * entity_speed * dt * collision_sensitivity;
@@ -276,7 +275,7 @@ void logic::World::remove_entity(const std::shared_ptr<CollectableSubject>& mode
     }
 }
 
-void logic::World::move_pacman(logic::Direction direction) { wanted_pacman_direction = direction; }
+void logic::World::move_pacman(Direction direction) { wanted_pacman_direction = direction; }
 
 void logic::World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();

@@ -9,7 +9,24 @@ logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : T
 }
 
 void logic::ClydeModel::update(float dt, World& world) {
-    // clyde is the fourth ghost, chases pacman location
-    Coordinate target = world.get_pacman_position();
+    GhostModel::update(dt);
+
+    if (waiting) {
+        return;
+    }
+    Coordinate target;
+    if (in_box) { // still in box
+        double x = position_.getX();
+        double y = 0 + 2*(1/world_height_); // 2 "blocks" above the box
+        target = {x, y};
+        if (utils::compute_manhattan_distance({target}, position_) < 0.05) {
+            // out of box
+            in_box = false;
+            target = world.get_pacman_position();
+        }
+    }
+    else { // out of box, chase pacman
+        target = world.get_pacman_position();
+    }
     update_(dt, world, target);
 }

@@ -16,6 +16,7 @@ protected:
      */
     Coordinate compute_pacman_forward_pos(World& world, float offset);
 
+    bool in_box = true;
 public:
     // constructor
     Type2Ghost(Coordinate pos, Direction dir, int world_width, int world_height);
@@ -39,6 +40,9 @@ public:
      */
     std::pair<Direction, Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location,
                                                       float dt, World& world, Coordinate target_location);
+
+
+    void go_to_center() override;
 };
 } // namespace logic
 
