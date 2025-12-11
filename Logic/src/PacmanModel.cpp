@@ -45,7 +45,7 @@ void logic::PacmanModel::update(float dt, World& world) {
         world.begin_fear_mode();
     }
     if (utils::has_event(events, Event::PacmanDied)) {
-        if (lives > 0) {
+        if (lives > 1) {
             // if pacman dies and he still has lives left, return every entity to their starting position
             --lives;
             world.return_center();

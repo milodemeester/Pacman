@@ -34,6 +34,7 @@ public:
 
     // getters
     int get_lives();
+    [[nodiscard]] EntityType get_type() const override {return EntityType::Pacman;};
 
     // setters
     void set_lives(int lives);

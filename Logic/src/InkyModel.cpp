@@ -17,7 +17,7 @@ logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : Gho
 
 void logic::InkyModel::update(float dt, World& world) {
     // Check if inky can move or not
-    GhostModel::update(dt);
+    GhostModel::update(dt, world);
 
     if (!waiting) {
         // use the current direction and position to determine the next ones

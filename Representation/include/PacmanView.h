@@ -53,6 +53,8 @@ public:
      * @param dt delta-time between updates
      */
     void update(float dt) override;
+
+    EntityType get_type() const override {return EntityType::Pacman;}
 };
 } // namespace representation
 

@@ -31,18 +31,13 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>
 }
 
 void representation::PacmanView::onNotify(const logic::Subject& entity, logic::Event& event) {
-    auto* model = dynamic_cast<const logic::PacmanModel*>(&entity);
-    if (!model) {
-        return;
-    }
-
     switch (event) {
     case (logic::Event::EntityPositionChanged): {
-        world_position = model->get_position();
+        world_position = entity.get_position();
         break;
     }
     case (logic::Event::EntityDirectionChanged): {
-        world_direction = model->get_direction();
+        world_direction = entity.get_direction();
         break;
     }
     }

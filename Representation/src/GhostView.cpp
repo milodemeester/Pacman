@@ -117,11 +117,7 @@ void representation::GhostView::onNotify(const logic::Subject& entity, logic::Ev
         break;
     }
     case (logic::Event::EntityDirectionChanged): {
-        auto* model = dynamic_cast<const logic::MoveableSubject*>(&entity);
-        if (!model) { // entity has to be a MoveableSubject
-            return;
-        }
-        world_direction = model->get_direction();
+        world_direction = entity.get_direction();
         break;
     }
     case (logic::Event::FearMode): {

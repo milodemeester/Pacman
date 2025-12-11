@@ -13,6 +13,8 @@ public:
     // Constructor
     explicit CoinModel(Coordinate pos) : CollectableSubject(pos) {}
     CoinModel() : CollectableSubject({0, 0}) {}
+
+    [[nodiscard]] EntityType get_type() const override {return EntityType::Coin;};
 };
 } // namespace logic
 

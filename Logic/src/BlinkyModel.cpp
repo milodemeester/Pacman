@@ -9,7 +9,7 @@ logic::BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) :
 }
 
 void logic::BlinkyModel::update(float dt, World& world) {
-    GhostModel::update(dt);
+    GhostModel::update(dt, world);
 
     if (waiting) {
         return;

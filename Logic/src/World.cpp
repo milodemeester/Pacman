@@ -77,23 +77,23 @@ void logic::World::initialise_maze(int pacman_lives) {
                         break;
                     }
                     case 'B': { // Blinky
-                        crnt_entity = game_factory->createGhost(GhostType::Blinky, world_width, world_height);
-                        blinky = std::dynamic_pointer_cast<BlinkyModel>(crnt_entity);
+                        blinky = game_factory->createGhost(GhostType::Blinky, world_width, world_height);
+                        crnt_entity = blinky;
                         break;
                     }
                     case 'P': { // Pinky
-                        crnt_entity = game_factory->createGhost(GhostType::Pinky, world_width, world_height);
-                        pinky = std::dynamic_pointer_cast<PinkyModel>(crnt_entity);
+                        pinky = game_factory->createGhost(GhostType::Pinky, world_width, world_height);
+                        crnt_entity = pinky;
                         break;
                     }
                     case 'I': { // Inky
-                        crnt_entity = game_factory->createGhost(GhostType::Inky, world_width, world_height);
-                        inky = std::dynamic_pointer_cast<InkyModel>(crnt_entity);
+                        inky = game_factory->createGhost(GhostType::Inky, world_width, world_height);
+                        crnt_entity = inky;
                         break;
                     }
                     case 'O': { // Clyde
-                        crnt_entity = game_factory->createGhost(GhostType::Clyde, world_width, world_height);
-                        clyde = std::dynamic_pointer_cast<ClydeModel>(crnt_entity);
+                        clyde = game_factory->createGhost(GhostType::Clyde, world_width, world_height);
+                        crnt_entity = clyde;
                         break;
                     }
                     case 'F': { // Fruit
@@ -102,8 +102,8 @@ void logic::World::initialise_maze(int pacman_lives) {
                         break;
                     }
                     case 'A': { // Pacman
-                        crnt_entity = game_factory->createPacman(world_width, world_height);
-                        pacman = std::dynamic_pointer_cast<PacmanModel>(crnt_entity);
+                        pacman = game_factory->createPacman(world_width, world_height);
+                        crnt_entity = pacman;
                         pacman->set_lives(pacman_lives);
                         break;
                     }
@@ -206,56 +206,58 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
 
 std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction,
                                                                float entity_speed, bool ghost, float dt) {
+    // In this method, it is safe to do static_casts, because there are checks done first for the entity_type
     std::vector<Event> events;
     for (auto& entity_vector : entities) {
-        for (auto& entity : entity_vector) {
+        for (auto& entity : entity_vector) { // loop through every entity
             Rectangle entity2_rect;
-            if (!entity) {
-            } else {
+            if (!entity) {}
+            else {
                 Coordinate entity2_left_upper_corner = {entity->get_position().getX(), entity->get_position().getY()};
                 Coordinate entity2_right_lower_corner = {entity->get_position().getX(), entity->get_position().getY()};
                 entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-            }
-            std::shared_ptr<CoinModel> coin_model = std::dynamic_pointer_cast<CoinModel>(entity);
-            std::shared_ptr<FruitModel> fruit_model = std::dynamic_pointer_cast<FruitModel>(entity);
-            std::shared_ptr<GhostModel> ghost_model = std::dynamic_pointer_cast<GhostModel>(entity);
-            std::shared_ptr<WallModel> wall_model = std::dynamic_pointer_cast<WallModel>(entity);
 
-            if (wall_model) {
-                // Define the wall's bounding box
-                float entity_half_size_x = (1.f / float(world_width));
-                float entity_half_size_y = (1.f / float(world_height));
-                Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
-                                                        wall_model->get_position().getY() - entity_half_size_y};
-                Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
-                                                         wall_model->get_position().getY() + entity_half_size_y};
-                entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
-                if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {
-                } else if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    events.push_back(Event::WallCollide);
+                if (entity->get_type() == EntityType::Wall) {
+                    auto wall_model = std::static_pointer_cast<WallModel>(entity);
+                    // Define the wall's bounding box
+                    float entity_half_size_x = (1.f / float(world_width));
+                    float entity_half_size_y = (1.f / float(world_height));
+                    Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
+                                                            wall_model->get_position().getY() - entity_half_size_y};
+                    Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
+                                                             wall_model->get_position().getY() + entity_half_size_y};
+                    entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
+                    if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {
+                    } else if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
+                        events.push_back(Event::WallCollide);
+                    }
                 }
-            }
-            if (coin_model && !ghost) {
-                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    remove_entity(coin_model);
-                    coin_count--;
-                    events.push_back(Event::CoinCollected);
+                if (entity->get_type() == EntityType::Coin && !ghost) {
+                    auto coin_model = std::static_pointer_cast<CoinModel>(entity);
+                    if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
+                        remove_entity(coin_model);
+                        coin_count--;
+                        events.push_back(Event::CoinCollected);
+                    }
                 }
-            }
-            if (fruit_model && !ghost) {
-                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    remove_entity(fruit_model);
-                    auto score = Stopwatch::getInstance();
-                    fear_mode_begin = std::chrono::system_clock::now();
-                    fruit_count--;
-                    events.push_back(Event::FruitEaten);
+                if (entity->get_type() == EntityType::Fruit && !ghost) {
+                    auto fruit_model = std::static_pointer_cast<CoinModel>(entity);
+                    if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
+                        remove_entity(fruit_model);
+                        auto score = Stopwatch::getInstance();
+                        fear_mode_begin = std::chrono::system_clock::now();
+                        fruit_count--;
+                        events.push_back(Event::FruitEaten);
+                    }
                 }
-            } else if (ghost_model && !ghost) {
-                if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
-                    if (pacman_dead(ghost_model)) {
-                        events.push_back(Event::PacmanDied);
-                    } else {
-                        events.push_back(Event::GhostEaten);
+                else if (entity->get_type() == EntityType::Ghost && !ghost) {
+                    auto ghost_model = std::static_pointer_cast<GhostModel>(entity);
+                    if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
+                        if (pacman_dead(ghost_model)) {
+                            events.push_back(Event::PacmanDied);
+                        } else {
+                            events.push_back(Event::GhostEaten);
+                        }
                     }
                 }
             }
@@ -265,9 +267,12 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
 }
 
 void logic::World::remove_entity(const std::shared_ptr<CollectableSubject>& model) {
+    if (model->get_type() != EntityType::Fruit && model->get_type() != EntityType::Coin) {
+        return;
+    }
     for (auto& vec : entities) {
         for (int i = 0; i < vec.size(); i++) {
-            if (std::dynamic_pointer_cast<Subject>(model) == vec[i]) {
+            if (model == vec[i]) {
                 vec.erase(vec.begin() + i);
                 model->destruct();
             }

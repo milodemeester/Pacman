@@ -5,6 +5,7 @@
 #ifndef PACMAN_ENTITYVIEW_H
 #define PACMAN_ENTITYVIEW_H
 #include "../../Utilities/utils.h"
+#include "Subject.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
@@ -14,7 +15,6 @@ class Camera;
 class EntityView {
 protected:
     Coordinate world_location_; // the world location of the entity
-
 public:
     // destructor
     virtual ~EntityView() = default;
@@ -34,6 +34,7 @@ public:
 
     // getters
     [[nodiscard]] Coordinate get_location() const { return world_location_; }
+    [[nodiscard]] virtual EntityType get_type() const { return EntityType::Undefined; }
 
     // setters
     void set_location(const Coordinate& location) { this->world_location_ = location; }

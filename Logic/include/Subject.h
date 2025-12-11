@@ -10,6 +10,8 @@
 #include <memory>
 #include <vector>
 
+enum class EntityType { Pacman, Ghost, Wall, Coin, Fruit, Undefined };
+
 namespace logic {
 class World;
 class Observer;
@@ -26,9 +28,10 @@ protected:
     Coordinate position_;                            // the current position of the subject
     Coordinate starting_position_;                   // the position where the entity spawned in
     bool is_complete = false;                        // waits until location is set
+    Direction direction_; // the current direction
 public:
     // constructor
-    explicit Subject(Coordinate pos) : position_(pos) {}
+    explicit Subject(Coordinate pos, Direction dir) : position_(pos), direction_(dir){}
 
     // destructor
     virtual ~Subject() = default;
@@ -51,16 +54,18 @@ public:
 
     // setters
     void set_position(const Coordinate& position);
+    void set_direction(Direction direction);
 
     // getters
     Coordinate get_position() const { return position_; }
+    [[nodiscard]] virtual EntityType get_type() const { return EntityType::Undefined; }
+    [[nodiscard]] Direction get_direction() const { return direction_; }
 };
 
 class MoveableSubject : public Subject {
 protected:
     int world_width_;     // width of the world
     int world_height_;    // height of the world
-    Direction direction_; // the current direction
     float speed_;        // measured in pixel/ms
 
     /**
@@ -79,7 +84,7 @@ protected:
 public:
     // constructor
     MoveableSubject(Coordinate pos, Direction dir, int world_width, int world_height)
-        : world_width_(world_width), world_height_(world_height), Subject(pos), direction_(dir) {}
+        : world_width_(world_width), world_height_(world_height), Subject(pos, dir) {}
 
     /**
      * @brief pure virtual update-function that needs to be overwritten
@@ -90,10 +95,6 @@ public:
 
     // setters
     void set_speed(float speed);
-    void set_direction(Direction direction);
-
-    // getters
-    [[nodiscard]] Direction get_direction() const { return direction_; }
 };
 } // namespace logic
 

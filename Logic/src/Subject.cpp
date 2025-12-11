@@ -22,7 +22,7 @@ void logic::Subject::set_position(const Coordinate& position) {
     notify(Event::EntityPositionChanged);
 }
 
-void logic::MoveableSubject::set_direction(Direction direction) {
+void logic::Subject::set_direction(Direction direction) {
     this->direction_ = direction;
     Event event = Event::EntityDirectionChanged;
     notify(event);

@@ -43,6 +43,8 @@ public:
      * @param dt delta-time between updates
      */
     void update(float dt) override {}
+
+    EntityType get_type() const override {return EntityType::Fruit;}
 };
 } // namespace representation
 #endif // PACMAN_FRUITVIEW_H

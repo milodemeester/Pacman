@@ -13,6 +13,8 @@ public:
     // Constructor
     explicit FruitModel(Coordinate pos) : CollectableSubject(pos) {}
     FruitModel() : CollectableSubject({0, 0}) {}
+
+    [[nodiscard]] EntityType get_type() const override {return EntityType::Fruit;};
 };
 } // namespace logic
 #endif // PACMAN_FRUITMODEL_H

@@ -63,10 +63,10 @@ class World {
     int world_height;                                            // height of the world
     std::shared_ptr<GameFactory> game_factory;
     std::shared_ptr<PacmanModel> pacman;
-    std::shared_ptr<BlinkyModel> blinky;
-    std::shared_ptr<PinkyModel> pinky;
-    std::shared_ptr<InkyModel> inky;
-    std::shared_ptr<ClydeModel> clyde;
+    std::shared_ptr<GhostModel> blinky;
+    std::shared_ptr<GhostModel> pinky;
+    std::shared_ptr<GhostModel> inky;
+    std::shared_ptr<GhostModel> clyde;
     Direction wanted_pacman_direction;
     std::chrono::system_clock::time_point fear_mode_begin;
     int coin_count = 0;

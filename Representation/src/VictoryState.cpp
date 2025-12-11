@@ -23,7 +23,9 @@ void representation::VictoryState::proces_user_input(const sf::Event& event, sf:
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
     } else if (event.type == sf::Event::MouseButtonPressed) {
-        sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
+        float x = event.mouseButton.x;
+        float y = event.mouseButton.y;
+        sf::Vector2f mouseCoords = {x, y};
         // check if the click is inside the button boundries
         Coordinate ulc = {button_.btnLeft_, button_.btnTop_};
         Coordinate lrc = {button_.btnRight_, button_.btnBottom_};

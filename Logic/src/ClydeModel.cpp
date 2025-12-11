@@ -9,7 +9,7 @@ logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : T
 }
 
 void logic::ClydeModel::update(float dt, World& world) {
-    GhostModel::update(dt);
+    GhostModel::update(dt, world);
 
     if (waiting) {
         return;

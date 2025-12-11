@@ -10,9 +10,6 @@
 logic::Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
 
 void logic::Type2Ghost::update_(float dt, World& world, Coordinate target) {
-    // Check if the ghost can move or not
-    update(dt);
-
     if (!waiting) { // ghost is not waiting
         // use the current direction and position to determine the next ones
         Direction current_direction = direction_;

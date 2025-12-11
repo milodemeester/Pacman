@@ -11,7 +11,7 @@ logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, in
 }
 
 void logic::PinkyModel::update(float dt, World& world) {
-    GhostModel::update(dt);
+    GhostModel::update(dt, world);
 
     if (waiting) {
         return;

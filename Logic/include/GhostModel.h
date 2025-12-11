@@ -47,13 +47,15 @@ public:
      * @brief takes care of the wait_time and puts chasing_mode on true if the wait_time is over
      * @param dt the delta time between this update and the update prior to this one
      */
-    void update(float dt);
+    void update(float dt, World& world);
 
     /**
      * @brief checks if the ghost is in chasing mode
      * @return a boolean that determines if the ghost is in chasing mode or fear mode
      */
     bool is_chasing_mode();
+
+    [[nodiscard]] EntityType get_type() const override {return EntityType::Ghost;};
 
     // setters
     void set_fear_mode();
