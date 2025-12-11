@@ -10,18 +10,18 @@ namespace logic {
 enum class Event;
 }
 struct Coordinate {
-    double getX() { return x; }
-    double getY() { return y; }
-    Coordinate(double x, double y) : x(x), y(y) {}
+    float getX() { return x; }
+    float getY() { return y; }
+    Coordinate(float x, float y) : x(x), y(y) {}
     Coordinate() = default;
-    void set_coordinates(double x, double y) {
+    void set_coordinates(float x, float y) {
         this->x = x;
         this->y = y;
     }
 
 private:
-    double x = 0;
-    double y = 0;
+    float x = 0;
+    float y = 0;
 };
 
 struct Rectangle {
@@ -60,9 +60,9 @@ public:
      * @brief compute the manhatten distance between two coordinates
      * @param pos1 the first coordinate
      * @param pos2 the second coordinate
-     * @return a double that represents the manhatten distance
+     * @return a float that represents the manhatten distance
      */
-    static double compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2);
+    static float compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2);
 
     static bool has_event(std::vector<logic::Event> events, logic::Event event);
 };

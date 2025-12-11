@@ -42,7 +42,7 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory, int level, int 
 }
 
 void logic::World::initialise_maze(int pacman_lives) {
-    int line = 0;
+    float line = 0.f;
     std::string maze_line;
     // Read map from this txt file
     std::ifstream maze_file("../data/maps/map1.txt");
@@ -59,12 +59,12 @@ void logic::World::initialise_maze(int pacman_lives) {
             } else {
                 std::vector<std::shared_ptr<Subject>> line_vector;
                 line_vector.reserve(world_width);
-                for (int char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
+                for (float char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
                     // X-position from -1 (left) to +1 (right)
-                    float x_pos = 2.0f * (float(char_idx) / float(world_width)) - 1.0f;
+                    float x_pos = 2.0f * (char_idx / float(world_width)) - 1.0f;
 
                     // Y-position from +1 (up) to -1 (under)
-                    float y_pos = 1.0f - 2.0f * (float(line) / float(world_height));
+                    float y_pos = 1.0f - 2.0f * (line / float(world_height));
                     std::shared_ptr<Subject> crnt_entity = nullptr;
                     switch (maze_line[char_idx]) {
                     case 'W': { // Wall
@@ -206,7 +206,7 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
 
 std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction,
                                                                float entity_speed, bool ghost, float dt) {
-    std::vector<logic::Event> events;
+    std::vector<Event> events;
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) {
             Rectangle entity2_rect;
@@ -281,13 +281,13 @@ void logic::World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();
     if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < frightened_mode_duration_) {
         pinky->set_fear_mode();
-        pinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
+        pinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
         inky->set_fear_mode();
-        inky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
+        inky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
         blinky->set_fear_mode();
-        blinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
+        blinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
         clyde->set_fear_mode();
-        clyde->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7);
+        clyde->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
     } else {
         pinky->set_chase_mode();
         pinky->set_speed(basic_ghost_speed*ghost_speed_fraction_);

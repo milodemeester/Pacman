@@ -27,9 +27,9 @@ public:
 
     /**
      * @brief computes the time between now and the previous tick
-     * @return double delta time
+     * @return delta time
      */
-    double get_delta_time();
+    float get_delta_time();
 
     /**
      * @brief computes the time between two time points
@@ -37,11 +37,11 @@ public:
      * @param time_point2 the latest time point
      * @return the time between the two time points in milliseconds
      */
-    double get_time_between(std::chrono::system_clock::time_point time_point1,
+    float get_time_between(std::chrono::system_clock::time_point time_point1,
                             std::chrono::system_clock::time_point time_point2);
 
     // getters
-    double get_start_time();
+    float get_start_time();
     std::chrono::system_clock::time_point get_now();
     static std::shared_ptr<Stopwatch> getInstance();
 };

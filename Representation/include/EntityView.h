@@ -30,7 +30,7 @@ public:
      * @brief update something
      * @param dt delta time between updates
      */
-    virtual void update(double dt) = 0;
+    virtual void update(float dt) = 0;
 
     // getters
     [[nodiscard]] Coordinate get_location() const { return world_location_; }

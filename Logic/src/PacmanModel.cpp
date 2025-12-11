@@ -60,7 +60,7 @@ void logic::PacmanModel::update(float dt, World& world) {
     }
 }
 
-double logic::PacmanModel::get_speed() { return speed_; }
+float logic::PacmanModel::get_speed() { return speed_; }
 
 int logic::PacmanModel::get_lives() { return lives; }
 

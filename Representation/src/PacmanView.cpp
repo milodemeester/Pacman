@@ -48,7 +48,7 @@ void representation::PacmanView::onNotify(const logic::Subject& entity, logic::E
     }
 }
 
-void representation::PacmanView::update(double dt) {
+void representation::PacmanView::update(float dt) {
     // handle animation
     animation_timer += dt;
     if (animation_timer > animation_speed) {

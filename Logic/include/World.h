@@ -75,7 +75,7 @@ class World {
     int level_;
 
     // level-dependant values
-    int frightened_mode_duration_; // duration of ghost frightened mode in miliseconds
+    float frightened_mode_duration_; // duration of ghost frightened mode in miliseconds
     float pacman_speed_fraction_;  // the fraction of the total pacman speed
     float ghost_speed_fraction_;   // the fraction of the total ghost speed
 

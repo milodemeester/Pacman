@@ -65,14 +65,14 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
     }
     // Using a vector because 2 directions could have the same manhatten distance
     std::vector<Direction> best_directions;
-    double best_manhattan;
+    float best_manhattan;
 
     if (chasing_mode) {
         // minimize the manhatten value
-        best_manhattan = std::numeric_limits<double>::max();
+        best_manhattan = std::numeric_limits<float>::max();
     } else {
         // maximize the manhatten value
-        best_manhattan = std::numeric_limits<double>::min();
+        best_manhattan = std::numeric_limits<float>::min();
     }
 
     // Check every possible direction except the opposite direction
@@ -91,7 +91,7 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
         // Check if there is a wall
         auto events = world.check_entity_collision(next_pos, direction, speed_, true, dt);
         if (!utils::has_event(events, Event::WallCollide)) {
-            double mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
+            float mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
 
             if (chasing_mode) {
                 // minimize the manhatten value
@@ -125,7 +125,7 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
         chosen_direction = get_opposite_direction(current_direction);
     } else {
         // Choose a random direction
-        int random_index = Random::getInstance()->getNumber(0, static_cast<int>(best_directions.size()) - 1);
+        int random_index = Random::getInstance()->getNumber(0, best_directions.size() - 1);
         chosen_direction = best_directions[random_index];
     }
 

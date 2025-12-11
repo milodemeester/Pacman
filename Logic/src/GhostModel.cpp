@@ -59,7 +59,7 @@ void logic::GhostModel::update(float dt) {
     }
 }
 
-double logic::GhostModel::get_speed() { return speed_; }
+float logic::GhostModel::get_speed() { return speed_; }
 
 void logic::GhostModel::set_fear_mode() {
     chasing_mode = false;

@@ -5,7 +5,7 @@
 #include "../include/CollectableSubject.h"
 
 namespace logic {
-void logic::CollectableSubject::destruct() {
+void CollectableSubject::destruct() {
     Event e = Event::EntityDestruct;
     notify(e);
 }

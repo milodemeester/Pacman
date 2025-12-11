@@ -10,10 +10,10 @@
 #include <vector>
 
 bool utils::contains(Coordinate& upper_left_corner, Coordinate& lower_right_corner, Coordinate& click) {
-    double left = upper_left_corner.getX();
-    double top = upper_left_corner.getY();
-    double right = lower_right_corner.getX();
-    double bottom = lower_right_corner.getY();
+    float left = upper_left_corner.getX();
+    float top = upper_left_corner.getY();
+    float right = lower_right_corner.getX();
+    float bottom = lower_right_corner.getY();
 
     if (click.getX() < left)
         return false;
@@ -45,8 +45,8 @@ bool utils::intersecting(Rectangle& rectangle1, Rectangle& rectangle2) {
     return true;
 }
 
-double utils::compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2) {
-    double distance = std::abs(pos1.getX() - pos2.getX()) + std::abs(pos1.getY() - pos2.getY());
+float utils::compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2) {
+    float distance = std::abs(pos1.getX() - pos2.getX()) + std::abs(pos1.getY() - pos2.getY());
     return distance;
 }
 

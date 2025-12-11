@@ -32,10 +32,10 @@ protected:
     static Direction get_opposite_direction(Direction dir);
 
     // getters
-    double get_speed() override;
+    float get_speed() override;
 
     std::chrono::system_clock::time_point initialize_time; // the time_point where this object was initialized
-    double wait_time = 0;         // the time the ghost has to wait before it can escape the center
+    float wait_time = 0;         // the time the ghost has to wait before it can escape the center
     bool chasing_mode = true;     // false = fear mode, true = chasing mode
     bool was_frightened_ = false; // determines the previous frightened state so a transition can be detected
     bool waiting = true;          // determines if the ghost is waiting in the center of the game

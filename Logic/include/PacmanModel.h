@@ -14,7 +14,7 @@ protected:
     int lives; // the amount of lives that pacman has left
 
     // getters
-    double get_speed() override;
+    float get_speed() override;
 public:
     /**
      * @brief constructor

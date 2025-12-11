@@ -57,7 +57,7 @@ public:
     /*
      * Method that is used to update the game
      */
-    void update(double delta_time);
+    void update(float delta_time);
 };
 } // namespace representation
 

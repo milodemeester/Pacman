@@ -59,11 +59,11 @@ void logic::Subject::notify(Event event) {
 }
 
 Coordinate logic::MoveableSubject::calculate_new_position(float dt, Direction direction, Coordinate position) {
-    double epsx = 1 / double(world_width_);
-    double epsy = 1 / double(world_height_);
-    double increase = dt * get_speed();
-    double new_x = 0;
-    double new_y = 0;
+    float epsx = 1 / float(world_width_);
+    float epsy = 1 / float(world_height_);
+    float increase = dt * get_speed();
+    float new_x = 0;
+    float new_y = 0;
     switch (direction) {
     case (Direction::North): {
         new_x = position.getX();
@@ -91,16 +91,18 @@ Coordinate logic::MoveableSubject::calculate_new_position(float dt, Direction di
 
 void logic::MoveableSubject::set_speed(float speed) { speed_ = speed; }
 
-void logic::Subject::go_to_center() { set_position(starting_position_); }
+void logic::Subject::go_to_center() {
+    set_position(starting_position_);
+}
 
 Coordinate logic::MoveableSubject::snap_location(Coordinate pos, Direction snap_direction, bool both) {
     Coordinate snapped_location = pos;
     if (snap_direction == Direction::East || snap_direction == Direction::West || both) {
-        double world_location_y = std::round(pos.getY() * world_height_);
+        float world_location_y = std::round(pos.getY() * world_height_);
         snapped_location.set_coordinates(pos.getX(), world_location_y / world_height_);
     }
     if (snap_direction == Direction::North || snap_direction == Direction::South || both) {
-        double world_location_x = std::round(pos.getX() * world_width_);
+        float world_location_x = std::round(pos.getX() * world_width_);
         snapped_location.set_coordinates(world_location_x / world_width_, pos.getY());
     }
     return snapped_location;

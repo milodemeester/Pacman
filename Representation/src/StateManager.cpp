@@ -44,7 +44,7 @@ void representation::StateManager::render(sf::RenderWindow& window) {
     state_stack.top()->render(window);
 }
 
-void representation::StateManager::update(double delta_time) {
+void representation::StateManager::update(float delta_time) {
     if (state_stack.empty())
         return;
     state_stack.top()->update(delta_time);

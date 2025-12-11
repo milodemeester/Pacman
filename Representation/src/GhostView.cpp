@@ -151,7 +151,7 @@ void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<C
     window.draw(sprite);
 }
 
-void representation::GhostView::update(double dt) {
+void representation::GhostView::update(float dt) {
     // animation of the ghost (does not draw anything)
     animation_timer += dt;
     if (animation_timer > animation_speed) { // sprite needs to be changed

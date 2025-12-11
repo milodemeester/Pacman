@@ -61,7 +61,7 @@ protected:
     int world_width_;     // width of the world
     int world_height_;    // height of the world
     Direction direction_; // the current direction
-    double speed_;        // measured in pixel/ms
+    float speed_;        // measured in pixel/ms
 
     /**
      * @brief computes the new position based on the delta time
@@ -72,7 +72,7 @@ protected:
      */
     Coordinate calculate_new_position(float dt, Direction direction, Coordinate position);
 
-    virtual double get_speed() = 0;
+    virtual float get_speed() = 0;
 
     Coordinate snap_location(Coordinate pos, Direction dir, bool both);
 

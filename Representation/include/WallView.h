@@ -42,7 +42,7 @@ public:
      * @brief does nothing
      * @param dt delta-time between updates
      */
-    void update(double dt) override {}
+    void update(float dt) override {}
 };
 } // namespace representation
 

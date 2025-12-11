@@ -42,11 +42,11 @@ representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, 
     highScores_.reserve(5);
 
     int line_number = 0;
-    for (auto& score : score_->get_high_scores()) {
+    for (auto& scoree : score_->get_high_scores()) {
         sf::Text file_score;
         file_score.setFont(scoreFont_);
         file_score.setFillColor(sf::Color::White);
-        file_score.setString(std::to_string(line_number + 1) + ": " + score);
+        file_score.setString(std::to_string(line_number + 1) + ": " + scoree);
         highScores_.push_back(file_score);
         line_number++;
     }
@@ -57,7 +57,7 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
     // --- High Scores ---
     float window_width = windowSize.x;
     float window_height = windowSize.y;
-    unsigned int char_size = (window_width / 64 + window_height / 64);
+    float char_size = (window_width / 64 + window_height / 64);
 
     // Titel
     highScoreTitle_.setCharacterSize(char_size);
@@ -89,7 +89,9 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
     }
 
     else if (event.type == sf::Event::MouseButtonPressed) {
-        sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
+        float x = event.mouseButton.x;
+        float y = event.mouseButton.y;
+        sf::Vector2f mouseCoords = {x, y};
         // check if the click is inside the button boundries
         Coordinate ulc = {button_.btnLeft_, button_.btnTop_};
         Coordinate lrc = {button_.btnRight_, button_.btnBottom_};

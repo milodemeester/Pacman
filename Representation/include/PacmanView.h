@@ -28,8 +28,8 @@ class PacmanView : public EntityView, public logic::Observer {
     logic::Direction world_direction;   // the world direction of pacman
     size_t current_sprite_index = 0;    // the index of the current animation sequence
     float last_sprite_change = 0.0f;    // last sprite change timestamp
-    double animation_timer = 0.0;       // the time passed after the previous sprite change
-    const double animation_speed = 125; // 125 ms = 0.125s
+    float animation_timer = 0.0;       // the time passed after the previous sprite change
+    const float animation_speed = 125; // 125 ms = 0.125s
 public:
     // constructor
     explicit PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map);
@@ -52,7 +52,7 @@ public:
      * @brief does nothing
      * @param dt delta-time between updates
      */
-    void update(double dt) override;
+    void update(float dt) override;
 };
 } // namespace representation
 

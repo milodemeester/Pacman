@@ -16,8 +16,8 @@ void logic::BlinkyModel::update(float dt, World& world) {
     }
     Coordinate target;
     if (in_box) { // still in the box
-        double x = position_.getX();
-        double y = 0 + 2*(1/world_height_); // 2 "blocks" above the box
+        float x = position_.getX();
+        float y = 0 + 2*(1/world_height_); // 2 "blocks" above the box
         target = {x, y};
         if (utils::compute_manhattan_distance({target}, position_) < 0.05) {
             // out of box

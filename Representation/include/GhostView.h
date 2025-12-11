@@ -73,8 +73,8 @@ class GhostView : public EntityView, public logic::Observer {
     size_t current_sprite_index = 0;    // the index of the current animation sequence
     logic::Direction world_direction;   // the current direction of the ghost
     float last_sprite_change = 0.0f;    // last sprite change timestamp
-    double animation_timer = 0.0;       // the time passed after the previous sprite change
-    const double animation_speed = 100; // 100 ms = 0.100s
+    float animation_timer = 0.0;       // the time passed after the previous sprite change
+    const float animation_speed = 100; // 100 ms = 0.100s
     Coordinate world_pos_;              // the world position of the ghost
     bool fear_mode = false;             // if true, ghost is in fear mode and has to change its sprite accordingly
 
@@ -100,7 +100,7 @@ public:
      * @brief does nothing
      * @param dt delta-time between updates
      */
-    void update(double dt) override;
+    void update(float dt) override;
 };
 } // namespace representation
 
