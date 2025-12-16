@@ -49,7 +49,7 @@ Coordinate Type2Ghost::compute_pacman_forward_pos(core::World& world, float offs
 std::pair<core::Direction, Coordinate> Type2Ghost::get_viable_state(core::Direction& current_direction,
                                                                     Coordinate& current_location, float dt,
                                                                     core::World& world, Coordinate target_location) {
-    // If the ghost just came out frightened mode, turn around
+    // If the ghost just came out of frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
         was_frightened_ = true;
         core::Direction reversed = get_opposite_direction(current_direction);
@@ -62,25 +62,27 @@ std::pair<core::Direction, Coordinate> Type2Ghost::get_viable_state(core::Direct
     if (chasing_mode) {
         was_frightened_ = false;
     }
-    // Using a vector because 2 directions could have the same manhatten distance
+
     std::vector<core::Direction> best_directions;
     float best_manhattan;
 
     if (chasing_mode) {
-        // minimize the manhatten value
+        // Minimize the manhattan value
         best_manhattan = std::numeric_limits<float>::max();
     } else {
-        // maximize the manhatten value
+        // Maximize the manhattan value
         best_manhattan = std::numeric_limits<float>::min();
     }
 
-    // Check every possible direction except the opposite direction
-    auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
-
     std::map<core::Direction, Coordinate> dir_cor_combis;
+    std::vector<core::Direction> viable_directions;
 
-    for (auto direction : possible_directions) {
-        // Calculate the position if clyde takes a step into this direction
+    // Check all 4 directions
+    const std::vector<core::Direction> all_directions = {
+        core::Direction::North, core::Direction::East, core::Direction::South, core::Direction::West};
+
+    for (auto direction : all_directions) {
+        // Calculate the position if the ghost takes a step into this direction
         Coordinate next_pos = calculate_new_position(dt, direction, current_location);
         snap_location(next_pos, direction, false);
 
@@ -90,40 +92,54 @@ std::pair<core::Direction, Coordinate> Type2Ghost::get_viable_state(core::Direct
         // Check if there is a wall
         auto events = world.check_entity_collision(next_pos, direction, speed_, true, dt);
         if (!utils::has_event(events, core::Event::WallCollide)) {
-            float mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
+            viable_directions.push_back(direction);
+        }
+    }
 
-            if (chasing_mode) {
-                // minimize the manhatten value
-                if (mnhtn_distance < best_manhattan) {
-                    // This direction is better than the other directions up to this point
-                    best_manhattan = mnhtn_distance;
-                    best_directions.clear();
-                    best_directions.push_back(direction);
-                } else if (mnhtn_distance == best_manhattan) {
-                    // This direction is equally good as another direction
-                    best_directions.push_back(direction);
-                }
-            } else {
-                // maximize the manhatten value
-                if (mnhtn_distance > best_manhattan) {
-                    // This direction is better than the other directions up to this point
-                    best_manhattan = mnhtn_distance;
-                    best_directions.clear();
-                    best_directions.push_back(direction);
-                } else if (mnhtn_distance == best_manhattan) {
-                    // This direction is equally good as another direction
-                    best_directions.push_back(direction);
-                }
+    // Exclude the opposite direction unless it's the only option
+    core::Direction opposite_direction = get_opposite_direction(current_direction);
+    if (viable_directions.size() > 1) {
+        viable_directions.erase(std::remove(viable_directions.begin(), viable_directions.end(), opposite_direction),
+                                viable_directions.end());
+    }
+
+    for (auto direction : viable_directions) {
+        Coordinate next_pos = dir_cor_combis[direction];
+        float mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
+
+        if (chasing_mode) {
+            // Minimize the manhattan value
+            if (mnhtn_distance < best_manhattan) {
+                best_manhattan = mnhtn_distance;
+                best_directions.clear();
+                best_directions.push_back(direction);
+            } else if (mnhtn_distance == best_manhattan) {
+                best_directions.push_back(direction);
+            }
+        } else {
+            // Maximize the manhattan value
+            if (mnhtn_distance > best_manhattan) {
+                best_manhattan = mnhtn_distance;
+                best_directions.clear();
+                best_directions.push_back(direction);
+            } else if (mnhtn_distance == best_manhattan) {
+                best_directions.push_back(direction);
             }
         }
     }
 
     // Choose the best direction
     core::Direction chosen_direction;
-    if (best_directions.empty()) { // no viable directions, turn around
-        chosen_direction = get_opposite_direction(current_direction);
+    if (best_directions.empty()) {
+        // This can happen if all viable directions are equally bad, or if there are no viable directions.
+        // As a fallback, just pick one of the viable ones. If none, turn around.
+        if (!viable_directions.empty()) {
+            chosen_direction = viable_directions[0];
+        } else {
+            chosen_direction = get_opposite_direction(current_direction);
+        }
     } else {
-        // Choose a random direction
+        // Choose a random direction among the best options
         int random_index = core::Random::getInstance()->getNumber(0, best_directions.size() - 1);
         chosen_direction = best_directions[random_index];
     }
