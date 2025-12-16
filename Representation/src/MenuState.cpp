@@ -104,6 +104,8 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
 }
 
 void representation::MenuState::render(sf::RenderWindow& window) {
+    // update everything
+    updateLayout(window.getSize());
     // Load the image and resize it to fit the window
     sf::Sprite sprite;
     sprite.setTexture(texture_);

@@ -84,10 +84,12 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
 }
 
 void representation::LevelState::update(float delta_time) {
+    // update the world and all the views
     world_.update(delta_time);
     for (const auto& view : views_) {
         view->update(delta_time);
     }
+    score_->update(delta_time);
     // check if this level has ended
     logic::WorldState world_state = world_.get_world_state();
     switch (world_state) {

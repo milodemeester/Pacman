@@ -40,7 +40,7 @@ void logic::Score::onNotify(const Subject& entity, Event& e) {
             score_ += standard_increase;
         } else {
             float time_between = stopwatch->get_time_between(now, previous_coin_time);
-            score_ += std::lround(standard_increase * (1 / (time_between / 1000)));
+            score_ += standard_increase * (1.f / (time_between / 1000.f));
         }
         previous_coin_time = now;
     } else if (e == Event::FruitEaten) {
@@ -50,14 +50,17 @@ void logic::Score::onNotify(const Subject& entity, Event& e) {
 
 std::vector<std::string> logic::Score::get_high_scores() { return high_scores_; }
 
-int logic::Score::get_score() const { return score_; }
+int logic::Score::get_score() const {
+    int ret = score_;
+    return ret;
+}
 
 void logic::Score::update_high_scores() {
     bool needs_update = false;
     int update_index = 0;
     // check if the current score is higher than any of the current high scores
     for (int i = 0; i < high_scores_.size(); i++) {
-        int score = std::stoi(high_scores_[i]);
+        float score = std::stof(high_scores_[i]);
         if (score_ > score) {
             // Remember the index
             needs_update = true;
@@ -68,7 +71,8 @@ void logic::Score::update_high_scores() {
     // if the current score is bigger than one of the high scores, update the high_scores_ vector
     if (needs_update) {
         std::vector<std::string> copy = high_scores_;
-        high_scores_[update_index] = std::to_string(score_);
+        int s = score_;
+        high_scores_[update_index] = std::to_string(s);
         for (int i = update_index + 1; i < 5; i++) {
             high_scores_[i] = copy[i - 1];
         }
@@ -86,3 +90,7 @@ void logic::Score::write_to_file(std::vector<std::string>& new_high_scores) {
 }
 
 void logic::Score::reset() { score_ = 0; }
+
+void logic::Score::update(float dt) {
+    score_ -= dt/100.f;
+}
