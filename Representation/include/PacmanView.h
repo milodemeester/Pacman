@@ -20,6 +20,7 @@ class PacmanModel;
 namespace representation {
 class Camera;
 
+namespace view {
 class PacmanView : public EntityView, public logic::core::Observer {
     std::map<logic::core::Direction, std::vector<sf::IntRect>>
         animation_sequences; // map with direction key and corresponding animation sequence
@@ -56,6 +57,7 @@ public:
 
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Pacman;}
 };
+}
 } // namespace representation
 
 #endif // PACMAN_PACMANVIEW_H

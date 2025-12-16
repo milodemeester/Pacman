@@ -10,7 +10,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 
-representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>& model, SpriteMap& sprite_map,
+namespace representation::view {
+GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>& model, SpriteMap& sprite_map,
                                      logic::entity::GhostType type) {
     world_direction = model->get_direction();
     world_pos_ = model->get_position();
@@ -109,7 +110,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>&
     }
 }
 
-void representation::GhostView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
+void GhostView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
 
     switch (event) {
     case (logic::core::Event::EntityPositionChanged): {
@@ -131,7 +132,7 @@ void representation::GhostView::onNotify(const logic::entity::Subject& entity, l
     }
 }
 
-void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
+void GhostView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     auto screen = cam->worldToScreen(world_pos_, {35, 35});
     sf::Vector2f new_coords = screen.first;
     std::vector<sf::Sprite> sprite_sequence;
@@ -147,7 +148,7 @@ void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<C
     window.draw(sprite);
 }
 
-void representation::GhostView::update(float dt) {
+void GhostView::update(float dt) {
     // animation of the ghost (does not draw anything)
     animation_timer += dt;
     if (animation_timer > animation_speed) { // sprite needs to be changed
@@ -163,4 +164,5 @@ void representation::GhostView::update(float dt) {
         current_sprite_index += 1;
         current_sprite_index %= crnt_sequence.size();
     }
+}
 }

@@ -10,7 +10,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <iostream>
 
-representation::WallView::WallView(const std::shared_ptr<logic::entity::WallModel>& model, SpriteMap& sprite_map,
+namespace representation::view {
+WallView::WallView(const std::shared_ptr<logic::entity::WallModel>& model, SpriteMap& sprite_map,
                                    bool invisible)
     : invisible_(invisible) {
     sf::Sprite sprite = sprite_map.getWallSprite({0, 0, 35, 35});
@@ -18,7 +19,7 @@ representation::WallView::WallView(const std::shared_ptr<logic::entity::WallMode
     set_location(model->get_position());
 }
 
-void representation::WallView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
+void WallView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
     switch (event) {
     case (logic::core::Event::EntityPositionChanged): {
         set_location(entity.get_position());
@@ -27,7 +28,7 @@ void representation::WallView::onNotify(const logic::entity::Subject& entity, lo
     }
 }
 
-void representation::WallView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
+void WallView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     if (!invisible_) { // if the wall can be displayed
         sf::Sprite& sprite = m_sprites_.at(WallSpriteState::Wall);
         auto screen = cam->worldToScreen(get_location(), {32, 32});
@@ -37,4 +38,5 @@ void representation::WallView::draw(sf::RenderWindow& window, std::shared_ptr<Ca
         sprite.setScale(sprite_size);
         window.draw(sprite);
     }
+}
 }

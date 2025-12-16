@@ -12,6 +12,8 @@
 
 namespace representation {
 class Camera;
+
+namespace view {
 class EntityView {
 protected:
     Coordinate world_location_; // the world location of the entity
@@ -39,6 +41,7 @@ public:
     // setters
     void set_location(const Coordinate& location) { this->world_location_ = location; }
 };
+}
 } // namespace representation
 
 #endif // PACMAN_ENTITYVIEW_H

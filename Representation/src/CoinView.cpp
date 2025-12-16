@@ -7,12 +7,13 @@
 #include "../include/Camera.h"
 #include "../include/SpriteMap.h"
 
-representation::CoinView::CoinView(std::shared_ptr<logic::entity::CoinModel> model, SpriteMap& sprite_map)
+namespace representation::view {
+CoinView::CoinView(std::shared_ptr<logic::entity::CoinModel> model, SpriteMap& sprite_map)
     : sprite(sprite_map.getSprite(sf::IntRect(404, 402, 35, 35))) {
     world_location_ = model->get_position();
 }
 
-void representation::CoinView::onNotify(const logic::entity::Subject& entity, logic::core::Event& e) {
+void CoinView::onNotify(const logic::entity::Subject& entity, logic::core::Event& e) {
     if (e == logic::core::Event::EntityPositionChanged) {
         world_location_ = entity.get_position();
     } else if (e == logic::core::Event::EntityDestruct) {
@@ -22,7 +23,7 @@ void representation::CoinView::onNotify(const logic::entity::Subject& entity, lo
     }
 }
 
-void representation::CoinView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
+void CoinView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     if (!invisible) {
         auto screen = cam->worldToScreen(world_location_, {32, 32});
         sf::Vector2f sprite_size = screen.second;
@@ -32,4 +33,5 @@ void representation::CoinView::draw(sf::RenderWindow& window, std::shared_ptr<Ca
         sprite.setPosition(new_coords.x, new_coords.y);
         window.draw(sprite);
     }
+}
 }

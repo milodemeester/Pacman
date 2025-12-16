@@ -16,6 +16,8 @@ enum class WallSpriteState { Wall };
 
 namespace representation {
 class SpriteMap;
+
+namespace view {
 class WallView : public EntityView, public logic::core::Observer {
     std::map<WallSpriteState, sf::Sprite> m_sprites_;
     bool invisible_;
@@ -46,6 +48,7 @@ public:
 
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Wall;}
 };
+}
 } // namespace representation
 
 #endif // PACMAN_WALLVIEW_H

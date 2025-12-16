@@ -18,7 +18,9 @@ class Score;
 namespace representation {
 class StateManager;
 class SfmlFactory;
+namespace view {
 class EntityView;
+}
 
 class LevelState final : public State {
     /**
@@ -31,7 +33,7 @@ class LevelState final : public State {
     SpriteMap spriteMap_;                  // the spritemap that is used to get the sprites for different entities
     std::shared_ptr<SfmlFactory> factory_; // factory that is used to create all the entities
     logic::core::World world_;                   // the world that is created every level
-    std::vector<std::shared_ptr<EntityView>> views_; // vector with every view
+    std::vector<std::shared_ptr<view::EntityView>> views_; // vector with every view
     StateManager& manager_;
     sf::Vector2u windowSize_;
     sf::Font font_; // font that is used for all the text in levelstate

@@ -12,11 +12,14 @@ enum class GhostType;
 
 namespace representation {
 class SpriteMap;
+namespace view {
 class EntityView;
+}
+
 class SfmlFactory : public logic::core::GameFactory {
     std::shared_ptr<Camera> camera_;
     sf::Vector2u windowSize_;
-    std::vector<std::shared_ptr<EntityView>> createdViews_;
+    std::vector<std::shared_ptr<view::EntityView>> createdViews_;
     SpriteMap& sprite_map_;
     std::shared_ptr<logic::core::Score> score_;
 
@@ -65,7 +68,7 @@ public:
     std::shared_ptr<logic::entity::WallModel> createWall(bool invisible) override;
 
     // getters
-    std::vector<std::shared_ptr<EntityView>> getCreatedViews();
+    std::vector<std::shared_ptr<view::EntityView>> getCreatedViews();
 };
 } // namespace representation
 

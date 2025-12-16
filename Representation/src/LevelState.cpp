@@ -117,8 +117,8 @@ void representation::LevelState::update(float delta_time) {
 }
 
 void representation::LevelState::render(sf::RenderWindow& window) {
-    std::shared_ptr<EntityView> pacman;
-    std::vector<std::shared_ptr<EntityView>> ghosts;
+    std::shared_ptr<view::EntityView> pacman;
+    std::vector<std::shared_ptr<view::EntityView>> ghosts;
 
     // render every view (except pacman and ghosts)
     for (auto& view : views_) {

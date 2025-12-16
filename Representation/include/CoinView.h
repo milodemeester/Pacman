@@ -15,6 +15,8 @@ class CoinModel;
 
 namespace representation {
 class SpriteMap;
+
+namespace view {
 class CoinView : public EntityView, public logic::core::Observer {
     bool invisible = false; // is false, the coin will not be drawn
     sf::Sprite sprite;      // the sprite that is used to represent a coin
@@ -45,5 +47,6 @@ public:
 
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Coin;}
 };
+}
 } // namespace representation
 #endif // PACMAN_COINVIEW_H

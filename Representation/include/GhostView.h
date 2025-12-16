@@ -75,6 +75,8 @@ class GhostModel;
 
 namespace representation {
 class SpriteMap;
+
+namespace view {
 class GhostView : public EntityView, public logic::core::Observer {
     std::map<logic::core::Direction, std::vector<sf::Sprite>>
         animation_sequences;            // map with direction key and corresponding animation sequence
@@ -112,6 +114,7 @@ public:
 
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Ghost;}
 };
+}
 } // namespace representation
 
 #endif // PACMAN_GHOSTVIEW_H

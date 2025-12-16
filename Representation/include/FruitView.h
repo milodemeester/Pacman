@@ -18,6 +18,7 @@ class FruitModel;
 namespace representation {
 class Camera;
 
+namespace view {
 class FruitView : public EntityView, public logic::core::Observer {
     bool invisible = false; // is false, the fruit will not be drawn
     sf::Sprite sprite;      // the sprite that is used to represent a fruit
@@ -48,5 +49,6 @@ public:
 
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Fruit;}
 };
+}
 } // namespace representation
 #endif // PACMAN_FRUITVIEW_H

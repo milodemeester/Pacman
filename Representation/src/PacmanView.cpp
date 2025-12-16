@@ -8,7 +8,8 @@
 #include "../include/SpriteMap.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 
-representation::PacmanView::PacmanView(const std::shared_ptr<logic::entity::PacmanModel>& model, SpriteMap& sprite_map)
+namespace representation::view {
+PacmanView::PacmanView(const std::shared_ptr<logic::entity::PacmanModel>& model, SpriteMap& sprite_map)
     : sprite_map_(sprite_map) {
     world_direction = model->get_direction();
     world_position = model->get_position();
@@ -30,7 +31,7 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::entity::Pacm
     animation_sequences[logic::core::Direction::South] = {pacman_closed_rect, open_down1_rect, open_down2_rect};
 }
 
-void representation::PacmanView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
+void PacmanView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
     switch (event) {
     case (logic::core::Event::EntityPositionChanged): {
         world_position = entity.get_position();
@@ -43,7 +44,7 @@ void representation::PacmanView::onNotify(const logic::entity::Subject& entity, 
     }
 }
 
-void representation::PacmanView::update(float dt) {
+void PacmanView::update(float dt) {
     // handle animation
     animation_timer += dt;
     if (animation_timer > animation_speed) {
@@ -56,7 +57,7 @@ void representation::PacmanView::update(float dt) {
     }
 }
 
-void representation::PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
+void PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     // Get the sprite IntRect
     const auto& sprite_rects = animation_sequences.at(world_direction);
     if (sprite_rects.empty() || current_sprite_index >= sprite_rects.size()) {
@@ -75,4 +76,5 @@ void representation::PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<
     sprite.setScale(sprite_size);
     sprite.setPosition(new_coords);
     window.draw(sprite);
+}
 }
