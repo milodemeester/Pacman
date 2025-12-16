@@ -34,7 +34,7 @@ public:
 
     // getters
     [[nodiscard]] Coordinate get_location() const { return world_location_; }
-    [[nodiscard]] virtual EntityType get_type() const { return EntityType::Undefined; }
+    [[nodiscard]] virtual logic::entity::EntityType get_type() const { return logic::entity::EntityType::Undefined; }
 
     // setters
     void set_location(const Coordinate& location) { this->world_location_ = location; }

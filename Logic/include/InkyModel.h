@@ -6,7 +6,7 @@
 #define PACMAN_INKYMODEL_H
 #include "GhostModel.h"
 
-namespace logic {
+namespace logic::entity {
 class InkyModel : public GhostModel {
 public:
     // constructor

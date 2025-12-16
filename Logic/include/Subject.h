@@ -6,15 +6,16 @@
 #define PACMAN_ENTITYMODEL_H
 #include "../Utilities/utils.h"
 #include "Direction.h"
-#include "Event.h"
 #include <memory>
 #include <vector>
-
-enum class EntityType { Pacman, Ghost, Wall, Coin, Fruit, Undefined };
 
 namespace logic {
 class World;
 class Observer;
+}
+
+namespace logic::entity {
+enum class EntityType { Pacman, Ghost, Wall, Coin, Fruit, Undefined };
 
 class Subject {
 protected:

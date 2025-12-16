@@ -10,7 +10,9 @@
 #include <memory>
 
 namespace logic {
+namespace entity {
 class FruitModel;
+}
 }
 
 namespace representation {
@@ -22,14 +24,14 @@ class FruitView : public EntityView, public logic::Observer {
 
 public:
     // constructor
-    explicit FruitView(std::shared_ptr<logic::FruitModel>& model, representation::SpriteMap& sprite_map);
+    explicit FruitView(std::shared_ptr<logic::entity::FruitModel>& model, SpriteMap& sprite_map);
 
     /**
      * @brief function that can notify observers of an event
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
 
     /**
      * @brief used to draw this entity on a window
@@ -44,7 +46,7 @@ public:
      */
     void update(float dt) override {}
 
-    EntityType get_type() const override {return EntityType::Fruit;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Fruit;}
 };
 } // namespace representation
 #endif // PACMAN_FRUITVIEW_H

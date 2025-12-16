@@ -22,14 +22,14 @@ class WallView : public EntityView, public logic::Observer {
 
 public:
     // constructor
-    explicit WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map, bool invisible);
+    explicit WallView(const std::shared_ptr<logic::entity::WallModel>& model, SpriteMap& sprite_map, bool invisible);
 
     /**
      * @brief function that can notify observers of an event
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
 
     /**
      * @brief used to draw this entity on a window
@@ -44,7 +44,7 @@ public:
      */
     void update(float dt) override {}
 
-    EntityType get_type() const override {return EntityType::Wall;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Wall;}
 };
 } // namespace representation
 

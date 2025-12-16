@@ -7,7 +7,7 @@
 #include "GhostModel.h"
 #include "Type2Ghost.h"
 
-namespace logic {
+namespace logic::entity {
 class ClydeModel : public Type2Ghost {
 public:
     // constructor

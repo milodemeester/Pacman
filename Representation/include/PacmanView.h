@@ -13,7 +13,7 @@
 #include <map>
 #include <memory>
 
-namespace logic {
+namespace logic::entity {
 class PacmanModel;
 }
 
@@ -32,14 +32,14 @@ class PacmanView : public EntityView, public logic::Observer {
     const float animation_speed = 125; // 125 ms = 0.125s
 public:
     // constructor
-    explicit PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map);
+    explicit PacmanView(const std::shared_ptr<logic::entity::PacmanModel>& model, SpriteMap& sprite_map);
 
     /**
      * @brief function that can notify observers of an event
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
 
     /**
      * @brief used to draw this ghost on a window
@@ -54,7 +54,7 @@ public:
      */
     void update(float dt) override;
 
-    EntityType get_type() const override {return EntityType::Pacman;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Pacman;}
 };
 } // namespace representation
 

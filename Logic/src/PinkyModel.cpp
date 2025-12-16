@@ -5,12 +5,13 @@
 #include "../include/PinkyModel.h"
 #include "../include/World.h"
 
-logic::PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height)
+namespace logic::entity {
+PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height)
     : Type2Ghost(pos, dir, world_width, world_height) {
     wait_time = 0;
 }
 
-void logic::PinkyModel::update(float dt, World& world) {
+void PinkyModel::update(float dt, World& world) {
     GhostModel::update(dt, world);
 
     if (waiting) {
@@ -31,4 +32,5 @@ void logic::PinkyModel::update(float dt, World& world) {
         target = compute_pacman_forward_pos(world, 2.0);
     }
     update_(dt, world, target);
+}
 }

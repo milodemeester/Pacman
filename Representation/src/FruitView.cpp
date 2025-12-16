@@ -6,11 +6,11 @@
 #include "../../Logic/include/FruitModel.h"
 #include "../include/Camera.h"
 
-representation::FruitView::FruitView(std::shared_ptr<logic::FruitModel>& model, representation::SpriteMap& sprite_map)
+representation::FruitView::FruitView(std::shared_ptr<logic::entity::FruitModel>& model, SpriteMap& sprite_map)
     : sprite(sprite_map.getSprite(sf::IntRect(601, 153, 36, 36))) {
     world_location_ = model->get_position();
 }
-void representation::FruitView::onNotify(const logic::Subject& entity, logic::Event& e) {
+void representation::FruitView::onNotify(const logic::entity::Subject& entity, logic::Event& e) {
     switch (e) {
     case (logic::Event::EntityPositionChanged): {
         world_location_ = entity.get_position();

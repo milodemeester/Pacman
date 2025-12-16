@@ -122,9 +122,9 @@ void representation::LevelState::render(sf::RenderWindow& window) {
 
     // render every view (except pacman and ghosts)
     for (auto& view : views_) {
-        if (view->get_type() == EntityType::Pacman) {
+        if (view->get_type() == logic::entity::EntityType::Pacman) {
             pacman = view;
-        } else if (view->get_type() == EntityType::Ghost) {
+        } else if (view->get_type() == logic::entity::EntityType::Ghost) {
             ghosts.push_back(view);
         } else {
             view->draw(window, camera_);

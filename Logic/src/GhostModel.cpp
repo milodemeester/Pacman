@@ -3,40 +3,43 @@
 //
 
 #include "../include/GhostModel.h"
+
 #include "../include/Stopwatch.h"
 #include "../include/World.h"
+#include "Event.h"
 
-logic::Direction logic::GhostModel::get_opposite_direction(logic::Direction dir) {
+namespace logic::entity {
+Direction GhostModel::get_opposite_direction(Direction dir) {
     switch (dir) {
-    case (logic::Direction::North): {
-        return logic::Direction::South;
+    case (Direction::North): {
+        return Direction::South;
     }
-    case (logic::Direction::East): {
-        return logic::Direction::West;
+    case (Direction::East): {
+        return Direction::West;
     }
-    case (logic::Direction::South): {
-        return logic::Direction::North;
+    case (Direction::South): {
+        return Direction::North;
     }
-    case (logic::Direction::West): {
-        return logic::Direction::East;
+    case (Direction::West): {
+        return Direction::East;
     }
     }
-    return logic::Direction::East;
+    return Direction::East;
 }
 
-std::vector<logic::Direction> logic::GhostModel::get_other_direction(logic::Direction dir) {
+std::vector<Direction> GhostModel::get_other_direction(Direction dir) {
     switch (dir) {
-    case (logic::Direction::East): {
-        return {logic::Direction::North, logic::Direction::South, logic::Direction::West};
+    case (Direction::East): {
+        return {Direction::North, Direction::South, Direction::West};
     }
-    case (logic::Direction::South): {
-        return {logic::Direction::North, logic::Direction::East, logic::Direction::West};
+    case (Direction::South): {
+        return {Direction::North, Direction::East, Direction::West};
     }
-    case (logic::Direction::West): {
-        return {logic::Direction::North, logic::Direction::East, logic::Direction::South};
+    case (Direction::West): {
+        return {Direction::North, Direction::East, Direction::South};
     }
-    case (logic::Direction::North): {
-        return {logic::Direction::East, logic::Direction::South, logic::Direction::West};
+    case (Direction::North): {
+        return {Direction::East, Direction::South, Direction::West};
     }
     default: {
         return {};
@@ -44,13 +47,13 @@ std::vector<logic::Direction> logic::GhostModel::get_other_direction(logic::Dire
     }
 }
 
-logic::GhostModel::GhostModel(Coordinate pos, Direction dir, int world_width, int world_height)
+GhostModel::GhostModel(Coordinate pos, Direction dir, int world_width, int world_height)
     : MoveableSubject(pos, dir, world_width, world_height) {
     std::shared_ptr<Stopwatch> stopwatch = Stopwatch::getInstance();
     initialize_time = stopwatch->get_now();
 }
 
-void logic::GhostModel::update(float dt, World& world) {
+void GhostModel::update(float dt, World& world) {
     // check if the ghost can leave the center
     std::shared_ptr<Stopwatch> stopwatch = Stopwatch::getInstance();
     auto time_waited = stopwatch->get_time_between(stopwatch->get_now(), initialize_time);
@@ -59,18 +62,19 @@ void logic::GhostModel::update(float dt, World& world) {
     }
 }
 
-float logic::GhostModel::get_speed() { return speed_; }
+float GhostModel::get_speed() { return speed_; }
 
-void logic::GhostModel::set_fear_mode() {
+void GhostModel::set_fear_mode() {
     chasing_mode = false;
     Event e = Event::FearMode;
     notify(e);
 }
 
-void logic::GhostModel::set_chase_mode() {
+void GhostModel::set_chase_mode() {
     chasing_mode = true;
     Event e = Event::ChaseMode;
     notify(e);
 }
 
-bool logic::GhostModel::is_chasing_mode() { return chasing_mode; }
+bool GhostModel::is_chasing_mode() { return chasing_mode; }
+}

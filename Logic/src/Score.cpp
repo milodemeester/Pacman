@@ -28,7 +28,7 @@ logic::Score::Score() {
     }
 }
 
-void logic::Score::onNotify(const Subject& entity, Event& e) {
+void logic::Score::onNotify(const entity::Subject& entity, Event& e) {
     if (e == Event::CoinCollected) {
         float standard_increase = 10;
         auto stopwatch = Stopwatch::getInstance();

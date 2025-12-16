@@ -3,19 +3,19 @@
 //
 
 #include "../include/InkyModel.h"
-
 #include "../include/Random.h"
 #include "../include/Stopwatch.h"
 #include "../include/World.h"
-
+#include "Event.h"
 #include <algorithm>
 #include <map>
 
-logic::InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
+namespace logic::entity {
+InkyModel::InkyModel(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {
     wait_time = 0;
 }
 
-void logic::InkyModel::update(float dt, World& world) {
+void InkyModel::update(float dt, World& world) {
     // Check if inky can move or not
     GhostModel::update(dt, world);
 
@@ -29,7 +29,7 @@ void logic::InkyModel::update(float dt, World& world) {
     }
 }
 
-std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direction& current_direction,
+std::pair<Direction, Coordinate> InkyModel::get_viable_state(Direction& current_direction,
                                                                            Coordinate& current_location, float dt,
                                                                            World& world) {
     // If inky just came out frightened mode, turn around
@@ -47,7 +47,7 @@ std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direc
     }
 
     // Check for every possible direction if it's a viable direction
-    std::vector<logic::Direction> possible_directions = {Direction::North, Direction::South, Direction::East,
+    std::vector<Direction> possible_directions = {Direction::North, Direction::South, Direction::East,
                                                          Direction::West};
     possible_directions.erase(
         std::remove(possible_directions.begin(), possible_directions.end(), get_opposite_direction(current_direction)),
@@ -78,4 +78,5 @@ std::pair<logic::Direction, Coordinate> logic::InkyModel::get_viable_state(Direc
     auto random = Random::getInstance();
     int new_state_index = random->getNumber(0, viable_states.size() - 1);
     return viable_states[new_state_index];
+}
 }

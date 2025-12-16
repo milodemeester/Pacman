@@ -5,11 +5,13 @@
 #include "../include/Type2Ghost.h"
 #include "../include/Random.h"
 #include "../include/World.h"
+#include "Event.h"
 #include <map>
 
-logic::Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
+namespace logic::entity {
+Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
 
-void logic::Type2Ghost::update_(float dt, World& world, Coordinate target) {
+void Type2Ghost::update_(float dt, World& world, Coordinate target) {
     if (!waiting) { // ghost is not waiting
         // use the current direction and position to determine the next ones
         Direction current_direction = direction_;
@@ -20,7 +22,7 @@ void logic::Type2Ghost::update_(float dt, World& world, Coordinate target) {
     }
 }
 
-Coordinate logic::Type2Ghost::compute_pacman_forward_pos(World& world, float offset) {
+Coordinate Type2Ghost::compute_pacman_forward_pos(World& world, float offset) {
     Coordinate pacman_location = world.get_pacman_position();
     Direction pacman_direction = world.get_pacman_direction();
 
@@ -44,7 +46,7 @@ Coordinate logic::Type2Ghost::compute_pacman_forward_pos(World& world, float off
     return {target_x, target_y};
 }
 
-std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Direction& current_direction,
+std::pair<Direction, Coordinate> Type2Ghost::get_viable_state(Direction& current_direction,
                                                                             Coordinate& current_location, float dt,
                                                                             World& world, Coordinate target_location) {
     // If the ghost just came out frightened mode, turn around
@@ -129,7 +131,8 @@ std::pair<logic::Direction, Coordinate> logic::Type2Ghost::get_viable_state(Dire
     return {chosen_direction, dir_cor_combis[chosen_direction]};
 }
 
-void logic::Type2Ghost::go_to_center() {
+void Type2Ghost::go_to_center() {
     Subject::go_to_center();
     in_box = true;
+}
 }

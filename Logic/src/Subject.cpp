@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <mutex>
 
-void logic::Subject::set_position(const Coordinate& position) {
+namespace logic::entity {
+void Subject::set_position(const Coordinate& position) {
     // If the object wasn't initialised yet, register starting pos and mark as complete
     if (!is_complete) {
         starting_position_ = position;
@@ -22,13 +23,13 @@ void logic::Subject::set_position(const Coordinate& position) {
     notify(Event::EntityPositionChanged);
 }
 
-void logic::Subject::set_direction(Direction direction) {
+void Subject::set_direction(Direction direction) {
     this->direction_ = direction;
     Event event = Event::EntityDirectionChanged;
     notify(event);
 }
 
-void logic::Subject::removeObserver(std::shared_ptr<Observer> observer_to_remove) {
+void Subject::removeObserver(std::shared_ptr<Observer> observer_to_remove) {
     observers_.erase(std::remove_if(observers_.begin(), observers_.end(),
                                     [&](const std::weak_ptr<Observer>& weak_obs) {
                                         // Verwijder als de weak_ptr verlopen is of als het de observer is die we willen
@@ -41,7 +42,7 @@ void logic::Subject::removeObserver(std::shared_ptr<Observer> observer_to_remove
                                     }),
                      observers_.end());
 }
-void logic::Subject::notify(Event event) {
+void Subject::notify(Event event) {
     if (!is_complete) {
         return;
     }
@@ -58,7 +59,7 @@ void logic::Subject::notify(Event event) {
     }
 }
 
-Coordinate logic::MoveableSubject::calculate_new_position(float dt, Direction direction, Coordinate position) {
+Coordinate MoveableSubject::calculate_new_position(float dt, Direction direction, Coordinate position) {
     float epsx = 1 / float(world_width_);
     float epsy = 1 / float(world_height_);
     float increase = dt * get_speed();
@@ -89,13 +90,13 @@ Coordinate logic::MoveableSubject::calculate_new_position(float dt, Direction di
     return {new_x, new_y};
 }
 
-void logic::MoveableSubject::set_speed(float speed) { speed_ = speed; }
+void MoveableSubject::set_speed(float speed) { speed_ = speed; }
 
-void logic::Subject::go_to_center() {
+void Subject::go_to_center() {
     set_position(starting_position_);
 }
 
-Coordinate logic::MoveableSubject::snap_location(Coordinate pos, Direction snap_direction, bool both) {
+Coordinate MoveableSubject::snap_location(Coordinate pos, Direction snap_direction, bool both) {
     Coordinate snapped_location = pos;
     if (snap_direction == Direction::East || snap_direction == Direction::West || both) {
         float world_location_y = std::round(pos.getY() * world_height_);
@@ -106,4 +107,5 @@ Coordinate logic::MoveableSubject::snap_location(Coordinate pos, Direction snap_
         snapped_location.set_coordinates(world_location_x / world_width_, pos.getY());
     }
     return snapped_location;
+}
 }

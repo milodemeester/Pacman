@@ -4,11 +4,12 @@
 #include "../include/ClydeModel.h"
 #include "../include/World.h"
 
-logic::ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
+namespace logic::entity {
+ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
     wait_time = 10000; // 10 seconden voor clyde
 }
 
-void logic::ClydeModel::update(float dt, World& world) {
+void ClydeModel::update(float dt, World& world) {
     GhostModel::update(dt, world);
 
     if (waiting) {
@@ -29,4 +30,5 @@ void logic::ClydeModel::update(float dt, World& world) {
         target = world.get_pacman_position();
     }
     update_(dt, world, target);
+}
 }

@@ -5,14 +5,14 @@
 #ifndef PACMAN_OBSERVER_H
 #define PACMAN_OBSERVER_H
 #include "Event.h"
-
 #include <memory>
 
+
 namespace logic {
+namespace entity {
 class Subject;
 }
 
-namespace logic {
 class Observer : public std::enable_shared_from_this<Observer> {
 public:
     // destructor
@@ -23,7 +23,7 @@ public:
      * @param entity the entity that the event is sent in by
      * @param e the type of event
      */
-    virtual void onNotify(const Subject& entity, Event& e) = 0;
+    virtual void onNotify(const entity::Subject& entity, Event& e) = 0;
 };
 } // namespace logic
 

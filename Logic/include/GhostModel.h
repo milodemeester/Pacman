@@ -12,7 +12,7 @@
 #include <string>
 #include <utility>
 
-namespace logic {
+namespace logic::entity {
 enum class GhostType { Inky, Blinky, Pinky, Clyde };
 
 class GhostModel : public MoveableSubject {

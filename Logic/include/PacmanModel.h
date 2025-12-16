@@ -8,7 +8,7 @@
 #include "Subject.h"
 #include "World.h"
 
-namespace logic {
+namespace logic::entity {
 class PacmanModel : public MoveableSubject {
 protected:
     int lives; // the amount of lives that pacman has left

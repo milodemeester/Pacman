@@ -10,7 +10,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <iostream>
 
-representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& model, SpriteMap& sprite_map,
+representation::WallView::WallView(const std::shared_ptr<logic::entity::WallModel>& model, SpriteMap& sprite_map,
                                    bool invisible)
     : invisible_(invisible) {
     sf::Sprite sprite = sprite_map.getWallSprite({0, 0, 35, 35});
@@ -18,7 +18,7 @@ representation::WallView::WallView(const std::shared_ptr<logic::WallModel>& mode
     set_location(model->get_position());
 }
 
-void representation::WallView::onNotify(const logic::Subject& entity, logic::Event& event) {
+void representation::WallView::onNotify(const logic::entity::Subject& entity, logic::Event& event) {
     switch (event) {
     case (logic::Event::EntityPositionChanged): {
         set_location(entity.get_position());

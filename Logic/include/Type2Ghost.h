@@ -5,7 +5,8 @@
 #ifndef PACMAN_TYPE2GHOST_H
 #define PACMAN_TYPE2GHOST_H
 #include "GhostModel.h"
-namespace logic {
+
+namespace logic::entity {
 class Type2Ghost : public GhostModel {
 protected:
     /**

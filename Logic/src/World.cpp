@@ -45,7 +45,7 @@ void logic::World::initialise_maze(int pacman_lives) {
     float line = 0.f;
     std::string maze_line;
     // Read map from this txt file
-    std::ifstream maze_file("../data/maps/map2.txt");
+    std::ifstream maze_file("../data/maps/map1.txt");
     if (maze_file) {
         while (getline(maze_file, maze_line)) {
             // First line are the dimensions of the map (widthXheight
@@ -57,7 +57,7 @@ void logic::World::initialise_maze(int pacman_lives) {
                 world_height = std::stoi(h);
                 line++;
             } else {
-                std::vector<std::shared_ptr<Subject>> line_vector;
+                std::vector<std::shared_ptr<entity::Subject>> line_vector;
                 line_vector.reserve(world_width);
                 for (float char_idx = 0; char_idx < maze_line.length() && char_idx < world_width; ++char_idx) {
                     // X-position from -1 (left) to +1 (right)
@@ -65,7 +65,7 @@ void logic::World::initialise_maze(int pacman_lives) {
 
                     // Y-position from +1 (up) to -1 (under)
                     float y_pos = 1.0f - 2.0f * (line / float(world_height));
-                    std::shared_ptr<Subject> crnt_entity = nullptr;
+                    std::shared_ptr<entity::Subject> crnt_entity = nullptr;
                     switch (maze_line[char_idx]) {
                     case 'W': { // Wall
                         crnt_entity = game_factory->createWall(false);
@@ -77,22 +77,22 @@ void logic::World::initialise_maze(int pacman_lives) {
                         break;
                     }
                     case 'B': { // Blinky
-                        blinky = game_factory->createGhost(GhostType::Blinky, world_width, world_height);
+                        blinky = game_factory->createGhost(entity::GhostType::Blinky, world_width, world_height);
                         crnt_entity = blinky;
                         break;
                     }
                     case 'P': { // Pinky
-                        pinky = game_factory->createGhost(GhostType::Pinky, world_width, world_height);
+                        pinky = game_factory->createGhost(entity::GhostType::Pinky, world_width, world_height);
                         crnt_entity = pinky;
                         break;
                     }
                     case 'I': { // Inky
-                        inky = game_factory->createGhost(GhostType::Inky, world_width, world_height);
+                        inky = game_factory->createGhost(entity::GhostType::Inky, world_width, world_height);
                         crnt_entity = inky;
                         break;
                     }
                     case 'O': { // Clyde
-                        clyde = game_factory->createGhost(GhostType::Clyde, world_width, world_height);
+                        clyde = game_factory->createGhost(entity::GhostType::Clyde, world_width, world_height);
                         crnt_entity = clyde;
                         break;
                     }
@@ -217,8 +217,8 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
                 Coordinate entity2_right_lower_corner = {entity->get_position().getX(), entity->get_position().getY()};
                 entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
 
-                if (entity->get_type() == EntityType::Wall) {
-                    auto wall_model = std::static_pointer_cast<WallModel>(entity);
+                if (entity->get_type() == entity::EntityType::Wall) {
+                    auto wall_model = std::static_pointer_cast<entity::WallModel>(entity);
                     // Define the wall's bounding box
                     float entity_half_size_x = (1.f / float(world_width));
                     float entity_half_size_y = (1.f / float(world_height));
@@ -232,16 +232,16 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
                         events.push_back(Event::WallCollide);
                     }
                 }
-                if (entity->get_type() == EntityType::Coin && !ghost) {
-                    auto coin_model = std::static_pointer_cast<CoinModel>(entity);
+                if (entity->get_type() == entity::EntityType::Coin && !ghost) {
+                    auto coin_model = std::static_pointer_cast<entity::CoinModel>(entity);
                     if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                         remove_entity(coin_model);
                         coin_count--;
                         events.push_back(Event::CoinCollected);
                     }
                 }
-                if (entity->get_type() == EntityType::Fruit && !ghost) {
-                    auto fruit_model = std::static_pointer_cast<CoinModel>(entity);
+                if (entity->get_type() == entity::EntityType::Fruit && !ghost) {
+                    auto fruit_model = std::static_pointer_cast<entity::CoinModel>(entity);
                     if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                         remove_entity(fruit_model);
                         auto score = Stopwatch::getInstance();
@@ -250,8 +250,8 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
                         events.push_back(Event::FruitEaten);
                     }
                 }
-                else if (entity->get_type() == EntityType::Ghost && !ghost) {
-                    auto ghost_model = std::static_pointer_cast<GhostModel>(entity);
+                else if (entity->get_type() == entity::EntityType::Ghost && !ghost) {
+                    auto ghost_model = std::static_pointer_cast<entity::GhostModel>(entity);
                     if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                         if (pacman_dead(ghost_model)) {
                             events.push_back(Event::PacmanDied);
@@ -266,8 +266,8 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
     return events;
 }
 
-void logic::World::remove_entity(const std::shared_ptr<CollectableSubject>& model) {
-    if (model->get_type() != EntityType::Fruit && model->get_type() != EntityType::Coin) {
+void logic::World::remove_entity(const std::shared_ptr<entity::CollectableSubject>& model) {
+    if (model->get_type() != entity::EntityType::Fruit && model->get_type() != entity::EntityType::Coin) {
         return;
     }
     for (auto& vec : entities) {
@@ -314,7 +314,7 @@ void logic::World::update(float delta_time) {
     }
 }
 
-bool logic::World::pacman_dead(const std::shared_ptr<GhostModel>& model) {
+bool logic::World::pacman_dead(const std::shared_ptr<entity::GhostModel>& model) {
     bool fear_mode = !model->is_chasing_mode();
     if (fear_mode) {
         model->go_to_center();
@@ -342,8 +342,8 @@ void logic::World::return_center() {
 
 void logic::World::set_world_state(WorldState& world_state) { world_state_ = world_state; }
 
-std::vector<std::shared_ptr<logic::Subject>> logic::World::get_all_subjects() const {
-    std::vector<std::shared_ptr<Subject>> all_subjects;
+std::vector<std::shared_ptr<logic::entity::Subject>> logic::World::get_all_subjects() const {
+    std::vector<std::shared_ptr<entity::Subject>> all_subjects;
     for (const auto& row : entities) {
         all_subjects.insert(all_subjects.end(), row.begin(), row.end());
     }

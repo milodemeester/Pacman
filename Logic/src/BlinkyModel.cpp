@@ -4,11 +4,13 @@
 
 #include "../include/BlinkyModel.h"
 
-logic::BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
+namespace logic::entity {
+
+BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
     wait_time = 5000; // 5 seconden voor blinky
 }
 
-void logic::BlinkyModel::update(float dt, World& world) {
+void BlinkyModel::update(float dt, World& world) {
     GhostModel::update(dt, world);
 
     if (waiting) {
@@ -26,7 +28,8 @@ void logic::BlinkyModel::update(float dt, World& world) {
         }
     }
     else { // out of box, chase 4 blocks in front of pacman
-    target = compute_pacman_forward_pos(world, 4.0);
+        target = compute_pacman_forward_pos(world, 4.0);
     }
     update_(dt, world, target);
+}
 }

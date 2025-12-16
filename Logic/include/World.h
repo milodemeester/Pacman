@@ -6,10 +6,12 @@
 #define PACMAN_WORLD_H
 #include "GameFactory.h"
 #include "Subject.h"
+#include <chrono>
 #include <fstream>
 #include <vector>
 
 namespace logic {
+namespace entity {
 class CollectableSubject;
 class ClydeModel;
 class BlinkyModel;
@@ -17,6 +19,7 @@ class PinkyModel;
 class InkyModel;
 class GhostModel;
 class PacmanModel;
+}
 
 enum class WorldState {
     Running,
@@ -28,7 +31,7 @@ class World {
     /**
      * @param model the coin model that needs to be removed from the world
      */
-    void remove_entity(const std::shared_ptr<CollectableSubject>& model);
+    void remove_entity(const std::shared_ptr<entity::CollectableSubject>& model);
 
     /**
      * @brief checks if there is a collision between two entities
@@ -56,17 +59,17 @@ class World {
      * @param model the model pacman collided with
      * @return true when pacman dies, false when ghost dies
      */
-    bool pacman_dead(const std::shared_ptr<GhostModel>& model);
+    bool pacman_dead(const std::shared_ptr<entity::GhostModel>& model);
 
-    std::vector<std::vector<std::shared_ptr<Subject>>> entities; // all the entities in the world
+    std::vector<std::vector<std::shared_ptr<entity::Subject>>> entities; // all the entities in the world
     int world_width;                                             // width of the world
     int world_height;                                            // height of the world
     std::shared_ptr<GameFactory> game_factory;
-    std::shared_ptr<PacmanModel> pacman;
-    std::shared_ptr<GhostModel> blinky;
-    std::shared_ptr<GhostModel> pinky;
-    std::shared_ptr<GhostModel> inky;
-    std::shared_ptr<GhostModel> clyde;
+    std::shared_ptr<entity::PacmanModel> pacman;
+    std::shared_ptr<entity::GhostModel> blinky;
+    std::shared_ptr<entity::GhostModel> pinky;
+    std::shared_ptr<entity::GhostModel> inky;
+    std::shared_ptr<entity::GhostModel> clyde;
     Direction wanted_pacman_direction;
     std::chrono::system_clock::time_point fear_mode_begin;
     int coin_count = 0;
@@ -129,7 +132,7 @@ public:
     [[nodiscard]] int get_pacman_lives() const;
     [[nodiscard]] WorldState get_world_state() const;
     [[nodiscard]] int get_level() const;
-    [[nodiscard]] std::vector<std::shared_ptr<Subject>> get_all_subjects() const;
+    [[nodiscard]] std::vector<std::shared_ptr<entity::Subject>> get_all_subjects() const;
 };
 } // namespace logic
 

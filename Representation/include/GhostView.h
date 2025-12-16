@@ -12,7 +12,11 @@
 #include <memory>
 
 namespace logic {
+namespace entity {
+class GhostModel;
+
 enum class GhostType;
+}
 }
 
 /**
@@ -80,14 +84,14 @@ class GhostView : public EntityView, public logic::Observer {
 
 public:
     // constructor
-    explicit GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map, logic::GhostType ghost_type);
+    explicit GhostView(std::shared_ptr<logic::entity::GhostModel>& model, SpriteMap& sprite_map, logic::entity::GhostType ghost_type);
 
     /**
      * @brief function that can notify observers of an event
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
 
     /**
      * @brief used to draw this ghost on a window
@@ -102,7 +106,7 @@ public:
      */
     void update(float dt) override;
 
-    EntityType get_type() const override {return EntityType::Ghost;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Ghost;}
 };
 } // namespace representation
 

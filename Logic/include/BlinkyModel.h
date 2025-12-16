@@ -8,7 +8,7 @@
 #include "Type2Ghost.h"
 #include "World.h"
 
-namespace logic {
+namespace logic::entity {
 class BlinkyModel : public Type2Ghost {
 public:
     BlinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);

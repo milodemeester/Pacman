@@ -7,7 +7,7 @@
 #include "../Utilities/utils.h"
 #include "Subject.h"
 
-namespace logic {
+namespace logic::entity {
 class WallModel : public Subject {
     bool ghost_access_; // if true, ghosts can escape it, but not enter
 public:

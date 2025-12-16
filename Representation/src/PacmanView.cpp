@@ -8,7 +8,7 @@
 #include "../include/SpriteMap.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 
-representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>& model, SpriteMap& sprite_map)
+representation::PacmanView::PacmanView(const std::shared_ptr<logic::entity::PacmanModel>& model, SpriteMap& sprite_map)
     : sprite_map_(sprite_map) {
     world_direction = model->get_direction();
     world_position = model->get_position();
@@ -30,7 +30,7 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::PacmanModel>
     animation_sequences[logic::Direction::South] = {pacman_closed_rect, open_down1_rect, open_down2_rect};
 }
 
-void representation::PacmanView::onNotify(const logic::Subject& entity, logic::Event& event) {
+void representation::PacmanView::onNotify(const logic::entity::Subject& entity, logic::Event& event) {
     switch (event) {
     case (logic::Event::EntityPositionChanged): {
         world_position = entity.get_position();

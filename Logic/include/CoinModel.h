@@ -7,7 +7,7 @@
 #include "../Utilities/utils.h"
 #include "CollectableSubject.h"
 
-namespace logic {
+namespace logic::entity {
 class CoinModel : public CollectableSubject {
 public:
     // Constructor

@@ -10,8 +10,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 
-representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, SpriteMap& sprite_map,
-                                     logic::GhostType type) {
+representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>& model, SpriteMap& sprite_map,
+                                     logic::entity::GhostType type) {
     world_direction = model->get_direction();
     world_pos_ = model->get_position();
     // ----------- sprites -----------
@@ -20,7 +20,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
     std::vector<sf::Sprite> NoDir{FEAR_MODE_1, FEAR_MODE_2};
     animation_sequences[logic::Direction::NoDirection] = NoDir;
 
-    if (type == logic::GhostType::Blinky) {
+    if (type == logic::entity::GhostType::Blinky) {
         // ----------- blinky -----------
         sf::Sprite BLINKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(1, 4, 33, 33));
         sf::Sprite BLINKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(1, 54, 33, 33));
@@ -42,7 +42,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
         animation_sequences[logic::Direction::South] = south;
     }
 
-    else if (type == logic::GhostType::Inky) {
+    else if (type == logic::entity::GhostType::Inky) {
         // ----------- inky -----------
         sf::Sprite INKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(101, 4, 35, 35));
         sf::Sprite INKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(101, 54, 35, 35));
@@ -64,7 +64,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
         animation_sequences[logic::Direction::South] = south;
     }
 
-    else if (type == logic::GhostType::Pinky) {
+    else if (type == logic::entity::GhostType::Pinky) {
         // ----------- pinky -----------
         sf::Sprite PINKY_RIGHT_1 = sprite_map.getSprite(sf::IntRect(51, 4, 35, 35));
         sf::Sprite PINKY_RIGHT_2 = sprite_map.getSprite(sf::IntRect(51, 54, 35, 35));
@@ -86,7 +86,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
         animation_sequences[logic::Direction::South] = south;
     }
 
-    else if (type == logic::GhostType::Clyde) {
+    else if (type == logic::entity::GhostType::Clyde) {
         // ----------- clyde -----------
         sf::Sprite CLYDED_RIGHT_1 = sprite_map.getSprite(sf::IntRect(151, 4, 35, 35));
         sf::Sprite CLYDED_RIGHT_2 = sprite_map.getSprite(sf::IntRect(151, 54, 35, 35));
@@ -109,7 +109,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::GhostModel>& model, 
     }
 }
 
-void representation::GhostView::onNotify(const logic::Subject& entity, logic::Event& event) {
+void representation::GhostView::onNotify(const logic::entity::Subject& entity, logic::Event& event) {
 
     switch (event) {
     case (logic::Event::EntityPositionChanged): {

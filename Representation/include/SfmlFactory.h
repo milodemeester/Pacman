@@ -6,9 +6,10 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-namespace logic {
+namespace logic::entity {
 enum class GhostType;
 }
+
 namespace representation {
 class SpriteMap;
 class EntityView;
@@ -33,7 +34,7 @@ public:
      * @param world_height the world height measured in amount of entities fitted
      * @return shared pointer to a PacmanModel instance
      */
-    std::shared_ptr<logic::PacmanModel> createPacman(int world_width, int world_height) override;
+    std::shared_ptr<logic::entity::PacmanModel> createPacman(int world_width, int world_height) override;
 
     /**
      * @brief creates a smart pointer to a ghost model and a ghost view and links them via observer pattern
@@ -42,26 +43,26 @@ public:
      * @param world_height the world height measured in amount of entities fitted
      * @return shared pointer to a (derrived) GhostModel instance
      */
-    std::shared_ptr<logic::GhostModel> createGhost(logic::GhostType type, int world_width, int world_height) override;
+    std::shared_ptr<logic::entity::GhostModel> createGhost(logic::entity::GhostType type, int world_width, int world_height) override;
 
     /**
      * @brief creates a smart pointer to a coin model and a coin view and links them via observer pattern
      * @return shared pointer to a CoinModel instance
      */
-    std::shared_ptr<logic::CoinModel> createCoin() override;
+    std::shared_ptr<logic::entity::CoinModel> createCoin() override;
 
     /**
      * @brief creates a smart pointer to a fruit model and a fruit view and links them via observer pattern
      * @return shared pointer to a FruitModel instance
      */
-    std::shared_ptr<logic::FruitModel> createFruit() override;
+    std::shared_ptr<logic::entity::FruitModel> createFruit() override;
 
     /**
      * @brief creates a smart pointer to a wall model and a wall view and links them via observer pattern
      * @param invisible boolean value that determines if the wall is visible or not
      * @return shared pointer to a WallModel instance
      */
-    std::shared_ptr<logic::WallModel> createWall(bool invisible) override;
+    std::shared_ptr<logic::entity::WallModel> createWall(bool invisible) override;
 
     // getters
     std::vector<std::shared_ptr<EntityView>> getCreatedViews();

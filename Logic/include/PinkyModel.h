@@ -8,8 +8,7 @@
 #include "GhostModel.h"
 #include "Type2Ghost.h"
 
-namespace logic {
-class World;
+namespace logic::entity {
 class PinkyModel : public Type2Ghost {
 public:
     // constructor

@@ -3,11 +3,12 @@
 //
 
 #include "../include/PacmanModel.h"
-#include <cmath>
+#include "Event.h"
 
-logic::PacmanModel::PacmanModel(Coordinate pos, Direction dir, int ww, int wh) : MoveableSubject(pos, dir, ww, wh) {}
+namespace logic::entity {
+PacmanModel::PacmanModel(Coordinate pos, Direction dir, int ww, int wh) : MoveableSubject(pos, dir, ww, wh) {}
 
-void logic::PacmanModel::update(float dt, World& world) {
+void PacmanModel::update(float dt, World& world) {
     Direction current_direction = get_direction();
     Direction wanted_direction = world.get_wanted_pacman_direction();
     // If pacman chooses a new direction, check if it's valid
@@ -60,8 +61,9 @@ void logic::PacmanModel::update(float dt, World& world) {
     }
 }
 
-float logic::PacmanModel::get_speed() { return speed_; }
+float PacmanModel::get_speed() { return speed_; }
 
-int logic::PacmanModel::get_lives() { return lives; }
+int PacmanModel::get_lives() { return lives; }
 
-void logic::PacmanModel::set_lives(int lives) { this->lives = lives; }
+void PacmanModel::set_lives(int lives) { this->lives = lives; }
+}

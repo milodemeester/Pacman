@@ -27,7 +27,7 @@ public:
      * @param entity the entity where the event is sent from
      * @param event the event that occured
      */
-    void onNotify(const Subject& entity, Event& event) override;
+    void onNotify(const entity::Subject& entity, Event& event) override;
 
     /**
      * @brief function that updates the high score if necassery

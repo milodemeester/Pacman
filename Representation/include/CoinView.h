@@ -9,7 +9,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <memory>
 
-namespace logic {
+namespace logic::entity {
 class CoinModel;
 }
 
@@ -21,14 +21,14 @@ class CoinView : public EntityView, public logic::Observer {
 
 public:
     // constructor
-    explicit CoinView(std::shared_ptr<logic::CoinModel> model, SpriteMap& sprite_map);
+    explicit CoinView(std::shared_ptr<logic::entity::CoinModel> model, SpriteMap& sprite_map);
 
     /**
      * @brief function that can notify observers of an event
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
 
     /**
      * @brief used to draw this entity on a window
@@ -43,7 +43,7 @@ public:
      */
     void update(float dt) override {}
 
-    EntityType get_type() const override {return EntityType::Coin;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Coin;}
 };
 } // namespace representation
 #endif // PACMAN_COINVIEW_H
