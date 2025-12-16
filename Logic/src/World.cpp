@@ -45,7 +45,7 @@ void logic::World::initialise_maze(int pacman_lives) {
     float line = 0.f;
     std::string maze_line;
     // Read map from this txt file
-    std::ifstream maze_file("../data/maps/map1.txt");
+    std::ifstream maze_file("../data/maps/map2.txt");
     if (maze_file) {
         while (getline(maze_file, maze_line)) {
             // First line are the dimensions of the map (widthXheight

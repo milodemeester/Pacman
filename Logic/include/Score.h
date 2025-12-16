@@ -50,6 +50,11 @@ public:
      */
     void update(float dt);
 
+    /**
+     * @brief gives bonus points for clearing a level
+     */
+    void update_on_win();
+
     // getters
     std::vector<std::string> get_high_scores();
     int get_score() const;

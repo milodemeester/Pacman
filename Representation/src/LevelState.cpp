@@ -104,6 +104,7 @@ void representation::LevelState::update(float delta_time) {
         return;
     }
     case (logic::WorldState::Victory): {
+        score_->update_on_win();
         // victory, pop this level, push new level and victory state
         auto level_state = std::make_unique<LevelState>(manager_, windowSize_, score_, camera_, world_.get_level() + 1,
                                                         world_.get_pacman_lives());
@@ -111,7 +112,6 @@ void representation::LevelState::update(float delta_time) {
         manager_.push_state(std::move(level_state));
         auto victory_state = std::make_unique<VictoryState>(manager_);
         manager_.push_state(std::move(victory_state));
-        return;
     }
     }
 }

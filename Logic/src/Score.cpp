@@ -94,3 +94,7 @@ void logic::Score::reset() { score_ = 0; }
 void logic::Score::update(float dt) {
     score_ -= dt/100.f;
 }
+
+void logic::Score::update_on_win() {
+    score_ += 500.f;
+}
