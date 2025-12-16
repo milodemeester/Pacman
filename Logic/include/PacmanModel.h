@@ -23,14 +23,14 @@ public:
      * @param world_width the width of the world the model is in
      * @param world_height the height of the world the model is in
      */
-    PacmanModel(Coordinate pos, Direction dir, int world_width, int world_height);
+    PacmanModel(Coordinate pos, core::Direction dir, int world_width, int world_height);
 
     /**
      * @brief updates the position and direction of pacman based on the amount of time passed between update-calls
      * @param dt the time passed since the last upate
      * @param world the world that pacman lives in
      */
-    void update(float dt, World& world) override;
+    void update(float dt, core::World& world) override;
 
     // getters
     int get_lives();

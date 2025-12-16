@@ -22,14 +22,14 @@ protected:
      * @param dir the direction that the ghost is currently travelling in
      * @return a vector of all the directions that are not equal to the current one
      */
-    static std::vector<Direction> get_other_direction(Direction dir);
+    static std::vector<core::Direction> get_other_direction(core::Direction dir);
 
     /**
      * @brief computes the opposite direction of the direction that the ghost is currently travelling at
      * @param dir the direction that the ghost is currently travelling in
      * @return the direction opposite to the current direction
      */
-    static Direction get_opposite_direction(Direction dir);
+    static core::Direction get_opposite_direction(core::Direction dir);
 
     // getters
     float get_speed() override;
@@ -41,13 +41,13 @@ protected:
     bool waiting = true;          // determines if the ghost is waiting in the center of the game
 public:
     // constructor
-    GhostModel(Coordinate pos, Direction dir, int world_width, int world_height);
+    GhostModel(Coordinate pos, core::Direction dir, int world_width, int world_height);
 
     /**
      * @brief takes care of the wait_time and puts chasing_mode on true if the wait_time is over
      * @param dt the delta time between this update and the update prior to this one
      */
-    void update(float dt, World& world);
+    void update(float dt, core::World& world);
 
     /**
      * @brief checks if the ghost is in chasing mode

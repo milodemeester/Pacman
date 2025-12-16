@@ -26,7 +26,9 @@
 static float basic_pacman_speed = 0.014;
 static float basic_ghost_speed = 0.01;
 
-logic::World::World(const std::shared_ptr<GameFactory>& factory) {
+namespace logic::core {
+
+World::World(const std::shared_ptr<GameFactory>& factory) {
     // initialise the width and height and create all the entities.
     level_ = 1;
     game_factory = factory;
@@ -34,14 +36,14 @@ logic::World::World(const std::shared_ptr<GameFactory>& factory) {
     initialise_values();
 }
 
-logic::World::World(const std::shared_ptr<GameFactory>& factory, int level, int pacman_lives) : level_(level) {
+World::World(const std::shared_ptr<GameFactory>& factory, int level, int pacman_lives) : level_(level) {
     // initialise the width and height and create all the entities.
     game_factory = factory;
     initialise_maze(pacman_lives);
     initialise_values();
 }
 
-void logic::World::initialise_maze(int pacman_lives) {
+void World::initialise_maze(int pacman_lives) {
     float line = 0.f;
     std::string maze_line;
     // Read map from this txt file
@@ -129,7 +131,7 @@ void logic::World::initialise_maze(int pacman_lives) {
     maze_file.close();
 }
 
-void logic::World::initialise_values() {
+void World::initialise_values() {
     switch (level_) {
     case 1: {
         frightened_mode_duration_ = 6000;
@@ -181,7 +183,7 @@ void logic::World::initialise_values() {
     clyde->set_speed(basic_ghost_speed * ghost_speed_fraction_);
 }
 
-bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, float entity_speed, float dt) const {
+bool World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, float entity_speed, float dt) const {
     float entity_half_size_x = (1.f / float(world_width));
     float entity_half_size_y = (1.f / float(world_height));
 
@@ -204,7 +206,7 @@ bool logic::World::check_collision(Coordinate& entity_pos, Rectangle entity2_rec
     return false;
 }
 
-std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction,
+std::vector<logic::core::Event> World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction,
                                                                float entity_speed, bool ghost, float dt) {
     // In this method, it is safe to do static_casts, because there are checks done first for the entity_type
     std::vector<Event> events;
@@ -266,7 +268,7 @@ std::vector<logic::Event> logic::World::check_entity_collision(Coordinate& entit
     return events;
 }
 
-void logic::World::remove_entity(const std::shared_ptr<entity::CollectableSubject>& model) {
+void World::remove_entity(const std::shared_ptr<entity::CollectableSubject>& model) {
     if (model->get_type() != entity::EntityType::Fruit && model->get_type() != entity::EntityType::Coin) {
         return;
     }
@@ -280,9 +282,9 @@ void logic::World::remove_entity(const std::shared_ptr<entity::CollectableSubjec
     }
 }
 
-void logic::World::move_pacman(Direction direction) { wanted_pacman_direction = direction; }
+void World::move_pacman(Direction direction) { wanted_pacman_direction = direction; }
 
-void logic::World::update(float delta_time) {
+void World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();
     if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < frightened_mode_duration_) {
         pinky->set_fear_mode();
@@ -314,7 +316,7 @@ void logic::World::update(float delta_time) {
     }
 }
 
-bool logic::World::pacman_dead(const std::shared_ptr<entity::GhostModel>& model) {
+bool World::pacman_dead(const std::shared_ptr<entity::GhostModel>& model) {
     bool fear_mode = !model->is_chasing_mode();
     if (fear_mode) {
         model->go_to_center();
@@ -324,15 +326,15 @@ bool logic::World::pacman_dead(const std::shared_ptr<entity::GhostModel>& model)
     }
 }
 
-[[nodiscard]] logic::Direction logic::World::get_pacman_direction() const { return pacman->get_direction(); }
-[[nodiscard]] Coordinate logic::World::get_pacman_position() const { return pacman->get_position(); }
-[[nodiscard]] int logic::World::get_pacman_lives() const { return pacman->get_lives(); }
-[[nodiscard]] logic::WorldState logic::World::get_world_state() const { return world_state_; }
-[[nodiscard]] int logic::World::get_level() const { return level_; }
+[[nodiscard]] Direction World::get_pacman_direction() const { return pacman->get_direction(); }
+[[nodiscard]] Coordinate World::get_pacman_position() const { return pacman->get_position(); }
+[[nodiscard]] int World::get_pacman_lives() const { return pacman->get_lives(); }
+[[nodiscard]] WorldState World::get_world_state() const { return world_state_; }
+[[nodiscard]] int World::get_level() const { return level_; }
 
-void logic::World::begin_fear_mode() { fear_mode_begin = std::chrono::system_clock::now(); }
+void World::begin_fear_mode() { fear_mode_begin = std::chrono::system_clock::now(); }
 
-void logic::World::return_center() {
+void World::return_center() {
     pacman->go_to_center();
     inky->go_to_center();
     blinky->go_to_center();
@@ -340,12 +342,13 @@ void logic::World::return_center() {
     clyde->go_to_center();
 }
 
-void logic::World::set_world_state(WorldState& world_state) { world_state_ = world_state; }
+void World::set_world_state(WorldState& world_state) { world_state_ = world_state; }
 
-std::vector<std::shared_ptr<logic::entity::Subject>> logic::World::get_all_subjects() const {
+std::vector<std::shared_ptr<entity::Subject>> World::get_all_subjects() const {
     std::vector<std::shared_ptr<entity::Subject>> all_subjects;
     for (const auto& row : entities) {
         all_subjects.insert(all_subjects.end(), row.begin(), row.end());
     }
     return all_subjects;
+}
 }

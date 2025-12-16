@@ -7,8 +7,11 @@
 #include <vector>
 
 namespace logic {
+namespace core {
 enum class Event;
 }
+}
+
 struct Coordinate {
     float getX() { return x; }
     float getY() { return y; }
@@ -64,7 +67,7 @@ public:
      */
     static float compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2);
 
-    static bool has_event(std::vector<logic::Event> events, logic::Event event);
+    static bool has_event(std::vector<logic::core::Event> events, logic::core::Event event);
 };
 
 #endif // PACMAN_UTILS_H

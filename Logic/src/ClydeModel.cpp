@@ -5,11 +5,11 @@
 #include "../include/World.h"
 
 namespace logic::entity {
-ClydeModel::ClydeModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
+ClydeModel::ClydeModel(Coordinate pos, core::Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
     wait_time = 10000; // 10 seconden voor clyde
 }
 
-void ClydeModel::update(float dt, World& world) {
+void ClydeModel::update(float dt, core::World& world) {
     GhostModel::update(dt, world);
 
     if (waiting) {

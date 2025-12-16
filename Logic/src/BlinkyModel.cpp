@@ -6,11 +6,11 @@
 
 namespace logic::entity {
 
-BlinkyModel::BlinkyModel(Coordinate pos, Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
+BlinkyModel::BlinkyModel(Coordinate pos, core::Direction dir, int ww, int wh) : Type2Ghost(pos, dir, ww, wh) {
     wait_time = 5000; // 5 seconden voor blinky
 }
 
-void BlinkyModel::update(float dt, World& world) {
+void BlinkyModel::update(float dt, core::World& world) {
     GhostModel::update(dt, world);
 
     if (waiting) {

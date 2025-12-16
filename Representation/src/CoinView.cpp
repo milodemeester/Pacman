@@ -12,12 +12,12 @@ representation::CoinView::CoinView(std::shared_ptr<logic::entity::CoinModel> mod
     world_location_ = model->get_position();
 }
 
-void representation::CoinView::onNotify(const logic::entity::Subject& entity, logic::Event& e) {
-    if (e == logic::Event::EntityPositionChanged) {
+void representation::CoinView::onNotify(const logic::entity::Subject& entity, logic::core::Event& e) {
+    if (e == logic::core::Event::EntityPositionChanged) {
         world_location_ = entity.get_position();
-    } else if (e == logic::Event::EntityDestruct) {
+    } else if (e == logic::core::Event::EntityDestruct) {
         invisible = true;
-    } else if (e == logic::Event::EntityReset) {
+    } else if (e == logic::core::Event::EntityReset) {
         invisible = false;
     }
 }

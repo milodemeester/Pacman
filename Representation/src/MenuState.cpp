@@ -14,7 +14,7 @@
 #include <memory>
 #include <utility>
 
-representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score)
+representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::core::Score> score)
     : State(sm), score_(std::move(score)) {
 
     // font loading

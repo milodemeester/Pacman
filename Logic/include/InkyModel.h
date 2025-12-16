@@ -10,14 +10,14 @@ namespace logic::entity {
 class InkyModel : public GhostModel {
 public:
     // constructor
-    InkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
+    InkyModel(Coordinate pos, core::Direction dir, int world_width, int world_height);
 
     /**
      * @brief updates the location (and possibly the direction) of the ghost
      * @param dt the delta time between this update and the previous one
      * @param world the world this entity lives in
      */
-    void update(float dt, World& world) override;
+    void update(float dt, core::World& world) override;
 
     /**
      * @brief Calculates the next Coordinate and Direction based on the direction options
@@ -27,8 +27,8 @@ public:
      * @param world the world this entity lives in
      * @return a pair of the new direction and new coordinate
      */
-    std::pair<Direction, Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location,
-                                                      float dt, World& world);
+    std::pair<core::Direction, Coordinate> get_viable_state(core::Direction& current_direction, Coordinate& current_location,
+                                                      float dt, core::World& world);
 };
 } // namespace logic
 #endif // PACMAN_INKYMODEL_H

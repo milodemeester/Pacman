@@ -10,17 +10,17 @@ representation::FruitView::FruitView(std::shared_ptr<logic::entity::FruitModel>&
     : sprite(sprite_map.getSprite(sf::IntRect(601, 153, 36, 36))) {
     world_location_ = model->get_position();
 }
-void representation::FruitView::onNotify(const logic::entity::Subject& entity, logic::Event& e) {
+void representation::FruitView::onNotify(const logic::entity::Subject& entity, logic::core::Event& e) {
     switch (e) {
-    case (logic::Event::EntityPositionChanged): {
+    case (logic::core::Event::EntityPositionChanged): {
         world_location_ = entity.get_position();
         break;
     }
-    case (logic::Event::EntityDestruct): {
+    case (logic::core::Event::EntityDestruct): {
         invisible = true;
         break;
     }
-    case (logic::Event::EntityReset): {
+    case (logic::core::Event::EntityReset): {
         invisible = false;
     }
     }

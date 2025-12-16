@@ -12,14 +12,14 @@ namespace logic::entity {
 class PinkyModel : public Type2Ghost {
 public:
     // constructor
-    PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height);
+    PinkyModel(Coordinate pos, core::Direction dir, int world_width, int world_height);
 
     /**
      * @brief updates the location (and possibly the direction) of the ghost
      * @param dt the delta time between this update and the previous one
      * @param world the world this entity lives in
      */
-    void update(float dt, World& world) override;
+    void update(float dt, core::World& world) override;
 };
 }; // namespace logic
 #endif // PACMAN_PINKYMODEL_H

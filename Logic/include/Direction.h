@@ -6,7 +6,9 @@
 #define PACMAN_DIRECTION_H
 
 namespace logic {
+namespace core {
 enum class Direction { North, East, South, West, NoDirection };
+}
 } // namespace logic
 
 #endif // PACMAN_DIRECTION_H

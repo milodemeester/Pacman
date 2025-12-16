@@ -20,7 +20,7 @@
 #include <utility>
 
 representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
-                                       std::shared_ptr<logic::Score> score, std::shared_ptr<Camera> camera,
+                                       std::shared_ptr<logic::core::Score> score, std::shared_ptr<Camera> camera,
                                        int level = 1, int pacman_lives)
     : State(manager), score_(std::move(score)), camera_(std::move(camera)), spriteMap_("../data/sprite.png"),
       factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)),
@@ -69,13 +69,13 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
     } else if (event.type == sf::Event::KeyPressed) {
         auto key = event.key.code;
         if (key == sf::Keyboard::Up) {
-            world_.move_pacman(logic::Direction::North);
+            world_.move_pacman(logic::core::Direction::North);
         } else if (key == sf::Keyboard::Down) {
-            world_.move_pacman(logic::Direction::South);
+            world_.move_pacman(logic::core::Direction::South);
         } else if (key == sf::Keyboard::Right) {
-            world_.move_pacman(logic::Direction::East);
+            world_.move_pacman(logic::core::Direction::East);
         } else if (key == sf::Keyboard::Left) {
-            world_.move_pacman(logic::Direction::West);
+            world_.move_pacman(logic::core::Direction::West);
         } else if (key == sf::Keyboard::Escape) {
             std::unique_ptr<PausedState> paused = std::make_unique<PausedState>(manager_, window.getSize());
             manager_.push_state(std::move(paused));
@@ -91,19 +91,19 @@ void representation::LevelState::update(float delta_time) {
     }
     score_->update(delta_time);
     // check if this level has ended
-    logic::WorldState world_state = world_.get_world_state();
+    logic::core::WorldState world_state = world_.get_world_state();
     switch (world_state) {
-    case (logic::WorldState::Running): {
+    case (logic::core::WorldState::Running): {
         return;
     }
-    case (logic::WorldState::Defeated): {
+    case (logic::core::WorldState::Defeated): {
         // defeat, back to menu
         score_->update_high_scores();
         score_->reset();
         manager_.pop_state();
         return;
     }
-    case (logic::WorldState::Victory): {
+    case (logic::core::WorldState::Victory): {
         score_->update_on_win();
         // victory, pop this level, push new level and victory state
         auto level_state = std::make_unique<LevelState>(manager_, windowSize_, score_, camera_, world_.get_level() + 1,

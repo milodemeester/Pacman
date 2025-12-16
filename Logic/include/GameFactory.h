@@ -6,7 +6,8 @@
 #define PACMAN_GAMEFACTORY_H
 #include <memory>
 
-namespace logic::entity {
+namespace logic {
+namespace entity {
 class PacmanModel;
 class GhostModel;
 class WallModel;
@@ -15,8 +16,7 @@ class CoinModel;
 enum class GhostType;
 }
 
-namespace logic {
-
+namespace core {
 class GameFactory { // abstract factory
 public:
     // destructor
@@ -57,6 +57,7 @@ public:
      */
     virtual std::shared_ptr<entity::CoinModel> createCoin() = 0;
 };
+}
 } // namespace logic
 
 #endif // PACMAN_GAMEFACTORY_H

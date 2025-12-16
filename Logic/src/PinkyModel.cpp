@@ -6,12 +6,12 @@
 #include "../include/World.h"
 
 namespace logic::entity {
-PinkyModel::PinkyModel(Coordinate pos, Direction dir, int world_width, int world_height)
+PinkyModel::PinkyModel(Coordinate pos, core::Direction dir, int world_width, int world_height)
     : Type2Ghost(pos, dir, world_width, world_height) {
     wait_time = 0;
 }
 
-void PinkyModel::update(float dt, World& world) {
+void PinkyModel::update(float dt, core::World& world) {
     GhostModel::update(dt, world);
 
     if (waiting) {

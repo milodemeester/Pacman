@@ -15,7 +15,7 @@ class CoinModel;
 
 namespace representation {
 class SpriteMap;
-class CoinView : public EntityView, public logic::Observer {
+class CoinView : public EntityView, public logic::core::Observer {
     bool invisible = false; // is false, the coin will not be drawn
     sf::Sprite sprite;      // the sprite that is used to represent a coin
 
@@ -28,7 +28,7 @@ public:
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::core::Event& e) override;
 
     /**
      * @brief used to draw this entity on a window

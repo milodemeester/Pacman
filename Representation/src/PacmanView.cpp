@@ -24,19 +24,19 @@ representation::PacmanView::PacmanView(const std::shared_ptr<logic::entity::Pacm
     sf::IntRect open_up1_rect(853, 504, 33, 33);
     sf::IntRect open_up2_rect(853, 554, 33, 33);
 
-    animation_sequences[logic::Direction::East] = {pacman_closed_rect, open_right1_rect, open_right2_rect};
-    animation_sequences[logic::Direction::West] = {pacman_closed_rect, open_left1_rect, open_left2_rect};
-    animation_sequences[logic::Direction::North] = {pacman_closed_rect, open_up1_rect, open_up2_rect};
-    animation_sequences[logic::Direction::South] = {pacman_closed_rect, open_down1_rect, open_down2_rect};
+    animation_sequences[logic::core::Direction::East] = {pacman_closed_rect, open_right1_rect, open_right2_rect};
+    animation_sequences[logic::core::Direction::West] = {pacman_closed_rect, open_left1_rect, open_left2_rect};
+    animation_sequences[logic::core::Direction::North] = {pacman_closed_rect, open_up1_rect, open_up2_rect};
+    animation_sequences[logic::core::Direction::South] = {pacman_closed_rect, open_down1_rect, open_down2_rect};
 }
 
-void representation::PacmanView::onNotify(const logic::entity::Subject& entity, logic::Event& event) {
+void representation::PacmanView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
     switch (event) {
-    case (logic::Event::EntityPositionChanged): {
+    case (logic::core::Event::EntityPositionChanged): {
         world_position = entity.get_position();
         break;
     }
-    case (logic::Event::EntityDirectionChanged): {
+    case (logic::core::Event::EntityDirectionChanged): {
         world_direction = entity.get_direction();
         break;
     }

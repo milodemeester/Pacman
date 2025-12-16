@@ -10,7 +10,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <memory>
 
-namespace logic {
+namespace logic::core {
 class Score;
 }
 namespace representation {
@@ -21,7 +21,7 @@ class MenuState final : public State {
      */
     void updateLayout(sf::Vector2u windowSize);
 
-    std::shared_ptr<logic::Score> score_;
+    std::shared_ptr<logic::core::Score> score_;
     sf::Font font_;
     sf::Font scoreFont_;
 
@@ -33,7 +33,7 @@ class MenuState final : public State {
 
 public:
     // constructor
-    explicit MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score);
+    explicit MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::core::Score> score);
 
     /**
      * @brief processes the input of the user

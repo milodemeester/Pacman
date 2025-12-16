@@ -13,6 +13,7 @@ namespace entity {
 class Subject;
 }
 
+namespace core {
 class Observer : public std::enable_shared_from_this<Observer> {
 public:
     // destructor
@@ -25,6 +26,7 @@ public:
      */
     virtual void onNotify(const entity::Subject& entity, Event& e) = 0;
 };
+}
 } // namespace logic
 
 #endif // PACMAN_OBSERVER_H

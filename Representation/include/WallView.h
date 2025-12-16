@@ -16,7 +16,7 @@ enum class WallSpriteState { Wall };
 
 namespace representation {
 class SpriteMap;
-class WallView : public EntityView, public logic::Observer {
+class WallView : public EntityView, public logic::core::Observer {
     std::map<WallSpriteState, sf::Sprite> m_sprites_;
     bool invisible_;
 
@@ -29,7 +29,7 @@ public:
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::core::Event& e) override;
 
     /**
      * @brief used to draw this entity on a window

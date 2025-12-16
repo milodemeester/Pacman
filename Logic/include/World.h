@@ -21,6 +21,7 @@ class GhostModel;
 class PacmanModel;
 }
 
+namespace core {
 enum class WorldState {
     Running,
     Victory,
@@ -134,6 +135,7 @@ public:
     [[nodiscard]] int get_level() const;
     [[nodiscard]] std::vector<std::shared_ptr<entity::Subject>> get_all_subjects() const;
 };
+}
 } // namespace logic
 
 #endif // PACMAN_WORLD_H

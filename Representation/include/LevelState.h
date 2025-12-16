@@ -12,7 +12,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-namespace logic {
+namespace logic::core {
 class Score;
 }
 namespace representation {
@@ -26,11 +26,11 @@ class LevelState final : public State {
      * @param windowSize size of the window
      */
     void updateLayout(sf::Vector2u windowSize);
-    std::shared_ptr<logic::Score> score_;  // the score that was created outside of LevelState
+    std::shared_ptr<logic::core::Score> score_;  // the score that was created outside of LevelState
     std::shared_ptr<Camera> camera_;       // the camera that is used to convert to pixel-ccordinates
     SpriteMap spriteMap_;                  // the spritemap that is used to get the sprites for different entities
     std::shared_ptr<SfmlFactory> factory_; // factory that is used to create all the entities
-    logic::World world_;                   // the world that is created every level
+    logic::core::World world_;                   // the world that is created every level
     std::vector<std::shared_ptr<EntityView>> views_; // vector with every view
     StateManager& manager_;
     sf::Vector2u windowSize_;
@@ -41,7 +41,7 @@ class LevelState final : public State {
 
 public:
     // constructor
-    LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::Score> score,
+    LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::core::Score> score,
                std::shared_ptr<Camera> camera, int level, int pacman_lives = 3);
 
     /**

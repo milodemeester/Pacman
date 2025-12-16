@@ -21,7 +21,7 @@
 #include "../include/WallView.h"
 
 representation::SfmlFactory::SfmlFactory(std::shared_ptr<Camera> c, sf::Vector2u w, SpriteMap& spriteMap,
-                                         std::shared_ptr<logic::Score> score)
+                                         std::shared_ptr<logic::core::Score> score)
     : sprite_map_(spriteMap), score_(score) {
     camera_ = std::move(c);
     windowSize_ = w;
@@ -32,7 +32,7 @@ std::vector<std::shared_ptr<representation::EntityView>> representation::SfmlFac
 }
 
 std::shared_ptr<logic::entity::PacmanModel> representation::SfmlFactory::createPacman(int ww, int wh) {
-    auto pacman_model = std::make_shared<logic::entity::PacmanModel>(Coordinate(0, 0), logic::Direction::East, ww, wh);
+    auto pacman_model = std::make_shared<logic::entity::PacmanModel>(Coordinate(0, 0), logic::core::Direction::East, ww, wh);
     auto pacman_view = std::make_shared<PacmanView>(pacman_model, sprite_map_);
     pacman_model->addObserver(score_);
     pacman_model->addObserver(pacman_view);
@@ -44,19 +44,19 @@ std::shared_ptr<logic::entity::GhostModel> representation::SfmlFactory::createGh
     std::shared_ptr<logic::entity::GhostModel> ghost_model;
     switch (type) {
     case (logic::entity::GhostType::Blinky): {
-        ghost_model = std::make_shared<logic::entity::BlinkyModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
+        ghost_model = std::make_shared<logic::entity::BlinkyModel>(Coordinate{0, 0}, logic::core::Direction::North, ww, wh);
         break;
     }
     case (logic::entity::GhostType::Inky): {
-        ghost_model = std::make_shared<logic::entity::InkyModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
+        ghost_model = std::make_shared<logic::entity::InkyModel>(Coordinate{0, 0}, logic::core::Direction::North, ww, wh);
         break;
     }
     case (logic::entity::GhostType::Pinky): {
-        ghost_model = std::make_shared<logic::entity::PinkyModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
+        ghost_model = std::make_shared<logic::entity::PinkyModel>(Coordinate{0, 0}, logic::core::Direction::North, ww, wh);
         break;
     }
     case (logic::entity::GhostType::Clyde): {
-        ghost_model = std::make_shared<logic::entity::ClydeModel>(Coordinate{0, 0}, logic::Direction::North, ww, wh);
+        ghost_model = std::make_shared<logic::entity::ClydeModel>(Coordinate{0, 0}, logic::core::Direction::North, ww, wh);
         break;
     }
     }

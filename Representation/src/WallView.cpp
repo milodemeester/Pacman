@@ -18,9 +18,9 @@ representation::WallView::WallView(const std::shared_ptr<logic::entity::WallMode
     set_location(model->get_position());
 }
 
-void representation::WallView::onNotify(const logic::entity::Subject& entity, logic::Event& event) {
+void representation::WallView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
     switch (event) {
-    case (logic::Event::EntityPositionChanged): {
+    case (logic::core::Event::EntityPositionChanged): {
         set_location(entity.get_position());
         break;
     }

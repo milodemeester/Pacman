@@ -10,6 +10,7 @@
 #include <vector>
 
 namespace logic {
+namespace core {
 class Score : public Observer {
     bool first_coin_collected = false;                        // when the first coin is collected, this becomes true
     std::chrono::system_clock::time_point previous_coin_time; // the time the previous coin was collected
@@ -59,6 +60,7 @@ public:
     std::vector<std::string> get_high_scores();
     int get_score() const;
 };
+}
 } // namespace logic
 
 #endif // PACMAN_SCORE_H

@@ -18,7 +18,7 @@ representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>&
     sf::Sprite FEAR_MODE_1 = sprite_map.getSprite(sf::IntRect(1, 554, 33, 33));
     sf::Sprite FEAR_MODE_2 = sprite_map.getSprite(sf::IntRect(1, 604, 33, 33));
     std::vector<sf::Sprite> NoDir{FEAR_MODE_1, FEAR_MODE_2};
-    animation_sequences[logic::Direction::NoDirection] = NoDir;
+    animation_sequences[logic::core::Direction::NoDirection] = NoDir;
 
     if (type == logic::entity::GhostType::Blinky) {
         // ----------- blinky -----------
@@ -36,10 +36,10 @@ representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>&
         std::vector<sf::Sprite> south{BLINKY_DOWN_1, BLINKY_DOWN_2};
         std::vector<sf::Sprite> north{BLINKY_UP_1, BLINKY_UP_2};
 
-        animation_sequences[logic::Direction::East] = east;
-        animation_sequences[logic::Direction::North] = north;
-        animation_sequences[logic::Direction::West] = west;
-        animation_sequences[logic::Direction::South] = south;
+        animation_sequences[logic::core::Direction::East] = east;
+        animation_sequences[logic::core::Direction::North] = north;
+        animation_sequences[logic::core::Direction::West] = west;
+        animation_sequences[logic::core::Direction::South] = south;
     }
 
     else if (type == logic::entity::GhostType::Inky) {
@@ -58,10 +58,10 @@ representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>&
         std::vector<sf::Sprite> south{INKY_DOWN_1, INKY_DOWN_2};
         std::vector<sf::Sprite> north{INKY_UP_1, INKY_UP_2};
 
-        animation_sequences[logic::Direction::East] = east;
-        animation_sequences[logic::Direction::North] = north;
-        animation_sequences[logic::Direction::West] = west;
-        animation_sequences[logic::Direction::South] = south;
+        animation_sequences[logic::core::Direction::East] = east;
+        animation_sequences[logic::core::Direction::North] = north;
+        animation_sequences[logic::core::Direction::West] = west;
+        animation_sequences[logic::core::Direction::South] = south;
     }
 
     else if (type == logic::entity::GhostType::Pinky) {
@@ -80,10 +80,10 @@ representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>&
         std::vector<sf::Sprite> south{PINKY_DOWN_1, PINKY_DOWN_2};
         std::vector<sf::Sprite> north{PINKY_UP_1, PINKY_UP_2};
 
-        animation_sequences[logic::Direction::East] = east;
-        animation_sequences[logic::Direction::North] = north;
-        animation_sequences[logic::Direction::West] = west;
-        animation_sequences[logic::Direction::South] = south;
+        animation_sequences[logic::core::Direction::East] = east;
+        animation_sequences[logic::core::Direction::North] = north;
+        animation_sequences[logic::core::Direction::West] = west;
+        animation_sequences[logic::core::Direction::South] = south;
     }
 
     else if (type == logic::entity::GhostType::Clyde) {
@@ -102,29 +102,29 @@ representation::GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>&
         std::vector<sf::Sprite> south{CLYDED_DOWN_1, CLYDED_DOWN_2};
         std::vector<sf::Sprite> north{CLYDED_UP_1, CLYDED_UP_2};
 
-        animation_sequences[logic::Direction::East] = east;
-        animation_sequences[logic::Direction::North] = north;
-        animation_sequences[logic::Direction::West] = west;
-        animation_sequences[logic::Direction::South] = south;
+        animation_sequences[logic::core::Direction::East] = east;
+        animation_sequences[logic::core::Direction::North] = north;
+        animation_sequences[logic::core::Direction::West] = west;
+        animation_sequences[logic::core::Direction::South] = south;
     }
 }
 
-void representation::GhostView::onNotify(const logic::entity::Subject& entity, logic::Event& event) {
+void representation::GhostView::onNotify(const logic::entity::Subject& entity, logic::core::Event& event) {
 
     switch (event) {
-    case (logic::Event::EntityPositionChanged): {
+    case (logic::core::Event::EntityPositionChanged): {
         world_pos_ = entity.get_position();
         break;
     }
-    case (logic::Event::EntityDirectionChanged): {
+    case (logic::core::Event::EntityDirectionChanged): {
         world_direction = entity.get_direction();
         break;
     }
-    case (logic::Event::FearMode): {
+    case (logic::core::Event::FearMode): {
         fear_mode = true;
         break;
     }
-    case (logic::Event::ChaseMode): {
+    case (logic::core::Event::ChaseMode): {
         fear_mode = false;
         break;
     }
@@ -136,7 +136,7 @@ void representation::GhostView::draw(sf::RenderWindow& window, std::shared_ptr<C
     sf::Vector2f new_coords = screen.first;
     std::vector<sf::Sprite> sprite_sequence;
     if (fear_mode) {
-        sprite_sequence = animation_sequences[logic::Direction::NoDirection]; // fear-mode sprites
+        sprite_sequence = animation_sequences[logic::core::Direction::NoDirection]; // fear-mode sprites
     } else {
         sprite_sequence = animation_sequences.at(world_direction); // normal suquence
     }
@@ -155,7 +155,7 @@ void representation::GhostView::update(float dt) {
         animation_timer = 0.0f;
         std::vector<sf::Sprite> crnt_sequence;
         if (fear_mode) {
-            crnt_sequence = animation_sequences.at(logic::Direction::NoDirection); // fear mode sprite
+            crnt_sequence = animation_sequences.at(logic::core::Direction::NoDirection); // fear mode sprite
         } else {
             crnt_sequence = animation_sequences.at(world_direction); // normal mode sprite
         }

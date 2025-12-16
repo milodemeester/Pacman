@@ -9,7 +9,7 @@
 #include <memory>
 #include <stack>
 
-namespace logic {
+namespace logic::core {
 class Score;
 }
 namespace sf {
@@ -28,7 +28,7 @@ public:
     // StateManager(const StateManager&) = delete;
     StateManager& operator=(const StateManager&) = delete;
 
-    explicit StateManager(sf::Vector2u windowSize, std::shared_ptr<logic::Score> score);
+    explicit StateManager(sf::Vector2u windowSize, std::shared_ptr<logic::core::Score> score);
     /*
      * Method to process a key-press event
      */

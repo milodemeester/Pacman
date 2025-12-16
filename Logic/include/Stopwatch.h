@@ -8,6 +8,7 @@
 #include <memory>
 
 namespace logic {
+namespace core {
 class Stopwatch {
     std::chrono::system_clock::time_point
         t_start; // the time_point the stopwatch was created (and thus the beginning of the game)
@@ -45,6 +46,7 @@ public:
     std::chrono::system_clock::time_point get_now();
     static std::shared_ptr<Stopwatch> getInstance();
 };
+}
 } // namespace logic
 
 #endif // PACMAN_STOPWATCH_H

@@ -7,7 +7,7 @@
 
 namespace logic::entity {
 void CollectableSubject::destruct() {
-    Event e = Event::EntityDestruct;
+    core::Event e = core::Event::EntityDestruct;
     notify(e);
 }
 } // namespace logic

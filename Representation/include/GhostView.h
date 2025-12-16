@@ -65,17 +65,21 @@ enum class GhostSpriteState {
 };
 
 namespace logic {
+namespace core {
 enum class Direction;
+}
+namespace entity {
 class GhostModel;
+}
 } // namespace logic
 
 namespace representation {
 class SpriteMap;
-class GhostView : public EntityView, public logic::Observer {
-    std::map<logic::Direction, std::vector<sf::Sprite>>
+class GhostView : public EntityView, public logic::core::Observer {
+    std::map<logic::core::Direction, std::vector<sf::Sprite>>
         animation_sequences;            // map with direction key and corresponding animation sequence
     size_t current_sprite_index = 0;    // the index of the current animation sequence
-    logic::Direction world_direction;   // the current direction of the ghost
+    logic::core::Direction world_direction;   // the current direction of the ghost
     float last_sprite_change = 0.0f;    // last sprite change timestamp
     float animation_timer = 0.0;       // the time passed after the previous sprite change
     const float animation_speed = 100; // 100 ms = 0.100s
@@ -91,7 +95,7 @@ public:
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::core::Event& e) override;
 
     /**
      * @brief used to draw this ghost on a window

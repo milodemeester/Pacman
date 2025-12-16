@@ -9,6 +9,7 @@
 #include <random>
 
 namespace logic {
+namespace core {
 class Random {
 protected:
     std::mt19937 mt;                               // Mersenne Twister
@@ -34,6 +35,7 @@ public:
      */
     int getNumber(int val1, int val2);
 };
+}
 } // namespace logic
 
 #endif // PACMAN_RANDOM_H

@@ -15,12 +15,12 @@ protected:
      * @param offset the amount of positions in front of pacman
      * @return
      */
-    Coordinate compute_pacman_forward_pos(World& world, float offset);
+    Coordinate compute_pacman_forward_pos(core::World& world, float offset);
 
     bool in_box = true;
 public:
     // constructor
-    Type2Ghost(Coordinate pos, Direction dir, int world_width, int world_height);
+    Type2Ghost(Coordinate pos, core::Direction dir, int world_width, int world_height);
 
     /**
      * @brief updates the location (and possibly the direction) of the ghost
@@ -28,7 +28,7 @@ public:
      * @param target_location the target location that will be used to calculate the manhatten distance
      * @param world the world this entity lives in
      */
-    void update_(float dt, World& world, Coordinate target_location);
+    void update_(float dt, core::World& world, Coordinate target_location);
 
     /**
      * @brief Calculates the next Coordinate and Direction based on the direction options
@@ -39,8 +39,8 @@ public:
      * @param target_location the target location that will be used to calculate the manhatten distance
      * @return a pair of the new direction and new coordinate
      */
-    std::pair<Direction, Coordinate> get_viable_state(Direction& current_direction, Coordinate& current_location,
-                                                      float dt, World& world, Coordinate target_location);
+    std::pair<core::Direction, Coordinate> get_viable_state(core::Direction& current_direction, Coordinate& current_location,
+                                                      float dt, core::World& world, Coordinate target_location);
 
 
     void go_to_center() override;

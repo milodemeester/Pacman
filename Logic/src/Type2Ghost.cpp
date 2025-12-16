@@ -9,12 +9,12 @@
 #include <map>
 
 namespace logic::entity {
-Type2Ghost::Type2Ghost(Coordinate pos, Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
+Type2Ghost::Type2Ghost(Coordinate pos, core::Direction dir, int ww, int wh) : GhostModel(pos, dir, ww, wh) {}
 
-void Type2Ghost::update_(float dt, World& world, Coordinate target) {
+void Type2Ghost::update_(float dt, core::World& world, Coordinate target) {
     if (!waiting) { // ghost is not waiting
         // use the current direction and position to determine the next ones
-        Direction current_direction = direction_;
+        core::Direction current_direction = direction_;
         Coordinate current_position = position_;
         auto state = get_viable_state(current_direction, current_position, dt, world, target);
         set_direction(state.first);
@@ -22,37 +22,37 @@ void Type2Ghost::update_(float dt, World& world, Coordinate target) {
     }
 }
 
-Coordinate Type2Ghost::compute_pacman_forward_pos(World& world, float offset) {
+Coordinate Type2Ghost::compute_pacman_forward_pos(core::World& world, float offset) {
     Coordinate pacman_location = world.get_pacman_position();
-    Direction pacman_direction = world.get_pacman_direction();
+    core::Direction pacman_direction = world.get_pacman_direction();
 
     float target_x = pacman_location.getX();
     float target_y = pacman_location.getY();
 
     switch (pacman_direction) {
-    case Direction::East:
+    case core::Direction::East:
         target_x += offset / world.get_width();
         break;
-    case Direction::West:
+    case core::Direction::West:
         target_x -= offset / world.get_width();
         break;
-    case Direction::North:
+    case core::Direction::North:
         target_y -= offset / world.get_height();
         break;
-    case Direction::South:
+    case core::Direction::South:
         target_y += offset / world.get_height();
         break;
     }
     return {target_x, target_y};
 }
 
-std::pair<Direction, Coordinate> Type2Ghost::get_viable_state(Direction& current_direction,
+std::pair<core::Direction, Coordinate> Type2Ghost::get_viable_state(core::Direction& current_direction,
                                                                             Coordinate& current_location, float dt,
-                                                                            World& world, Coordinate target_location) {
+                                                                    core::World& world, Coordinate target_location) {
     // If the ghost just came out frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
         was_frightened_ = true;
-        Direction reversed = get_opposite_direction(current_direction);
+        core::Direction reversed = get_opposite_direction(current_direction);
         Coordinate final_pos = calculate_new_position(dt, reversed, current_location);
         final_pos = snap_location(final_pos, reversed, false);
         return {reversed, final_pos};
@@ -63,7 +63,7 @@ std::pair<Direction, Coordinate> Type2Ghost::get_viable_state(Direction& current
         was_frightened_ = false;
     }
     // Using a vector because 2 directions could have the same manhatten distance
-    std::vector<Direction> best_directions;
+    std::vector<core::Direction> best_directions;
     float best_manhattan;
 
     if (chasing_mode) {
@@ -77,7 +77,7 @@ std::pair<Direction, Coordinate> Type2Ghost::get_viable_state(Direction& current
     // Check every possible direction except the opposite direction
     auto possible_directions = get_other_direction(get_opposite_direction(current_direction));
 
-    std::map<Direction, Coordinate> dir_cor_combis;
+    std::map<core::Direction, Coordinate> dir_cor_combis;
 
     for (auto direction : possible_directions) {
         // Calculate the position if clyde takes a step into this direction
@@ -89,7 +89,7 @@ std::pair<Direction, Coordinate> Type2Ghost::get_viable_state(Direction& current
 
         // Check if there is a wall
         auto events = world.check_entity_collision(next_pos, direction, speed_, true, dt);
-        if (!utils::has_event(events, Event::WallCollide)) {
+        if (!utils::has_event(events, core::Event::WallCollide)) {
             float mnhtn_distance = utils::compute_manhattan_distance(target_location, next_pos);
 
             if (chasing_mode) {
@@ -119,12 +119,12 @@ std::pair<Direction, Coordinate> Type2Ghost::get_viable_state(Direction& current
     }
 
     // Choose the best direction
-    Direction chosen_direction;
+    core::Direction chosen_direction;
     if (best_directions.empty()) { // no viable directions, turn around
         chosen_direction = get_opposite_direction(current_direction);
     } else {
         // Choose a random direction
-        int random_index = Random::getInstance()->getNumber(0, best_directions.size() - 1);
+        int random_index = core::Random::getInstance()->getNumber(0, best_directions.size() - 1);
         chosen_direction = best_directions[random_index];
     }
 

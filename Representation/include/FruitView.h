@@ -18,7 +18,7 @@ class FruitModel;
 namespace representation {
 class Camera;
 
-class FruitView : public EntityView, public logic::Observer {
+class FruitView : public EntityView, public logic::core::Observer {
     bool invisible = false; // is false, the fruit will not be drawn
     sf::Sprite sprite;      // the sprite that is used to represent a fruit
 
@@ -31,7 +31,7 @@ public:
      * @param entity this entity
      * @param e the event that occured
      */
-    void onNotify(const logic::entity::Subject& entity, logic::Event& e) override;
+    void onNotify(const logic::entity::Subject& entity, logic::core::Event& e) override;
 
     /**
      * @brief used to draw this entity on a window

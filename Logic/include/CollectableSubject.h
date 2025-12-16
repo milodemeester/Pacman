@@ -11,7 +11,7 @@ namespace logic::entity {
 class CollectableSubject : public Subject {
 public:
     // constructor
-    explicit CollectableSubject(Coordinate position) : Subject(position, Direction::NoDirection) {}
+    explicit CollectableSubject(Coordinate position) : Subject(position, core::Direction::NoDirection) {}
 
     /**
      * @brief this function notifies observers that it is destructed

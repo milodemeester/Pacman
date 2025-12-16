@@ -9,7 +9,8 @@
 #include <math.h>
 #include <string>
 
-logic::Score::Score() {
+namespace logic::core {
+Score::Score() {
     score_ = 0;
     high_scores_.reserve(5);
 
@@ -28,7 +29,7 @@ logic::Score::Score() {
     }
 }
 
-void logic::Score::onNotify(const entity::Subject& entity, Event& e) {
+void Score::onNotify(const entity::Subject& entity, Event& e) {
     if (e == Event::CoinCollected) {
         float standard_increase = 10;
         auto stopwatch = Stopwatch::getInstance();
@@ -48,14 +49,14 @@ void logic::Score::onNotify(const entity::Subject& entity, Event& e) {
     }
 }
 
-std::vector<std::string> logic::Score::get_high_scores() { return high_scores_; }
+std::vector<std::string> Score::get_high_scores() { return high_scores_; }
 
-int logic::Score::get_score() const {
+int Score::get_score() const {
     int ret = score_;
     return ret;
 }
 
-void logic::Score::update_high_scores() {
+void Score::update_high_scores() {
     bool needs_update = false;
     int update_index = 0;
     // check if the current score is higher than any of the current high scores
@@ -80,7 +81,7 @@ void logic::Score::update_high_scores() {
     }
 }
 
-void logic::Score::write_to_file(std::vector<std::string>& new_high_scores) {
+void Score::write_to_file(std::vector<std::string>& new_high_scores) {
     std::ofstream file("../data/high_scores.txt");
     if (file.is_open()) {
         for (auto& string : new_high_scores) {
@@ -89,12 +90,13 @@ void logic::Score::write_to_file(std::vector<std::string>& new_high_scores) {
     }
 }
 
-void logic::Score::reset() { score_ = 0; }
+void Score::reset() { score_ = 0; }
 
-void logic::Score::update(float dt) {
+void Score::update(float dt) {
     score_ -= dt/100.f;
 }
 
-void logic::Score::update_on_win() {
+void Score::update_on_win() {
     score_ += 500.f;
+}
 }

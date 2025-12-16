@@ -50,7 +50,7 @@ float utils::compute_manhattan_distance(Coordinate& pos1, Coordinate& pos2) {
     return distance;
 }
 
-bool utils::has_event(std::vector<logic::Event> events, logic::Event event) {
+bool utils::has_event(std::vector<logic::core::Event> events, logic::core::Event event) {
     for (auto& e : events) {
         if (e == event) {
             return true;

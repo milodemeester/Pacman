@@ -13,17 +13,17 @@ enum class GhostType;
 namespace representation {
 class SpriteMap;
 class EntityView;
-class SfmlFactory : public logic::GameFactory {
+class SfmlFactory : public logic::core::GameFactory {
     std::shared_ptr<Camera> camera_;
     sf::Vector2u windowSize_;
     std::vector<std::shared_ptr<EntityView>> createdViews_;
     SpriteMap& sprite_map_;
-    std::shared_ptr<logic::Score> score_;
+    std::shared_ptr<logic::core::Score> score_;
 
 public:
     // constructor
     SfmlFactory(std::shared_ptr<Camera> camera, sf::Vector2u windowSize, SpriteMap& sprite_map,
-                std::shared_ptr<logic::Score> score);
+                std::shared_ptr<logic::core::Score> score);
 
     // destructor
     ~SfmlFactory() override = default;
