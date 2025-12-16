@@ -19,6 +19,6 @@ public:
     virtual void destruct();
 };
 
-} // namespace logic
+} // namespace logic::entity
 
 #endif // PACMAN_COLLECTABLESUBJECT_H

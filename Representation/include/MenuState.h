@@ -55,7 +55,7 @@ public:
      */
     void update(float dt) override;
 };
-}
+} // namespace state
 } // namespace representation
 
 #endif // PACMAN_MENUSTATE_H

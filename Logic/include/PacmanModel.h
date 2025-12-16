@@ -15,6 +15,7 @@ protected:
 
     // getters
     float get_speed() override;
+
 public:
     /**
      * @brief constructor
@@ -34,11 +35,11 @@ public:
 
     // getters
     int get_lives();
-    [[nodiscard]] EntityType get_type() const override {return EntityType::Pacman;};
+    [[nodiscard]] EntityType get_type() const override { return EntityType::Pacman; };
 
     // setters
     void set_lives(int lives);
 };
-} // namespace logic
+} // namespace logic::entity
 
 #endif // PACMAN_PACMAN_H

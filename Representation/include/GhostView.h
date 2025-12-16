@@ -16,8 +16,8 @@ namespace entity {
 class GhostModel;
 
 enum class GhostType;
-}
-}
+} // namespace entity
+} // namespace logic
 
 /**
  * @brief every possible animation-state of a ghost
@@ -79,18 +79,19 @@ class SpriteMap;
 namespace view {
 class GhostView : public EntityView, public logic::core::Observer {
     std::map<logic::core::Direction, std::vector<sf::Sprite>>
-        animation_sequences;            // map with direction key and corresponding animation sequence
-    size_t current_sprite_index = 0;    // the index of the current animation sequence
-    logic::core::Direction world_direction;   // the current direction of the ghost
-    float last_sprite_change = 0.0f;    // last sprite change timestamp
-    float animation_timer = 0.0;       // the time passed after the previous sprite change
-    const float animation_speed = 100; // 100 ms = 0.100s
-    Coordinate world_pos_;              // the world position of the ghost
-    bool fear_mode = false;             // if true, ghost is in fear mode and has to change its sprite accordingly
+        animation_sequences;                // map with direction key and corresponding animation sequence
+    size_t current_sprite_index = 0;        // the index of the current animation sequence
+    logic::core::Direction world_direction; // the current direction of the ghost
+    float last_sprite_change = 0.0f;        // last sprite change timestamp
+    float animation_timer = 0.0;            // the time passed after the previous sprite change
+    const float animation_speed = 100;      // 100 ms = 0.100s
+    Coordinate world_pos_;                  // the world position of the ghost
+    bool fear_mode = false;                 // if true, ghost is in fear mode and has to change its sprite accordingly
 
 public:
     // constructor
-    explicit GhostView(std::shared_ptr<logic::entity::GhostModel>& model, SpriteMap& sprite_map, logic::entity::GhostType ghost_type);
+    explicit GhostView(std::shared_ptr<logic::entity::GhostModel>& model, SpriteMap& sprite_map,
+                       logic::entity::GhostType ghost_type);
 
     /**
      * @brief function that can notify observers of an event
@@ -112,9 +113,9 @@ public:
      */
     void update(float dt) override;
 
-    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Ghost;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Ghost; }
 };
-}
+} // namespace view
 } // namespace representation
 
 #endif // PACMAN_GHOSTVIEW_H

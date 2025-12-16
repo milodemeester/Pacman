@@ -76,4 +76,4 @@ void VictoryState::render(sf::RenderWindow& window) {
 
     window.draw(rect);
 }
-}
+} // namespace representation::state

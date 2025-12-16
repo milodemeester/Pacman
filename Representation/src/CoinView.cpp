@@ -34,4 +34,4 @@ void CoinView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
         window.draw(sprite);
     }
 }
-}
+} // namespace representation::view

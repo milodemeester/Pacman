@@ -35,7 +35,7 @@ public:
      */
     int getNumber(int val1, int val2);
 };
-}
+} // namespace core
 } // namespace logic
 
 #endif // PACMAN_RANDOM_H

@@ -10,7 +10,8 @@
 
 namespace representation {
 /**
- * IDEE VAN CHATGPT
+ * IDEA FROM CHATGPT
+ * the idea is that the lifetime of the texture lasts as long as necessary
  */
 class SpriteMap {
     sf::Texture m_texture;

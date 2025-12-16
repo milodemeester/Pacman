@@ -77,4 +77,4 @@ void PacmanView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
     sprite.setPosition(new_coords);
     window.draw(sprite);
 }
-}
+} // namespace representation::view

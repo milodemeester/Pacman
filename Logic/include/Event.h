@@ -24,7 +24,7 @@ enum class Event {
     EntityReset,
     WallCollide
 };
-}
+} // namespace core
 } // namespace logic
 
 #endif // PACMAN_EVENT_H

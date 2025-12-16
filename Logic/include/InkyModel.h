@@ -27,8 +27,8 @@ public:
      * @param world the world this entity lives in
      * @return a pair of the new direction and new coordinate
      */
-    std::pair<core::Direction, Coordinate> get_viable_state(core::Direction& current_direction, Coordinate& current_location,
-                                                      float dt, core::World& world);
+    std::pair<core::Direction, Coordinate> get_viable_state(core::Direction& current_direction,
+                                                            Coordinate& current_location, float dt, core::World& world);
 };
-} // namespace logic
+} // namespace logic::entity
 #endif // PACMAN_INKYMODEL_H

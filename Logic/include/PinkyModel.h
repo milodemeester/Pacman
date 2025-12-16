@@ -21,5 +21,5 @@ public:
      */
     void update(float dt, core::World& world) override;
 };
-}; // namespace logic
+}; // namespace logic::entity
 #endif // PACMAN_PINKYMODEL_H

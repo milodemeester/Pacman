@@ -3,11 +3,11 @@
 //
 
 #include "../include/Subject.h"
-#include "../include/Observer.h"
-#include <cmath>
-#include <algorithm>
-#include <mutex>
 #include "../include/Event.h"
+#include "../include/Observer.h"
+#include <algorithm>
+#include <cmath>
+#include <mutex>
 
 namespace logic::entity {
 void Subject::set_position(const Coordinate& position) {
@@ -93,9 +93,7 @@ Coordinate MoveableSubject::calculate_new_position(float dt, core::Direction dir
 
 void MoveableSubject::set_speed(float speed) { speed_ = speed; }
 
-void Subject::go_to_center() {
-    set_position(starting_position_);
-}
+void Subject::go_to_center() { set_position(starting_position_); }
 
 Coordinate MoveableSubject::snap_location(Coordinate pos, core::Direction snap_direction, bool both) {
     Coordinate snapped_location = pos;
@@ -109,4 +107,4 @@ Coordinate MoveableSubject::snap_location(Coordinate pos, core::Direction snap_d
     }
     return snapped_location;
 }
-}
+} // namespace logic::entity

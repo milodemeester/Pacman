@@ -77,4 +77,4 @@ void GhostModel::set_chase_mode() {
 }
 
 bool GhostModel::is_chasing_mode() { return chasing_mode; }
-}
+} // namespace logic::entity

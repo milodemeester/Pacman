@@ -92,11 +92,7 @@ void Score::write_to_file(std::vector<std::string>& new_high_scores) {
 
 void Score::reset() { score_ = 0; }
 
-void Score::update(float dt) {
-    score_ -= dt/100.f;
-}
+void Score::update(float dt) { score_ -= dt / 100.f; }
 
-void Score::update_on_win() {
-    score_ += 500.f;
-}
-}
+void Score::update_on_win() { score_ += 500.f; }
+} // namespace logic::core

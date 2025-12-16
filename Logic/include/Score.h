@@ -60,7 +60,7 @@ public:
     std::vector<std::string> get_high_scores();
     int get_score() const;
 };
-}
+} // namespace core
 } // namespace logic
 
 #endif // PACMAN_SCORE_H

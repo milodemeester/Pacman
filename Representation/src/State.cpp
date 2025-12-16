@@ -5,4 +5,4 @@
 
 namespace representation::state {
 void State::update(float delta_time) {}
-}
+} // namespace representation::state

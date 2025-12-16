@@ -46,9 +46,9 @@ public:
      */
     void update(float dt) override {}
 
-    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Wall;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Wall; }
 };
-}
+} // namespace view
 } // namespace representation
 
 #endif // PACMAN_WALLVIEW_H

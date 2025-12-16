@@ -3,24 +3,22 @@
 //
 
 #include "../include/LevelState.h"
-#include "../include/PausedState.h"
-#include "../include/MenuState.h"
-#include "../include/VictoryState.h"
 #include "../../Logic/include/Score.h"
 #include "../include/EntityView.h"
 #include "../include/GhostView.h"
+#include "../include/MenuState.h"
 #include "../include/PacmanView.h"
-#include "../include/StateManager.h"
+#include "../include/PausedState.h"
 #include "../include/SfmlFactory.h"
+#include "../include/StateManager.h"
+#include "../include/VictoryState.h"
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 #include <utility>
 
-
 namespace representation::state {
-LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
-                                       std::shared_ptr<logic::core::Score> score, std::shared_ptr<Camera> camera,
-                                       int level = 1, int pacman_lives)
+LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize, std::shared_ptr<logic::core::Score> score,
+                       std::shared_ptr<Camera> camera, int level = 1, int pacman_lives)
     : State(manager), score_(std::move(score)), camera_(std::move(camera)), spriteMap_("../data/sprite.png"),
       factory_(std::make_shared<SfmlFactory>(camera_, windowSize, spriteMap_, score_)),
       world_(factory_, level, pacman_lives), manager_(manager) {
@@ -194,8 +192,9 @@ void LevelState::updateLayout(sf::Vector2u windowSize) {
 
     // in the middle of the game board
     levelTitle_.setPosition(
-        (camera_->getBoardLeftX() + (camera_->getBoardLeftX() + camera_->getBlockSize() * static_cast<float>(world_.get_width()))) /
+        (camera_->getBoardLeftX() +
+         (camera_->getBoardLeftX() + camera_->getBlockSize() * static_cast<float>(world_.get_width()))) /
             2.f,
         board_bottom + ui_bar_height / 2.f);
 }
-}
+} // namespace representation::state

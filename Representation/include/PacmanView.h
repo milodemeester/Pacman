@@ -4,9 +4,9 @@
 
 #ifndef PACMAN_PACMANVIEW_H
 #define PACMAN_PACMANVIEW_H
+#include "../../Logic/Utilities/utils.h"
 #include "../../Logic/include/Observer.h"
 #include "../../Logic/include/PacmanModel.h"
-#include "../../Logic/Utilities/utils.h"
 #include "EntityView.h"
 #include "SpriteMap.h"
 
@@ -25,12 +25,12 @@ class PacmanView : public EntityView, public logic::core::Observer {
     std::map<logic::core::Direction, std::vector<sf::IntRect>>
         animation_sequences; // map with direction key and corresponding animation sequence
     SpriteMap& sprite_map_;
-    Coordinate world_position;          // the world position of pacman
-    logic::core::Direction world_direction;   // the world direction of pacman
-    size_t current_sprite_index = 0;    // the index of the current animation sequence
-    float last_sprite_change = 0.0f;    // last sprite change timestamp
-    float animation_timer = 0.0;       // the time passed after the previous sprite change
-    const float animation_speed = 125; // 125 ms = 0.125s
+    Coordinate world_position;              // the world position of pacman
+    logic::core::Direction world_direction; // the world direction of pacman
+    size_t current_sprite_index = 0;        // the index of the current animation sequence
+    float last_sprite_change = 0.0f;        // last sprite change timestamp
+    float animation_timer = 0.0;            // the time passed after the previous sprite change
+    const float animation_speed = 125;      // 125 ms = 0.125s
 public:
     // constructor
     explicit PacmanView(const std::shared_ptr<logic::entity::PacmanModel>& model, SpriteMap& sprite_map);
@@ -55,9 +55,9 @@ public:
      */
     void update(float dt) override;
 
-    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Pacman;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Pacman; }
 };
-}
+} // namespace view
 } // namespace representation
 
 #endif // PACMAN_PACMANVIEW_H

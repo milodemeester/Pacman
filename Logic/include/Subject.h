@@ -14,8 +14,8 @@ namespace core {
 class World;
 class Observer;
 enum class Event;
-}
-}
+} // namespace core
+} // namespace logic
 
 namespace logic::entity {
 enum class EntityType { Pacman, Ghost, Wall, Coin, Fruit, Undefined };
@@ -29,13 +29,13 @@ protected:
     void notify(core::Event event);
 
     std::vector<std::weak_ptr<core::Observer>> observers_; // vector with all of the observers
-    Coordinate position_;                            // the current position of the subject
-    Coordinate starting_position_;                   // the position where the entity spawned in
-    bool is_complete = false;                        // waits until location is set
-    core::Direction direction_; // the current direction
+    Coordinate position_;                                  // the current position of the subject
+    Coordinate starting_position_;                         // the position where the entity spawned in
+    bool is_complete = false;                              // waits until location is set
+    core::Direction direction_;                            // the current direction
 public:
     // constructor
-    explicit Subject(Coordinate pos, core::Direction dir) : position_(pos), direction_(dir){}
+    explicit Subject(Coordinate pos, core::Direction dir) : position_(pos), direction_(dir) {}
 
     // destructor
     virtual ~Subject() = default;
@@ -68,9 +68,9 @@ public:
 
 class MoveableSubject : public Subject {
 protected:
-    int world_width_;     // width of the world
-    int world_height_;    // height of the world
-    float speed_;        // measured in pixel/ms
+    int world_width_;  // width of the world
+    int world_height_; // height of the world
+    float speed_;      // measured in pixel/ms
 
     /**
      * @brief computes the new position based on the delta time
@@ -100,6 +100,6 @@ public:
     // setters
     void set_speed(float speed);
 };
-} // namespace logic
+} // namespace logic::entity
 
 #endif // PACMAN_ENTITYMODEL_H

@@ -46,7 +46,8 @@ public:
      * @param world_height the world height measured in amount of entities fitted
      * @return shared pointer to a (derrived) GhostModel instance
      */
-    std::shared_ptr<logic::entity::GhostModel> createGhost(logic::entity::GhostType type, int world_width, int world_height) override;
+    std::shared_ptr<logic::entity::GhostModel> createGhost(logic::entity::GhostType type, int world_width,
+                                                           int world_height) override;
 
     /**
      * @brief creates a smart pointer to a coin model and a coin view and links them via observer pattern

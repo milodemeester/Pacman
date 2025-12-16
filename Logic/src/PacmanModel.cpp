@@ -31,8 +31,7 @@ void PacmanModel::update(float dt, core::World& world) {
         // snap location to middle of the position
         Coordinate new_coordinate = snap_location(position_, direction_, true);
         set_position(new_coordinate);
-    }
-    else {
+    } else {
         Coordinate new_pos = snap_location(next_pos, direction_, false);
         set_position(new_pos);
     }
@@ -66,4 +65,4 @@ float PacmanModel::get_speed() { return speed_; }
 int PacmanModel::get_lives() { return lives; }
 
 void PacmanModel::set_lives(int lives) { this->lives = lives; }
-}
+} // namespace logic::entity

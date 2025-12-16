@@ -10,7 +10,7 @@ namespace logic {
 namespace core {
 enum class Event;
 }
-}
+} // namespace logic
 
 struct Coordinate {
     float getX() { return x; }

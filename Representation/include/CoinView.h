@@ -45,8 +45,8 @@ public:
      */
     void update(float dt) override {}
 
-    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Coin;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Coin; }
 };
-}
+} // namespace view
 } // namespace representation
 #endif // PACMAN_COINVIEW_H

@@ -12,7 +12,7 @@
 
 namespace representation::view {
 GhostView::GhostView(std::shared_ptr<logic::entity::GhostModel>& model, SpriteMap& sprite_map,
-                                     logic::entity::GhostType type) {
+                     logic::entity::GhostType type) {
     world_direction = model->get_direction();
     world_pos_ = model->get_position();
     // ----------- sprites -----------
@@ -165,4 +165,4 @@ void GhostView::update(float dt) {
         current_sprite_index %= crnt_sequence.size();
     }
 }
-}
+} // namespace representation::view

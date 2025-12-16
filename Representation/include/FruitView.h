@@ -13,7 +13,7 @@ namespace logic {
 namespace entity {
 class FruitModel;
 }
-}
+} // namespace logic
 
 namespace representation {
 class Camera;
@@ -47,8 +47,8 @@ public:
      */
     void update(float dt) override {}
 
-    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Fruit;}
+    logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Fruit; }
 };
-}
+} // namespace view
 } // namespace representation
 #endif // PACMAN_FRUITVIEW_H

@@ -14,8 +14,8 @@ public:
     explicit CoinModel(Coordinate pos) : CollectableSubject(pos) {}
     CoinModel() : CollectableSubject({0, 0}) {}
 
-    [[nodiscard]] EntityType get_type() const override {return EntityType::Coin;};
+    [[nodiscard]] EntityType get_type() const override { return EntityType::Coin; };
 };
-} // namespace logic
+} // namespace logic::entity
 
 #endif // PACMAN_COINMODEL_H

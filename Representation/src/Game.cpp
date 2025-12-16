@@ -26,7 +26,7 @@ void representation::Game::run() {
             }
             state_manager_->process_event(event, window_);
         }
-        //state_manager_->update(20); // for debugging
+        // state_manager_->update(20); // for debugging
         state_manager_->update(stopwatch->get_delta_time());
         window_.clear(sf::Color::Black);
         state_manager_->render(window_);

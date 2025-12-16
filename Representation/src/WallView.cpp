@@ -11,8 +11,7 @@
 #include <iostream>
 
 namespace representation::view {
-WallView::WallView(const std::shared_ptr<logic::entity::WallModel>& model, SpriteMap& sprite_map,
-                                   bool invisible)
+WallView::WallView(const std::shared_ptr<logic::entity::WallModel>& model, SpriteMap& sprite_map, bool invisible)
     : invisible_(invisible) {
     sf::Sprite sprite = sprite_map.getWallSprite({0, 0, 35, 35});
     m_sprites_.insert(std::pair(WallSpriteState::Wall, sprite));
@@ -39,4 +38,4 @@ void WallView::draw(sf::RenderWindow& window, std::shared_ptr<Camera> cam) {
         window.draw(sprite);
     }
 }
-}
+} // namespace representation::view

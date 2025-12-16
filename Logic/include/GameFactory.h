@@ -14,7 +14,7 @@ class WallModel;
 class FruitModel;
 class CoinModel;
 enum class GhostType;
-}
+} // namespace entity
 
 namespace core {
 class GameFactory { // abstract factory
@@ -36,7 +36,8 @@ public:
      * @param world_height the world height measured in amount of entities fitted
      * @return shared pointer to a (derrived) GhostModel instance
      */
-    virtual std::shared_ptr<entity::GhostModel> createGhost(entity::GhostType type, int world_width, int world_height) = 0;
+    virtual std::shared_ptr<entity::GhostModel> createGhost(entity::GhostType type, int world_width,
+                                                            int world_height) = 0;
 
     /**
      * @brief pure virtual function that needs to be overwritten by a concrete factory
@@ -57,7 +58,7 @@ public:
      */
     virtual std::shared_ptr<entity::CoinModel> createCoin() = 0;
 };
-}
+} // namespace core
 } // namespace logic
 
 #endif // PACMAN_GAMEFACTORY_H

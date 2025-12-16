@@ -7,7 +7,6 @@
 #include "Event.h"
 #include <memory>
 
-
 namespace logic {
 namespace entity {
 class Subject;
@@ -26,7 +25,7 @@ public:
      */
     virtual void onNotify(const entity::Subject& entity, Event& e) = 0;
 };
-}
+} // namespace core
 } // namespace logic
 
 #endif // PACMAN_OBSERVER_H

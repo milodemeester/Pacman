@@ -41,7 +41,7 @@ public:
     // setters
     void set_location(const Coordinate& location) { this->world_location_ = location; }
 };
-}
+} // namespace view
 } // namespace representation
 
 #endif // PACMAN_ENTITYVIEW_H

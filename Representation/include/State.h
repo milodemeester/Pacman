@@ -37,7 +37,7 @@ public:
 
     virtual void update(float delta_time);
 };
-}
+} // namespace state
 } // namespace representation
 
 #endif // PACMAN_STATE_H

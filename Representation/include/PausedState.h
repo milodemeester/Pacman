@@ -37,6 +37,6 @@ public:
      */
     void render(sf::RenderWindow& window) override;
 };
-}
+} // namespace state
 } // namespace representation
 #endif // PACMAN_PAUSEDSTATE_H

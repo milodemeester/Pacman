@@ -50,4 +50,4 @@ void StateManager::update(float delta_time) {
         return;
     state_stack.top()->update(delta_time);
 }
-}
+} // namespace representation::state

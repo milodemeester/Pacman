@@ -47,7 +47,7 @@ Coordinate Type2Ghost::compute_pacman_forward_pos(core::World& world, float offs
 }
 
 std::pair<core::Direction, Coordinate> Type2Ghost::get_viable_state(core::Direction& current_direction,
-                                                                            Coordinate& current_location, float dt,
+                                                                    Coordinate& current_location, float dt,
                                                                     core::World& world, Coordinate target_location) {
     // If the ghost just came out frightened mode, turn around
     if (!chasing_mode && !was_frightened_) {
@@ -135,4 +135,4 @@ void Type2Ghost::go_to_center() {
     Subject::go_to_center();
     in_box = true;
 }
-}
+} // namespace logic::entity

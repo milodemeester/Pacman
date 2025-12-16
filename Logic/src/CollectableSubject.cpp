@@ -10,4 +10,4 @@ void CollectableSubject::destruct() {
     core::Event e = core::Event::EntityDestruct;
     notify(e);
 }
-} // namespace logic
+} // namespace logic::entity

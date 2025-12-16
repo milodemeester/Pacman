@@ -18,17 +18,16 @@ void ClydeModel::update(float dt, core::World& world) {
     Coordinate target;
     if (in_box) { // still in box
         float x = position_.getX();
-        float y = 0 + 2*(1/world_height_); // 2 "blocks" above the box
+        float y = 0 + 2 * (1 / world_height_); // 2 "blocks" above the box
         target = {x, y};
         if (utils::compute_manhattan_distance({target}, position_) < 0.05) {
             // out of box
             in_box = false;
             target = world.get_pacman_position();
         }
-    }
-    else { // out of box, chase pacman
+    } else { // out of box, chase pacman
         target = world.get_pacman_position();
     }
     update_(dt, world, target);
 }
-}
+} // namespace logic::entity

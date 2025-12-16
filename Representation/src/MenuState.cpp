@@ -151,4 +151,4 @@ void MenuState::update(float dt) {
         highScores_[i].setString(scores[i]);
     }
 }
-}
+} // namespace representation::state

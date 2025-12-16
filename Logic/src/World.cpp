@@ -207,14 +207,14 @@ bool World::check_collision(Coordinate& entity_pos, Rectangle entity2_rect, floa
 }
 
 std::vector<logic::core::Event> World::check_entity_collision(Coordinate& entity_pos, Direction& entity_direction,
-                                                               float entity_speed, bool ghost, float dt) {
+                                                              float entity_speed, bool ghost, float dt) {
     // In this method, it is safe to do static_casts, because there are checks done first for the entity_type
     std::vector<Event> events;
     for (auto& entity_vector : entities) {
         for (auto& entity : entity_vector) { // loop through every entity
             Rectangle entity2_rect;
-            if (!entity) {}
-            else {
+            if (!entity) {
+            } else {
                 Coordinate entity2_left_upper_corner = {entity->get_position().getX(), entity->get_position().getY()};
                 Coordinate entity2_right_lower_corner = {entity->get_position().getX(), entity->get_position().getY()};
                 entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
@@ -251,8 +251,7 @@ std::vector<logic::core::Event> World::check_entity_collision(Coordinate& entity
                         fruit_count--;
                         events.push_back(Event::FruitEaten);
                     }
-                }
-                else if (entity->get_type() == entity::EntityType::Ghost && !ghost) {
+                } else if (entity->get_type() == entity::EntityType::Ghost && !ghost) {
                     auto ghost_model = std::static_pointer_cast<entity::GhostModel>(entity);
                     if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                         if (pacman_dead(ghost_model)) {
@@ -288,22 +287,22 @@ void World::update(float delta_time) {
     auto stopwatch = Stopwatch::getInstance();
     if (stopwatch->get_time_between(stopwatch->get_now(), fear_mode_begin) < frightened_mode_duration_) {
         pinky->set_fear_mode();
-        pinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
+        pinky->set_speed(basic_ghost_speed * ghost_speed_fraction_ * 0.7f);
         inky->set_fear_mode();
-        inky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
+        inky->set_speed(basic_ghost_speed * ghost_speed_fraction_ * 0.7f);
         blinky->set_fear_mode();
-        blinky->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
+        blinky->set_speed(basic_ghost_speed * ghost_speed_fraction_ * 0.7f);
         clyde->set_fear_mode();
-        clyde->set_speed(basic_ghost_speed*ghost_speed_fraction_*0.7f);
+        clyde->set_speed(basic_ghost_speed * ghost_speed_fraction_ * 0.7f);
     } else {
         pinky->set_chase_mode();
-        pinky->set_speed(basic_ghost_speed*ghost_speed_fraction_);
+        pinky->set_speed(basic_ghost_speed * ghost_speed_fraction_);
         inky->set_chase_mode();
-        inky->set_speed(basic_ghost_speed*ghost_speed_fraction_);
+        inky->set_speed(basic_ghost_speed * ghost_speed_fraction_);
         blinky->set_chase_mode();
-        blinky->set_speed(basic_ghost_speed*ghost_speed_fraction_);
+        blinky->set_speed(basic_ghost_speed * ghost_speed_fraction_);
         clyde->set_chase_mode();
-        clyde->set_speed(basic_ghost_speed*ghost_speed_fraction_);
+        clyde->set_speed(basic_ghost_speed * ghost_speed_fraction_);
     }
     pinky->update(delta_time, *this);
     inky->update(delta_time, *this);
@@ -351,4 +350,4 @@ std::vector<std::shared_ptr<entity::Subject>> World::get_all_subjects() const {
     }
     return all_subjects;
 }
-}
+} // namespace logic::core

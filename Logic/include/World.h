@@ -19,7 +19,7 @@ class PinkyModel;
 class InkyModel;
 class GhostModel;
 class PacmanModel;
-}
+} // namespace entity
 
 namespace core {
 enum class WorldState {
@@ -63,8 +63,8 @@ class World {
     bool pacman_dead(const std::shared_ptr<entity::GhostModel>& model);
 
     std::vector<std::vector<std::shared_ptr<entity::Subject>>> entities; // all the entities in the world
-    int world_width;                                             // width of the world
-    int world_height;                                            // height of the world
+    int world_width;                                                     // width of the world
+    int world_height;                                                    // height of the world
     std::shared_ptr<GameFactory> game_factory;
     std::shared_ptr<entity::PacmanModel> pacman;
     std::shared_ptr<entity::GhostModel> blinky;
@@ -80,8 +80,8 @@ class World {
 
     // level-dependant values
     float frightened_mode_duration_; // duration of ghost frightened mode in miliseconds
-    float pacman_speed_fraction_;  // the fraction of the total pacman speed
-    float ghost_speed_fraction_;   // the fraction of the total ghost speed
+    float pacman_speed_fraction_;    // the fraction of the total pacman speed
+    float ghost_speed_fraction_;     // the fraction of the total ghost speed
 
 public:
     // constructor
@@ -135,7 +135,7 @@ public:
     [[nodiscard]] int get_level() const;
     [[nodiscard]] std::vector<std::shared_ptr<entity::Subject>> get_all_subjects() const;
 };
-}
+} // namespace core
 } // namespace logic
 
 #endif // PACMAN_WORLD_H

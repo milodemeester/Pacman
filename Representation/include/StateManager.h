@@ -60,7 +60,7 @@ public:
      */
     void update(float delta_time);
 };
-}
+} // namespace state
 } // namespace representation
 
 #endif // PACMAN_STATEMANAGER_H

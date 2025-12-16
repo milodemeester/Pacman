@@ -79,4 +79,4 @@ void PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& wi
         }
     }
 }
-}
+} // namespace representation::state

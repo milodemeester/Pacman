@@ -35,7 +35,7 @@ protected:
     float get_speed() override;
 
     std::chrono::system_clock::time_point initialize_time; // the time_point where this object was initialized
-    float wait_time = 0;         // the time the ghost has to wait before it can escape the center
+    float wait_time = 0;          // the time the ghost has to wait before it can escape the center
     bool chasing_mode = true;     // false = fear mode, true = chasing mode
     bool was_frightened_ = false; // determines the previous frightened state so a transition can be detected
     bool waiting = true;          // determines if the ghost is waiting in the center of the game
@@ -55,12 +55,12 @@ public:
      */
     bool is_chasing_mode();
 
-    [[nodiscard]] EntityType get_type() const override {return EntityType::Ghost;};
+    [[nodiscard]] EntityType get_type() const override { return EntityType::Ghost; };
 
     // setters
     void set_fear_mode();
     void set_chase_mode();
 };
-} // namespace logic
+} // namespace logic::entity
 
 #endif // PACMAN_GHOST_H

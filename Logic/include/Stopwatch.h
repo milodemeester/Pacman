@@ -39,14 +39,14 @@ public:
      * @return the time between the two time points in milliseconds
      */
     float get_time_between(std::chrono::system_clock::time_point time_point1,
-                            std::chrono::system_clock::time_point time_point2);
+                           std::chrono::system_clock::time_point time_point2);
 
     // getters
     float get_start_time();
     std::chrono::system_clock::time_point get_now();
     static std::shared_ptr<Stopwatch> getInstance();
 };
-}
+} // namespace core
 } // namespace logic
 
 #endif // PACMAN_STOPWATCH_H
