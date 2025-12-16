@@ -3,14 +3,10 @@
 //
 
 #include "../include/VictoryState.h"
-
-#include "../../Utilities/utils.h"
+#include "../../Logic/Utilities/utils.h"
 #include "../include/StateManager.h"
-
-#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 

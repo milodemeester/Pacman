@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_WALLMODEL_H
 #define PACMAN_WALLMODEL_H
-#include "../../Utilities/utils.h"
+#include "../Utilities/utils.h"
 #include "Subject.h"
 
 namespace logic {

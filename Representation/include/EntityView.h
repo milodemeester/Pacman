@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_ENTITYVIEW_H
 #define PACMAN_ENTITYVIEW_H
-#include "../../Utilities/utils.h"
+#include "../../Logic/Utilities/utils.h"
 #include "Subject.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>

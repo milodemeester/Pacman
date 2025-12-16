@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_ENTITYMODEL_H
 #define PACMAN_ENTITYMODEL_H
-#include "../../Utilities/utils.h"
+#include "../Utilities/utils.h"
 #include "Direction.h"
 #include "Event.h"
 #include <memory>

@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
-#include "../../Utilities/utils.h"
+#include "../Utilities/utils.h"
 #include "Direction.h"
 #include "Subject.h"
 

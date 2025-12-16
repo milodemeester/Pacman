@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_FRUITMODEL_H
 #define PACMAN_FRUITMODEL_H
-#include "../../Utilities/utils.h"
+#include "../Utilities/utils.h"
 #include "CollectableSubject.h"
 
 namespace logic {

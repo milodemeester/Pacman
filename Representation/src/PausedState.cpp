@@ -3,9 +3,8 @@
 //
 
 #include "../include/PausedState.h"
-#include "../../Utilities/utils.h"
+#include "../../Logic/Utilities/utils.h"
 #include "../include/StateManager.h"
-#include "SFML/Graphics/Text.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <iostream>

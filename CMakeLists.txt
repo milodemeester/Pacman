@@ -30,7 +30,7 @@ add_executable(pacman
         Representation/src/WallView.cpp Representation/include/WallView.h
         Representation/src/SpriteMap.cpp Representation/include/SpriteMap.h
 
-        Utilities/utils.cpp Utilities/utils.h
+        Logic/Utilities/utils.cpp Logic/Utilities/utils.h
 )
 
 # Link the logic library

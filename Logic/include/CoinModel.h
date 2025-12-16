@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_COINMODEL_H
 #define PACMAN_COINMODEL_H
-#include "../../Utilities/utils.h"
+#include "../Utilities/utils.h"
 #include "CollectableSubject.h"
 
 namespace logic {

@@ -3,8 +3,7 @@
 //
 
 #include "../include/MenuState.h"
-#include "../../Utilities/utils.h"
-#include "../include/EntityView.h"
+#include "../../Logic/Utilities/utils.h"
 #include "../include/LevelState.h"
 #include "../include/StateManager.h"
 #include "SFML/Graphics/Font.hpp"
@@ -13,7 +12,6 @@
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 #include <memory>
-#include <sstream>
 #include <utility>
 
 representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::Score> score)

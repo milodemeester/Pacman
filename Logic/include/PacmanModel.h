@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_PACMAN_H
 #define PACMAN_PACMAN_H
-#include "../../Utilities/utils.h"
+#include "../Utilities/utils.h"
 #include "Subject.h"
 #include "World.h"
 

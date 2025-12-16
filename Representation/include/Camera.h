@@ -4,7 +4,7 @@
 
 #ifndef PACMAN_CAMERA_H
 #define PACMAN_CAMERA_H
-#include "../../Utilities/utils.h"
+#include "../../Logic/Utilities/utils.h"
 #include <SFML/System/Vector2.hpp>
 
 #include <utility>
