@@ -18,6 +18,7 @@ class Event;
 } // namespace sf
 
 namespace representation {
+namespace state {
 class State;
 
 class StateManager {
@@ -59,6 +60,7 @@ public:
      */
     void update(float delta_time);
 };
+}
 } // namespace representation
 
 #endif // PACMAN_STATEMANAGER_H

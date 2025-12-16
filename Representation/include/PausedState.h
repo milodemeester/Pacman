@@ -8,6 +8,7 @@
 #include <SFML/Graphics/Texture.hpp>
 
 namespace representation {
+namespace state {
 class PausedState final : public State {
     /**
      * @brief update all the text
@@ -36,5 +37,6 @@ public:
      */
     void render(sf::RenderWindow& window) override;
 };
+}
 } // namespace representation
 #endif // PACMAN_PAUSEDSTATE_H

@@ -11,7 +11,7 @@ namespace representation {
 class Game {
     std::shared_ptr<logic::core::Score> score_;
     sf::RenderWindow window_;
-    std::shared_ptr<StateManager> state_manager_;
+    std::shared_ptr<state::StateManager> state_manager_;
 
 public:
     // constructor

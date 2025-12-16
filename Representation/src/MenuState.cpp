@@ -14,7 +14,8 @@
 #include <memory>
 #include <utility>
 
-representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::core::Score> score)
+namespace representation::state {
+MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, std::shared_ptr<logic::core::Score> score)
     : State(sm), score_(std::move(score)) {
 
     // font loading
@@ -51,7 +52,7 @@ representation::MenuState::MenuState(StateManager& sm, sf::Vector2u windowsize, 
     updateLayout(windowsize);
 }
 
-void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
+void MenuState::updateLayout(sf::Vector2u windowSize) {
     // --- High Scores ---
     float window_width = windowSize.x;
     float window_height = windowSize.y;
@@ -79,7 +80,7 @@ void representation::MenuState::updateLayout(sf::Vector2u windowSize) {
     }
 }
 
-void representation::MenuState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
+void MenuState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::Resized) {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
@@ -101,7 +102,7 @@ void representation::MenuState::proces_user_input(const sf::Event& event, sf::Re
     }
 }
 
-void representation::MenuState::render(sf::RenderWindow& window) {
+void MenuState::render(sf::RenderWindow& window) {
     // update everything
     updateLayout(window.getSize());
     // Load the image and resize it to fit the window
@@ -144,9 +145,10 @@ void representation::MenuState::render(sf::RenderWindow& window) {
     }
 }
 
-void representation::MenuState::update(float dt) {
+void MenuState::update(float dt) {
     std::vector<std::string> scores = score_->get_high_scores();
     for (int i = 0; i < 5; i++) {
         highScores_[i].setString(scores[i]);
     }
+}
 }

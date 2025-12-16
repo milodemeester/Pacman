@@ -8,6 +8,7 @@
 #include <SFML/Graphics/Texture.hpp>
 
 namespace representation {
+namespace state {
 class VictoryState final : public State {
     sf::Texture texture_;
     Button button_;
@@ -29,6 +30,7 @@ public:
      */
     void render(sf::RenderWindow& window) override;
 };
+}
 } // namespace representation
 
 #endif // PACMAN_VICTORYSTATE_H

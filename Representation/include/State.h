@@ -15,6 +15,7 @@ struct Button {
 };
 
 class Camera;
+namespace state {
 class StateManager;
 class State { // Abstract product
 protected:
@@ -36,6 +37,7 @@ public:
 
     virtual void update(float delta_time);
 };
+}
 } // namespace representation
 
 #endif // PACMAN_STATE_H

@@ -3,4 +3,6 @@
 //
 #include "../include/State.h"
 
-void representation::State::update(float delta_time) {}
+namespace representation::state {
+void State::update(float delta_time) {}
+}

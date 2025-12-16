@@ -16,12 +16,13 @@ namespace logic::core {
 class Score;
 }
 namespace representation {
-class StateManager;
 class SfmlFactory;
 namespace view {
 class EntityView;
 }
 
+namespace state {
+class StateManager;
 class LevelState final : public State {
     /**
      * @brief update all the texts, buttons and scores
@@ -65,6 +66,7 @@ public:
      */
     void update(float delta_time) override;
 };
+}
 } // namespace representation
 
 #endif // PACMAN_LEVELSTATE_H

@@ -14,6 +14,7 @@ namespace logic::core {
 class Score;
 }
 namespace representation {
+namespace state {
 class MenuState final : public State {
     /**
      * @brief update all the texts, buttons and high scores
@@ -54,6 +55,7 @@ public:
      */
     void update(float dt) override;
 };
+}
 } // namespace representation
 
 #endif // PACMAN_MENUSTATE_H

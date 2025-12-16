@@ -3,23 +3,22 @@
 //
 
 #include "../include/LevelState.h"
-
+#include "../include/PausedState.h"
+#include "../include/MenuState.h"
+#include "../include/VictoryState.h"
 #include "../../Logic/include/Score.h"
 #include "../include/EntityView.h"
 #include "../include/GhostView.h"
 #include "../include/PacmanView.h"
-#include "../include/PausedState.h"
-#include "../include/SfmlFactory.h"
-#include "../include/SpriteMap.h"
 #include "../include/StateManager.h"
-#include "../include/VictoryState.h"
-
+#include "../include/SfmlFactory.h"
 #include <SFML/Window/Event.hpp>
-
 #include <iostream>
 #include <utility>
 
-representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
+
+namespace representation::state {
+LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize,
                                        std::shared_ptr<logic::core::Score> score, std::shared_ptr<Camera> camera,
                                        int level = 1, int pacman_lives)
     : State(manager), score_(std::move(score)), camera_(std::move(camera)), spriteMap_("../data/sprite.png"),
@@ -53,7 +52,7 @@ representation::LevelState::LevelState(StateManager& manager, sf::Vector2u windo
     views_ = factory_->getCreatedViews();
 }
 
-void representation::LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
+void LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::Resized) {
         // update view
         windowSize_ = sf::Vector2u(event.size.width, event.size.height);
@@ -83,7 +82,7 @@ void representation::LevelState::proces_user_input(const sf::Event& event, sf::R
     }
 }
 
-void representation::LevelState::update(float delta_time) {
+void LevelState::update(float delta_time) {
     // update the world and all the views
     world_.update(delta_time);
     for (const auto& view : views_) {
@@ -116,7 +115,7 @@ void representation::LevelState::update(float delta_time) {
     }
 }
 
-void representation::LevelState::render(sf::RenderWindow& window) {
+void LevelState::render(sf::RenderWindow& window) {
     std::shared_ptr<view::EntityView> pacman;
     std::vector<std::shared_ptr<view::EntityView>> ghosts;
 
@@ -146,7 +145,7 @@ void representation::LevelState::render(sf::RenderWindow& window) {
     window.draw(levelTitle_);
 }
 
-void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
+void LevelState::updateLayout(sf::Vector2u windowSize) {
     float window_width = windowSize.x;
     float window_height = windowSize.y;
 
@@ -198,4 +197,5 @@ void representation::LevelState::updateLayout(sf::Vector2u windowSize) {
         (camera_->getBoardLeftX() + (camera_->getBoardLeftX() + camera_->getBlockSize() * static_cast<float>(world_.get_width()))) /
             2.f,
         board_bottom + ui_bar_height / 2.f);
+}
 }

@@ -9,14 +9,15 @@
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 
-representation::PausedState::PausedState(StateManager& sm, sf::Vector2u windowsize) : State(sm) {
+namespace representation::state {
+PausedState::PausedState(StateManager& sm, sf::Vector2u windowsize) : State(sm) {
     if (!texture_.loadFromFile("../data/textures/paused_state_img.png")) {
         std::cerr << "Error loading texture in pausedstate" << std::endl;
         exit(1);
     }
 }
 
-void representation::PausedState::render(sf::RenderWindow& window) {
+void PausedState::render(sf::RenderWindow& window) {
     // load the image and set right position and scale
     sf::Sprite sprite;
     sprite.setTexture(texture_);
@@ -57,7 +58,7 @@ void representation::PausedState::render(sf::RenderWindow& window) {
     button2_.btnBottom_ = spriteTop + scaledH * 0.76f;
 }
 
-void representation::PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
+void PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::Resized) {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
@@ -77,4 +78,5 @@ void representation::PausedState::proces_user_input(const sf::Event& event, sf::
             manager_.double_pop_state();
         }
     }
+}
 }

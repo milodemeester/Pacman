@@ -10,11 +10,12 @@
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 
-representation::VictoryState::VictoryState(StateManager& sm) : State(sm) {
+namespace representation::state {
+VictoryState::VictoryState(StateManager& sm) : State(sm) {
     texture_.loadFromFile("../data/textures/victory_state_img.png");
 }
 
-void representation::VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
+void VictoryState::proces_user_input(const sf::Event& event, sf::RenderWindow& window) {
     if (event.type == sf::Event::Resized) {
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
@@ -32,7 +33,7 @@ void representation::VictoryState::proces_user_input(const sf::Event& event, sf:
     }
 }
 
-void representation::VictoryState::render(sf::RenderWindow& window) {
+void VictoryState::render(sf::RenderWindow& window) {
     // Load and draw the image
     sf::Sprite sprite;
     sprite.setTexture(texture_);
@@ -74,4 +75,5 @@ void representation::VictoryState::render(sf::RenderWindow& window) {
     rect.setOutlineThickness(5.f);             // wat dikker
 
     window.draw(rect);
+}
 }
