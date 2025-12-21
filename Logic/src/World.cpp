@@ -224,9 +224,9 @@ std::vector<logic::core::Event> World::check_entity_collision(Coordinate& entity
                     // Define the wall's bounding box
                     float entity_half_size_x = (1.f / float(world_width));
                     float entity_half_size_y = (1.f / float(world_height));
-                    Coordinate entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
+                    entity2_left_upper_corner = {wall_model->get_position().getX() - entity_half_size_x,
                                                             wall_model->get_position().getY() - entity_half_size_y};
-                    Coordinate entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
+                    entity2_right_lower_corner = {wall_model->get_position().getX() + entity_half_size_x,
                                                              wall_model->get_position().getY() + entity_half_size_y};
                     entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                     if (ghost && wall_model->has_ghost_acces() && entity_direction == Direction::North) {
@@ -244,6 +244,13 @@ std::vector<logic::core::Event> World::check_entity_collision(Coordinate& entity
                 }
                 if (entity->get_type() == entity::EntityType::Fruit && !ghost) {
                     auto fruit_model = std::static_pointer_cast<entity::CoinModel>(entity);
+                    float entity_half_size_x = (1.f / float(world_width));
+                    float entity_half_size_y = (1.f / float(world_height));
+                    entity2_left_upper_corner = {fruit_model->get_position().getX() - entity_half_size_x,
+                                                            fruit_model->get_position().getY() - entity_half_size_y};
+                    entity2_right_lower_corner = {fruit_model->get_position().getX() + entity_half_size_x,
+                                                             fruit_model->get_position().getY() + entity_half_size_y};
+                    entity2_rect = {entity2_left_upper_corner, entity2_right_lower_corner};
                     if (check_collision(entity_pos, entity2_rect, entity_speed, dt)) {
                         remove_entity(fruit_model);
                         auto score = Stopwatch::getInstance();
