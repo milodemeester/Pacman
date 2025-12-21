@@ -23,7 +23,7 @@ class CoinView : public EntityView, public logic::core::Observer {
 
 public:
     // constructor
-    explicit CoinView(std::shared_ptr<logic::entity::CoinModel> model, SpriteMap& sprite_map);
+    explicit CoinView(const std::shared_ptr<logic::entity::CoinModel>& model, SpriteMap& sprite_map);
 
     /**
      * @brief function that can notify observers of an event
@@ -45,6 +45,7 @@ public:
      */
     void update(float dt) override {}
 
+    // getter
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Coin; }
 };
 } // namespace view

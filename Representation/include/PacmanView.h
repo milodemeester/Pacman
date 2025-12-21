@@ -55,6 +55,7 @@ public:
      */
     void update(float dt) override;
 
+    // getter
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Pacman; }
 };
 } // namespace view

@@ -14,6 +14,7 @@ public:
     explicit FruitModel(Coordinate pos) : CollectableSubject(pos) {}
     FruitModel() : CollectableSubject({0, 0}) {}
 
+    // getter
     [[nodiscard]] EntityType get_type() const override { return EntityType::Fruit; };
 };
 } // namespace logic::entity

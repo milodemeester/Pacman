@@ -81,9 +81,19 @@ protected:
      */
     Coordinate calculate_new_position(float dt, core::Direction direction, Coordinate position);
 
-    virtual float get_speed() = 0;
-
+    /**
+     * method that snaps the location of an entity to the "middle" of a tile, to avoid unwanted colissions
+     * it uses the direction to know which coordinate to snap to the middle, and if both is true, than the entity is in
+     * a corner and the function will snap both coordinates
+     * @param pos the current position of the entity
+     * @param dir the current direction of the entity
+     * @param both if true, both coordinates will be snapped to the middle
+     * @return the new, snapped, coordinate
+     */
     Coordinate snap_location(Coordinate pos, core::Direction dir, bool both);
+
+    // getters
+    virtual float get_speed() = 0;
 
 public:
     // constructor

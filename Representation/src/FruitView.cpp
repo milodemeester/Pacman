@@ -23,7 +23,10 @@ void FruitView::onNotify(const logic::entity::Subject& entity, logic::core::Even
     }
     case (logic::core::Event::EntityReset): {
         invisible = false;
+        break;
     }
+    default:
+        return;
     }
 }
 

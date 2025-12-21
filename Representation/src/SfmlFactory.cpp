@@ -22,7 +22,7 @@
 
 representation::SfmlFactory::SfmlFactory(std::shared_ptr<Camera> c, sf::Vector2u w, SpriteMap& spriteMap,
                                          std::shared_ptr<logic::core::Score> score)
-    : sprite_map_(spriteMap), score_(score) {
+    : sprite_map_(spriteMap), score_(std::move(score)) {
     camera_ = std::move(c);
     windowSize_ = w;
 }

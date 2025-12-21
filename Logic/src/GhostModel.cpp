@@ -23,8 +23,9 @@ core::Direction GhostModel::get_opposite_direction(core::Direction dir) {
     case (core::Direction::West): {
         return core::Direction::East;
     }
+    default:
+        return core::Direction::NoDirection;
     }
-    return core::Direction::East;
 }
 
 std::vector<core::Direction> GhostModel::get_other_direction(core::Direction dir) {
@@ -76,5 +77,5 @@ void GhostModel::set_chase_mode() {
     notify(e);
 }
 
-bool GhostModel::is_chasing_mode() { return chasing_mode; }
+bool GhostModel::is_chasing_mode() const { return chasing_mode; }
 } // namespace logic::entity

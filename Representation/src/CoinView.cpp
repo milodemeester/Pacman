@@ -8,7 +8,7 @@
 #include "../include/SpriteMap.h"
 
 namespace representation::view {
-CoinView::CoinView(std::shared_ptr<logic::entity::CoinModel> model, SpriteMap& sprite_map)
+CoinView::CoinView(const std::shared_ptr<logic::entity::CoinModel>& model, SpriteMap& sprite_map)
     : sprite(sprite_map.getSprite(sf::IntRect(404, 402, 35, 35))) {
     world_location_ = model->get_position();
 }

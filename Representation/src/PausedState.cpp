@@ -63,7 +63,7 @@ void PausedState::proces_user_input(const sf::Event& event, sf::RenderWindow& wi
         sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         window.setView(sf::View(visibleArea));
     } else if (event.type == sf::Event::MouseButtonPressed) {
-        sf::Vector2f mouseCoords = {float(event.mouseButton.x), float(event.mouseButton.y)};
+        sf::Vector2f mouseCoords = {static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y)};
         // check if the click is inside the button boundries
         Coordinate ulc1{button1_.btnLeft_, button1_.btnTop_};
         Coordinate ulc2{button2_.btnLeft_, button2_.btnTop_};

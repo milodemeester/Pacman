@@ -11,13 +11,10 @@
 #include <map>
 #include <memory>
 
-namespace logic {
-namespace entity {
+namespace logic::entity {
 class GhostModel;
-
 enum class GhostType;
-} // namespace entity
-} // namespace logic
+} // namespace logic::entity
 
 /**
  * @brief every possible animation-state of a ghost
@@ -113,6 +110,7 @@ public:
      */
     void update(float dt) override;
 
+    // getter
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Ghost; }
 };
 } // namespace view

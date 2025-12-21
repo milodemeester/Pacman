@@ -7,7 +7,7 @@
 #include "../include/MenuState.h"
 
 namespace representation::state {
-StateManager::StateManager(sf::Vector2u windowSize, std::shared_ptr<logic::core::Score> score)
+StateManager::StateManager(sf::Vector2u windowSize, const std::shared_ptr<logic::core::Score>& score)
     : currentWindowSize(windowSize) {
     std::unique_ptr<MenuState> menu = std::make_unique<MenuState>(*this, currentWindowSize, score);
     push_state(std::move(menu));

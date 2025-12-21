@@ -19,7 +19,7 @@ void BlinkyModel::update(float dt, core::World& world) {
     Coordinate target;
     if (in_box) { // still in the box
         float x = position_.getX();
-        float y = 0 + 2 * (1 / world_height_); // 2 "blocks" above the box
+        float y = 0.f + 2.f * (1.f / world_height_); // 2 "blocks" above the box
         target = {x, y};
         if (utils::compute_manhattan_distance({target}, position_) < 0.05) {
             // out of box

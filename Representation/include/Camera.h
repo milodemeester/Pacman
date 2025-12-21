@@ -21,7 +21,8 @@ public:
      * @param char_size the size of the entity
      * @return a screen-coordinate
      */
-    std::pair<sf::Vector2f, sf::Vector2f> worldToScreen(Coordinate worldPos, sf::Vector2f char_size) const;
+    [[nodiscard]] std::pair<sf::Vector2f, sf::Vector2f> worldToScreen(Coordinate worldPos,
+                                                                      sf::Vector2f char_size) const;
 
     /**
      * @brief calculates and updates the layout-size using the window size (this function need to be called on

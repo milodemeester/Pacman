@@ -78,8 +78,8 @@ std::pair<core::Direction, Coordinate> Type2Ghost::get_viable_state(core::Direct
     std::vector<core::Direction> viable_directions;
 
     // Check all 4 directions
-    const std::vector<core::Direction> all_directions = {
-        core::Direction::North, core::Direction::East, core::Direction::South, core::Direction::West};
+    const std::vector<core::Direction> all_directions = {core::Direction::North, core::Direction::East,
+                                                         core::Direction::South, core::Direction::West};
 
     for (auto direction : all_directions) {
         // Calculate the position if the ghost takes a step into this direction

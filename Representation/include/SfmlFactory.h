@@ -4,8 +4,6 @@
 #include "../../Logic/include/Score.h"
 #include "Camera.h"
 
-#include <SFML/Graphics/RenderWindow.hpp>
-
 namespace logic::entity {
 enum class GhostType;
 }

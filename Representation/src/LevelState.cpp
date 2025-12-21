@@ -44,7 +44,8 @@ LevelState::LevelState(StateManager& manager, sf::Vector2u windowSize, std::shar
     livesTitle_.setString("Level: " + std::to_string((world_.get_level())));
 
     // initialize camera
-    camera_->updateScreenSize(windowSize, {float(world_.get_width()), float(world_.get_height())});
+    camera_->updateScreenSize(windowSize,
+                              {static_cast<float>(world_.get_width()), static_cast<float>(world_.get_height())});
     updateLayout(windowSize);
 
     views_ = factory_->getCreatedViews();
@@ -59,7 +60,8 @@ void LevelState::proces_user_input(const sf::Event& event, sf::RenderWindow& win
 
         // update the camera with the new size
         sf::Vector2u newSize(event.size.width, event.size.height);
-        camera_->updateScreenSize(newSize, {float(world_.get_width()), float(world_.get_height())});
+        camera_->updateScreenSize(newSize,
+                                  {static_cast<float>(world_.get_width()), static_cast<float>(world_.get_height())});
 
         // update text
         updateLayout(newSize);

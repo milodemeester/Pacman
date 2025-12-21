@@ -62,7 +62,7 @@ void PacmanModel::update(float dt, core::World& world) {
 
 float PacmanModel::get_speed() { return speed_; }
 
-int PacmanModel::get_lives() { return lives; }
+int PacmanModel::get_lives() const { return lives; }
 
-void PacmanModel::set_lives(int lives) { this->lives = lives; }
+void PacmanModel::set_lives(int live) { this->lives = live; }
 } // namespace logic::entity

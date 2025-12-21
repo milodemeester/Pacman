@@ -22,6 +22,7 @@ public:
      */
     bool has_ghost_acces() const { return ghost_access_; }
 
+    // getter
     [[nodiscard]] EntityType get_type() const override { return EntityType::Wall; };
 };
 } // namespace logic::entity

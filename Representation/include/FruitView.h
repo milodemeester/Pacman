@@ -9,11 +9,9 @@
 #include "SpriteMap.h"
 #include <memory>
 
-namespace logic {
-namespace entity {
+namespace logic::entity {
 class FruitModel;
-}
-} // namespace logic
+} // namespace logic::entity
 
 namespace representation {
 class Camera;
@@ -47,6 +45,7 @@ public:
      */
     void update(float dt) override {}
 
+    // getter
     logic::entity::EntityType get_type() const override { return logic::entity::EntityType::Fruit; }
 };
 } // namespace view

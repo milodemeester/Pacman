@@ -34,7 +34,7 @@ public:
     void update(float dt, core::World& world) override;
 
     // getters
-    int get_lives();
+    [[nodiscard]] int get_lives() const;
     [[nodiscard]] EntityType get_type() const override { return EntityType::Pacman; };
 
     // setters

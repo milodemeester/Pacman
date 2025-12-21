@@ -20,15 +20,15 @@ void PinkyModel::update(float dt, core::World& world) {
     Coordinate target;
     if (in_box) { // still in box
         float x = position_.getX();
-        float y = 0 + 2 * (1 / world_height_); // 2 "blocks" above the box
+        float y = 0.f + 2.f * (1.f / world_height_); // 2 "blocks" above the box
         target = {x, y};
-        if (utils::compute_manhattan_distance({target}, position_) < 0.05) {
+        if (utils::compute_manhattan_distance({target}, position_) < 0.05f) {
             // out of box
             in_box = false;
-            target = compute_pacman_forward_pos(world, 2.0);
+            target = compute_pacman_forward_pos(world, 2.0f);
         }
     } else { // out of box, chase 2 blocks in front of pacman
-        target = compute_pacman_forward_pos(world, 2.0);
+        target = compute_pacman_forward_pos(world, 2.0f);
     }
     update_(dt, world, target);
 }
