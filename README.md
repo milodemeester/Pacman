@@ -1,5 +1,11 @@
 # Pacman Project Advanced Programming
 
+```
+Name: Milo De Meester
+Student number: s0244766
+Student mail: Milo.DeMeester@student.uantwerpen.be
+```
+
 ## Project Evaluation
 
 ### 1. Core Game Requirements
@@ -17,7 +23,7 @@
 - [x] Patterns: MVC, Observer, Abstract Factory, Singleton, State
 - [x] Logic as standalone library
 - [x] Camera & normalized coords
-- [ ] Good polymorphism & extensibility
+- [x] Good polymorphism & extensibility
 
 ### 3. Project Defense Video
 - [ ] 3 min gameplay demo
@@ -26,7 +32,7 @@
 ### 4. Documentation
 - [ ] ~2 page report
 - [ ] Design rationale
-- [ ] Comments & API docs
+- [x] Comments & API docs
 
 ### 5. Bonus Features
 - [ ] Extra gameplay/visuals
