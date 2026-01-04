@@ -26,7 +26,6 @@ class StateManager {
     sf::Vector2u currentWindowSize;
 
 public:
-    // StateManager(const StateManager&) = delete;
     StateManager& operator=(const StateManager&) = delete;
 
     explicit StateManager(sf::Vector2u windowSize, const std::shared_ptr<logic::core::Score>& score);

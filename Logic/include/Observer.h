@@ -13,7 +13,7 @@ class Subject;
 }
 
 namespace core {
-class Observer : public std::enable_shared_from_this<Observer> {
+class Observer {
 public:
     // destructor
     virtual ~Observer() = default;
