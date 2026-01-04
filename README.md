@@ -26,12 +26,12 @@ Student mail: Milo.DeMeester@student.uantwerpen.be
 - [x] Good polymorphism & extensibility
 
 ### 3. Project Defense Video
-- [ ] 3 min gameplay demo
-- [ ] 7 min technical explanation
+- [x] 3 min gameplay demo
+- [x] 7 min technical explanation
 
 ### 4. Documentation
-- [ ] ~2 page report
-- [ ] Design rationale
+- [x] ~2 page report
+- [x] Design rationale
 - [x] Comments & API docs
 
 ### 5. Bonus Features
