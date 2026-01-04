@@ -1,0 +1,7 @@
+<map id="representation::view::GhostView" name="representation::view::GhostView">
+<area shape="rect" id="Node000001" title=" " alt="" coords="95,93,251,133"/>
+<area shape="rect" id="Node000002" href="$classrepresentation_1_1view_1_1EntityView.html" title=" " alt="" coords="5,5,161,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,53,155,91,151,95,111,57"/>
+<area shape="rect" id="Node000003" href="$classlogic_1_1core_1_1Observer.html" title=" " alt="" coords="185,13,341,38"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="243,49,194,95,191,91,239,46"/>
+</map>

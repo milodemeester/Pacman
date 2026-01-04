@@ -1,0 +1,9 @@
+<map id="logic::entity::CollectableSubject" name="logic::entity::CollectableSubject">
+<area shape="rect" id="Node000001" title=" " alt="" coords="102,79,281,119"/>
+<area shape="rect" id="Node000003" href="$classlogic_1_1entity_1_1CoinModel.html" title=" " alt="" coords="5,167,180,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,129,109,168,106,164,155,125"/>
+<area shape="rect" id="Node000004" href="$classlogic_1_1entity_1_1FruitModel.html" title=" " alt="" coords="204,167,379,192"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="228,125,278,164,275,168,225,129"/>
+<area shape="rect" id="Node000002" href="$classlogic_1_1entity_1_1Subject.html" title=" " alt="" coords="114,5,269,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,44,194,79,189,79,189,44"/>
+</map>

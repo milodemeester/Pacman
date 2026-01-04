@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['observer_0',['Observer',['../classlogic_1_1core_1_1Observer.html',1,'logic::core']]],
+  ['onnotify_1',['onnotify',['../classlogic_1_1core_1_1Observer.html#a58ef431610523fdea9b9437f770e69dd',1,'logic::core::Observer::onNotify()'],['../classlogic_1_1core_1_1Score.html#a8d35db55231d10168d5adf3f4eaee650',1,'logic::core::Score::onNotify()'],['../classrepresentation_1_1view_1_1CoinView.html#a8c94ff37d13bfd451e97856f3f63297a',1,'representation::view::CoinView::onNotify()'],['../classrepresentation_1_1view_1_1FruitView.html#a36e65d870cb2a7be456c925a0bd3b85b',1,'representation::view::FruitView::onNotify()'],['../classrepresentation_1_1view_1_1GhostView.html#a764fd8c1f210a62a4200beb318def41a',1,'representation::view::GhostView::onNotify()'],['../classrepresentation_1_1view_1_1PacmanView.html#a759f4f239abd1ad1c60de204bf75fd59',1,'representation::view::PacmanView::onNotify()'],['../classrepresentation_1_1view_1_1WallView.html#a8227ae34f51b4b4f24dabdd87a272562',1,'representation::view::WallView::onNotify()']]]
+];
